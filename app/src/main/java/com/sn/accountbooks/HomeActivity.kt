@@ -1,33 +1,34 @@
 package com.sn.accountbooks
 
+import android.util.Log
+import android.view.Menu
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
-import com.google.android.material.snackbar.Snackbar
-import com.gyf.immersionbar.ImmersionBar
 import com.sn.accountbooks.base.BaseAppCompatActivity
 
 class HomeActivity : BaseAppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
 
+    //
     override fun init() {
     }
 
     override fun initView() {
         val toolbar: Toolbar = findViewById(R.id.toolbar)
-        toolbar?.title = ""
         setSupportActionBar(toolbar)
         val fab: FloatingActionButton = findViewById(R.id.fab)
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+        // drawerlayout 不传入，代表 Toolbar 和 侧拉无管理。不显示Home 按键
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow
@@ -35,6 +36,14 @@ class HomeActivity : BaseAppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        // 动态修改左上角title
+        //TODO : BUG，如果监听放在set之前，监听无效
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            Log.e("navController", destination.label.toString());
+            Log.e("navController", destination.toString());
+            toolbar.title = getString(R.string.app_name)
+            toolbar.title = "2020/10/18"
+        }
     }
 
 
@@ -42,9 +51,16 @@ class HomeActivity : BaseAppCompatActivity() {
         return R.layout.activity_main
     }
 
-    override fun initStatusBar() {
-//        ImmersionBar.with(this)
-//            .titleBarMarginTop(R.id.toolbar) //可以为任意view
-//            .init()
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.main, menu)
+        return true
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment)
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 }
+
+

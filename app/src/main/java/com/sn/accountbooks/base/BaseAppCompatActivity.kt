@@ -14,7 +14,6 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
         init()
         setContentView(setViewId())
         //绑定到butterKnife
-        initStatusBar()
         initView()
     }
 
@@ -24,7 +23,6 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
 
     abstract fun setViewId(): Int
 
-    abstract fun initStatusBar()
 
 
 }

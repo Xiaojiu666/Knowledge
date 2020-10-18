@@ -1,0 +1,3 @@
+include ':app:plugin_commin'
+include ':app'
+rootProject.name = "AccountBooks"

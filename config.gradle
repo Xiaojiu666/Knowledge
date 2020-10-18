@@ -1,0 +1,71 @@
+def supportVersion = "28.0.0"
+def floatingactionbutton = '1.10.1'
+def recyclerview = '1.1.0'
+
+def glideVersion = '4.9.0'
+def gsonVersion = '2.6.2'
+def multiStateViewVersion = '1.3.2'
+def butterKnifeVersion = '10.2.1'
+def smartRefersh = '2.0.1'
+def bugly = '3.2.422'
+def bugly_ndk = '3.7.5'
+def rxjava = '3.0.0'
+def multidex = '2.0.1'
+def permissions = '4.7.0'
+def appcompat = '1.1.0'
+def swiperefreshlayout = '1.1.0'
+def constraintlayout = '1.1.3'
+def material = '1.1.0'
+def banner = '2.0.12'
+def ratingbar = '1.4.0'
+def dagger2 = '2.11'
+def navigationVersion = '2.2.0'
+
+ext {
+    dependencies = [
+            "glide"                      : "com.github.bumptech.glide:glide:${glideVersion}",
+            "gson"                       : "com.google.code.gson:gson:${gsonVersion}",
+            "multi-state-view"           : "com.github.Kennyc1012:MultiStateView:${multiStateViewVersion}",
+            "butterKnife_support"        : "com.jakewharton:butterknife:${butterKnifeVersion}",
+            "butterKnife_compiler"       : "com.jakewharton:butterknife-compiler:${butterKnifeVersion}",
+            "okhttpLogging"              : "com.squareup.okhttp3:logging-interceptor:3.8.0",
+            "retrofit2"                  : "com.squareup.retrofit2:retrofit:2.3.0",
+            "retrofit2Adapter"           : "com.squareup.retrofit2:adapter-rxjava3:2.9.0",
+            "retrofit2Gson"              : "com.squareup.retrofit2:converter-gson:2.3.0",
+            "smartRefersh_kernel"        : "com.scwang.smart:refresh-layout-kernel:${smartRefersh}",
+            "smartRefersh_classics"      : "com.scwang.smart:refresh-header-classics:${smartRefersh}",
+            "bugly"                      : "com.tencent.bugly:crashreport:${bugly}",
+            "bugly_ndk"                  : "com.tencent.bugly:nativecrashreport:${bugly_ndk}",
+            "rxjava"                     : "io.reactivex.rxjava3:rxjava:${rxjava}",
+            "rxAndroid"                  : "io.reactivex.rxjava3:rxandroid:${rxjava}",
+            "multidex"                   : "androidx.multidex:multidex:${multidex}",
+            "permissions"                : "org.permissionsdispatcher:permissionsdispatcher:${permissions}",
+            "permissions_processor"      : "org.permissionsdispatcher:permissionsdispatcher-processor:${permissions}",
+            "androidx_appcompat"         : "androidx.appcompat:appcompat:${appcompat}",
+            "androidx_material"          : "com.google.android.material:material:${material}",
+            "androidx_swiperefreshlayout": "androidx.swiperefreshlayout:swiperefreshlayout:${swiperefreshlayout}",
+            "androidx_constraintlayout"  : "androidx.constraintlayout:constraintlayout:${constraintlayout}",
+            "androidx_recyclerview"      : "androidx.recyclerview:recyclerview:${recyclerview}",
+            "banner"                     : "com.youth.banner:banner:${banner}",
+            "ratingbar"                  : "me.zhanghai.android.materialratingbar:library:${ratingbar}",
+            "dagger2"                    : "com.google.dagger:dagger:${dagger2}",
+            "dagger2_compiler"           : "com.google.dagger:dagger-compiler:${dagger2}",
+            "luban"                      : "top.zibin:Luban:1.1.8",
+            "immersionbar"               : 'com.gyf.immersionbar:immersionbar:3.0.0',
+            "immersionbar_components"    : 'com.gyf.immersionbar:immersionbar-components:3.0.0',
+    ]
+
+    versions = [
+            "buildToolsVersion": "28.0.3",
+            "compileSdkVersion": 28,
+            "minSdkVersion"    : 18,
+            "targetSdkVersion" : 28,
+            "versionCode"      : 1,
+            "versionName"      : "1.0.0"
+    ]
+
+    androidX = [
+            "androidx_navigation_ragment_ktx": "androidx.navigation:navigation-fragment-ktx:${navigationVersion}",
+            "androidx_navigation_ui_ktx"     : "androidx.navigation:navigation-ui-ktx:${navigationVersion}"
+    ]
+}

@@ -24,10 +24,11 @@ abstract class BaseFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initStatusBar()
+        initView(view);
     }
 
-    abstract fun initStatusBar()
+    abstract fun initView(view: View)
+
 
     abstract fun getLayoutId(): Int
 }

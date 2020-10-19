@@ -5,6 +5,8 @@
     <color name="colorAccent">#03DAC5</color>
 
     <color name="colorAppTheme">#43A178</color>
+    <color name="color_white">#fff</color>
+    <color name="color_tran">#00000000</color>
 
 
 </resources>

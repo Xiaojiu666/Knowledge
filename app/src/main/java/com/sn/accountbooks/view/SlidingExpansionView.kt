@@ -5,12 +5,17 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import android.view.View.OnLayoutChangeListener
 import android.widget.FrameLayout
+import android.widget.ImageView
 import androidx.core.view.ViewCompat
 import androidx.customview.widget.ViewDragHelper
+import com.sn.accountbooks.framework.ui.AnimatorUtils
 
 /**
  * Created by GuoXu on 2020/10/19 17:22.
+ * ? 可空 ，不崩
+ * !! 不能空 ， 空指针
  */
 class SlidingExpansionView @JvmOverloads constructor(
     context: Context?,
@@ -20,6 +25,8 @@ class SlidingExpansionView @JvmOverloads constructor(
     private var viewDragHelper: ViewDragHelper? = null
     private var mBgView: View? = null
     private var mChildSlidingView: View? = null
+
+    private var slidingOpenState: Boolean = false
 
     private fun initView() {
         viewDragHelper = ViewDragHelper.create(this, 1.0f, SlidingViewDragHelper(this))
@@ -78,10 +85,7 @@ class SlidingExpansionView @JvmOverloads constructor(
         ): Int {
             val i = height - child.height
             val q1 = mBgView!!.measuredHeight
-            Log.e(
-                TAG,
-                " i " + i + "q1 " + q1 + "top " + top
-            )
+
             return top.coerceAtLeast(q1 / 2).coerceAtMost(q1)
         }
 
@@ -132,6 +136,20 @@ class SlidingExpansionView @JvmOverloads constructor(
             return measuredHeight - child.measuredHeight
         }
 
+        override fun onViewPositionChanged(
+            changedView: View,
+            left: Int,
+            top: Int,
+            dx: Int,
+            dy: Int
+        ) {
+//            super.onViewPositionChanged(changedView, left, top, dx, dy)
+            slidingOpenState = top == mBgView?.measuredHeight
+            Log.e(
+                TAG,
+                "left : $left , top :$top , dx : $dx , dy : $dy , slidingStauts : $slidingOpenState"
+            )
+        }
     }
 
     /**
@@ -141,6 +159,22 @@ class SlidingExpansionView @JvmOverloads constructor(
         super.onFinishInflate()
         mBgView = getChildAt(0)
         mChildSlidingView = getChildAt(1)
+//        mChildSlidingView?.addOnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
+//            Log.d(
+//                TAG,
+//                "onFinishInflate new: left : $left , top : $top ,right : $right, bottom : $bottom"
+//            )
+//            Log.d(
+//                TAG,
+//                "onFinishInflate old: oldLeft : $oldLeft , oldTop : $oldTop ,oldRight : $oldRight, oldBottom : $oldBottom"
+//            )
+//        }
+        mChildSlidingView?.setOnScrollChangeListener { view, i, i2, i3, i4 ->
+            Log.d(
+                TAG,
+                "onFinishInflate new: left : $i , top : $i2 ,right : $i3, bottom : $i4"
+            )
+        }
     }
 
     override fun onLayout(
@@ -200,6 +234,44 @@ class SlidingExpansionView @JvmOverloads constructor(
     ) {
         child.layout(left, top, left + width, top + height)
     }
+
+
+    /**
+     *  控制SlidingView展开 或者关闭
+     *  ImageViewV为SlidingView 上方箭头
+     */
+    fun expansionView(imageView: ImageView) {
+        //       if (mChildSlidingView?.translationY!!.toInt() == (mBgView?.measuredHeight?.div(2))) {
+        if (slidingOpenState) {
+            mChildSlidingView?.scrollTo(0,300)
+//            AnimatorUtils.translationY(
+//                mChildSlidingView!!,
+//                mChildSlidingView?.translationY!!.toFloat(),
+//                -(mBgView?.measuredHeight?.div(2))?.toFloat()!!
+//            )
+            AnimatorUtils.startRotate(
+                imageView,
+                imageView.rotation,
+                0f
+            )
+            slidingOpenState = false;
+        } else {
+            Log.e(TAG, "OPEN")
+            mChildSlidingView?.scrollTo(0,-300)
+//            AnimatorUtils.translationY(
+//                mChildSlidingView!!,
+//                mChildSlidingView?.translationY!!.toFloat(),
+//                mBgView!!.measuredHeight.toFloat() / 2
+//            )
+            AnimatorUtils.startRotate(
+                imageView,
+                0f,
+                180f
+            )
+            slidingOpenState = true;
+        }
+    }
+
 
     // 回弹效果需要重写
     override fun computeScroll() {

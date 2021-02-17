@@ -17,7 +17,6 @@ import com.sn.accountbooks.base.BaseAppCompatActivity
 class HomeActivity : BaseAppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
 
-    //
     override fun init() {
     }
 
@@ -28,7 +27,7 @@ class HomeActivity : BaseAppCompatActivity() {
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
-        // drawerlayout 不传入，代表 Toolbar 和 侧拉无管理。不显示Home 按键
+        // drawerlayout 不传入，代表 Toolbar 和 侧拉无关联。不显示Home 按键
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow

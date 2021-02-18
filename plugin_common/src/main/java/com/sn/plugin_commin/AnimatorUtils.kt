@@ -1,4 +1,4 @@
-package com.sn.accountbooks.framework.ui
+package com.sn.plugin_commin
 
 import android.animation.ObjectAnimator
 import android.view.View

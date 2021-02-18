@@ -1,6 +1,7 @@
-package com.sn.accountbooks.view
+package com.sn.module_account_book.ui.view
 
 import android.content.Context
+import android.os.Build
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
@@ -8,9 +9,10 @@ import android.view.View
 import android.view.View.OnLayoutChangeListener
 import android.widget.FrameLayout
 import android.widget.ImageView
+import androidx.annotation.RequiresApi
 import androidx.core.view.ViewCompat
 import androidx.customview.widget.ViewDragHelper
-import com.sn.accountbooks.framework.ui.AnimatorUtils
+import com.sn.plugin_commin.AnimatorUtils
 
 /**
  * Created by GuoXu on 2020/10/19 17:22.
@@ -155,6 +157,7 @@ class SlidingExpansionView @JvmOverloads constructor(
     /**
      * 完成绘制
      */
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onFinishInflate() {
         super.onFinishInflate()
         mBgView = getChildAt(0)

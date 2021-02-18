@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name="com.sn.module_diary.DiaryIndexActivity">
+        <activity android:name="com.sn.module_diary.DiaryIndexActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,24 +1,15 @@
 package com.sn.accountbooks.framework.ui.home
 
-import android.graphics.Color
 import android.view.View
-import com.github.mikephil.charting.animation.Easing
-import com.github.mikephil.charting.components.Legend
-import com.github.mikephil.charting.data.PieData
-import com.github.mikephil.charting.data.PieDataSet
-import com.github.mikephil.charting.data.PieEntry
-import com.github.mikephil.charting.formatter.PercentFormatter
-import com.github.mikephil.charting.utils.ColorTemplate
 import com.sn.accountbooks.R
 import com.sn.accountbooks.base.BaseFragment
 import com.sn.myapplication.ui.home.HomeViewModel
-import kotlinx.android.synthetic.main.sliding_background.*
-import kotlinx.android.synthetic.main.sliding_sliding_view.*
-import java.util.*
 
 class HomeFragment : BaseFragment() {
 
     private lateinit var homeViewModel: HomeViewModel
+    override fun initView(view: View) {
+    }
 
 //    override fun onCreateView(
 //        inflater: LayoutInflater,
@@ -35,7 +26,7 @@ class HomeFragment : BaseFragment() {
 //        return root
 //    }
 
-    override fun initView(view: View) {
+//    override fun initView(view: View) {
 ////        sliding_view_arrow.animate().rotationX(1.0f).start()
 //        linearLayout.setOnClickListener {
 ////            sliding_expansion_view.expansionView(sliding_view_arrow)
@@ -49,10 +40,8 @@ class HomeFragment : BaseFragment() {
 //
 //        chart.setTransparentCircleColor(Color.WHITE)
 ////        chart.setTransparentCircleAlpha(110)
-//
 ////        chart.holeRadius = 58f
 ////        chart.transparentCircleRadius = 61f
-//
 //        chart.setDrawCenterText(true)
 //        chart.rotationAngle = 0f
 //        // enable rotation of the chart by touch
@@ -84,47 +73,47 @@ class HomeFragment : BaseFragment() {
 //        chart.animateY(1400, Easing.EaseInOutQuad)
 //        //dataSet.setSelectionShift(0f);
 //        setData(2, 10.0f);
-    }
-
-
-    private fun setData(count: Int, range: Float) {
-        val entries = ArrayList<PieEntry>()
-        // NOTE: The order of the entries when being added to the entries array determines their position around the center of
-        // the chart.
-        for (i in 0 until count) {
-            entries.add(
-                PieEntry(
-                    (Math.random() * range + range / 5).toFloat(),
-                    "收入",
-                    resources.getDrawable(R.drawable.ic_launcher_background)
-                )
-            )
-        }
-        val dataSet = PieDataSet(entries, "")
-        dataSet.setDrawIcons(false)
-
-        val colors = ArrayList<Int>()
-//        for (c in ColorTemplate.VORDIPLOM_COLORS) colors.add(c)
-//        for (c in ColorTemplate.JOYFUL_COLORS) colors.add(c)
-//        for (c in ColorTemplate.COLORFUL_COLORS) colors.add(c)
-        for (c in ColorTemplate.LIBERTY_COLORS) colors.add(c)
-        for (c in ColorTemplate.PASTEL_COLORS) colors.add(c)
-        colors.add(ColorTemplate.getHoloBlue())
-        dataSet.colors = colors
-        //dataSet.setSelectionShift(0f);
-        val data = PieData(dataSet)
-        data.setValueFormatter(PercentFormatter())
-        data.setDrawValues(false)
-//        data.setValueTextSize(11f)
-//        data.setValueTextColor(Color.WHITE)
-        chart.data = data
-        // undo all highlights
-        chart.highlightValues(null)
-        chart.invalidate()
-    }
+//    }
+//
+//
+//    private fun setData(count: Int, range: Float) {
+//        val entries = ArrayList<PieEntry>()
+//        // NOTE: The order of the entries when being added to the entries array determines their position around the center of
+//        // the chart.
+//        for (i in 0 until count) {
+//            entries.add(
+//                PieEntry(
+//                    (Math.random() * range + range / 5).toFloat(),
+//                    "收入",
+//                    resources.getDrawable(R.drawable.ic_launcher_background)
+//                )
+//            )
+//        }
+//        val dataSet = PieDataSet(entries, "")
+//        dataSet.setDrawIcons(false)
+//
+//        val colors = ArrayList<Int>()
+////        for (c in ColorTemplate.VORDIPLOM_COLORS) colors.add(c)
+////        for (c in ColorTemplate.JOYFUL_COLORS) colors.add(c)
+////        for (c in ColorTemplate.COLORFUL_COLORS) colors.add(c)
+//        for (c in ColorTemplate.LIBERTY_COLORS) colors.add(c)
+//        for (c in ColorTemplate.PASTEL_COLORS) colors.add(c)
+//        colors.add(ColorTemplate.getHoloBlue())
+//        dataSet.colors = colors
+//        //dataSet.setSelectionShift(0f);
+//        val data = PieData(dataSet)
+//        data.setValueFormatter(PercentFormatter())
+//        data.setDrawValues(false)
+////        data.setValueTextSize(11f)
+////        data.setValueTextColor(Color.WHITE)
+//        chart.data = data
+//        // undo all highlights
+//        chart.highlightValues(null)
+//        chart.invalidate()
+//    }
 
 
     override fun getLayoutId(): Int {
-        return R.layout.fragment_home;
+        return R.layout.fragment_home
     }
 }

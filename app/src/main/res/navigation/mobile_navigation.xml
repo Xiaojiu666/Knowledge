@@ -3,23 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/menu_home">
 
     <fragment
-        android:id="@+id/nav_home"
+        android:id="@+id/menu_home"
         android:name="com.sn.myapplication.ui.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_nav_home_to_nav_account_book"
+            app:destination="@id/menu_account" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_diary"
+            app:destination="@id/menu_diary" />
+    </fragment>
 
     <fragment
-        android:id="@+id/nav_gallery"
+        android:id="@+id/menu_account"
         android:name="com.sn.myapplication.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
+        android:label="@string/menu_account_book"
         tools:layout="@layout/fragment_gallery" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
+        android:id="@+id/menu_diary"
         android:name="com.sn.myapplication.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
+        android:label="@string/menu_diary"
         tools:layout="@layout/fragment_slideshow" />
+
 </navigation>

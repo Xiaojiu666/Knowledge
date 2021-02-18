@@ -27,10 +27,11 @@ class HomeActivity : BaseAppCompatActivity() {
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
-        // drawerlayout 不传入，代表 Toolbar 和 侧拉无关联。不显示Home 按键
+        // 为导航组件配置NavigationUI
+//        appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow
+                R.id.menu_home, R.id.menu_account, R.id.menu_diary
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -51,7 +52,6 @@ class HomeActivity : BaseAppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
         return true
     }

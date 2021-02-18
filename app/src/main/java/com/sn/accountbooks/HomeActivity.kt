@@ -41,8 +41,8 @@ class HomeActivity : BaseAppCompatActivity() {
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             Log.e("navController", destination.label.toString());
             Log.e("navController", destination.toString());
-            toolbar.title = getString(R.string.app_name)
-            toolbar.title = "2020/10/18"
+//            toolbar.title = getString(R.string.app_name)
+//            toolbar.title = "2020/10/18"
         }
     }
 

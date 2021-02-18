@@ -45,7 +45,9 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-
+    if (!isModule.toBoolean()) {
+        implementation project(path: ':module_account_book')
+    }
 
 //    implementation "androidx.datastore:datastore-preferences:1.0.0-alpha06"
 //    implementation "androidx.datastore:datastore-preferences-core:1.0.0-alpha06"
@@ -73,6 +75,6 @@ dependencies {
     /**
      * 报表
      */
-    implementation librarys.MPchart
+    api librarys.MPchart
 
 }

@@ -75,7 +75,7 @@ MessageQueue(boolean quitAllowed) {
 
 乍一看朴实无华，就一个构造，一个参数，相比Handler可太清晰了，参数也很简单，是否允许消息队列退出，由Looper创建时提供。
 
-但是这里面竟然有很多native层的接口，暂时先不管c层的调用，因为我也还不会。。。。
+但是这里面竟然有很多native层的接口，我们暂时先不管c层的调用，后面会说道作用。
 
 通过Handler源码，我们发现最终会调用enqueueMessage方法，那我们就看下这里面的逻辑,主要就是通过when对消息队列进行排序从过next 对下一个节点进行关联
 
@@ -161,7 +161,7 @@ public static void loop() {
     final MessageQueue queue = me.mQueue;
     //...
     for (;;) {
-        Message msg = queue.next(); // 获取消息
+        Message msg = queue.next(); // 循环遍历MsgQueue获取消息
         if (msg == null) {
             return;
         }
@@ -181,7 +181,89 @@ public static void loop() {
 }
 ```
 
-看到这里 你会发现，获取消息的方法在queue
+看到这里 你会发现，真正获取消息的方法又回到了消息队列中，那让我们在回看下next方法
+
+
+
+```java
+//MessageQueue 类
+Message next() {
+    //...
+    int pendingIdleHandlerCount = -1; // -1 only during first iteration
+    int nextPollTimeoutMillis = 0;
+    for (;;) {
+        if (nextPollTimeoutMillis != 0) {
+            Binder.flushPendingCommands();
+        }
+				//1.调用 NDK 层方法 ，nextPollTimeoutMillis = -1 时,将线程阻塞挂起，进入等待
+      	// 控制没有消息的时候，不进行无限循环
+        nativePollOnce(ptr, nextPollTimeoutMillis);
+
+        synchronized (this) {
+            // Try to retrieve the next message.  Return if found.
+            final long now = SystemClock.uptimeMillis();
+            Message prevMsg = null;
+            Message msg = mMessages;
+          	// 2.如果第一条头消息，没有对应的Handler，那么直接取下一条
+            if (msg != null && msg.target == null) {
+                do {
+                    prevMsg = msg;
+                    msg = msg.next;
+                } while (msg != null && !msg.isAsynchronous());
+            }
+            if (msg != null) {
+               //3.根据当前时间进行消息定时发送
+              if (now < msg.when) {
+                    // 3.1 下一条消息没有准备好。当它准备好时，设置一个超时唤醒。
+                    nextPollTimeoutMillis = (int) Math.min(msg.when - now, Integer.MAX_VALUE);
+                } else {
+                    // 3.2 消息到时间了
+                    mBlocked = false;
+                		// 4. 判断当前信息前面是否有数据
+                    if (prevMsg != null) {
+                      // 4.1 
+                        prevMsg.next = msg.next;
+                    } else {
+                      // 4.2 链表指针指向下一个消息体
+                        mMessages = msg.next;
+                    }
+                		// 5 置空当前消息链表对应的下一个节点
+                    msg.next = null;
+                    if (DEBUG) Log.v(TAG, "Returning message: " + msg);
+                    msg.markInUse();
+                    return msg;
+                }
+            } else {
+                // No more messages.
+                nextPollTimeoutMillis = -1;
+            }
+					//...
+    }
+}
+```
+
+根据next()方法，我们会发现，消息队列会根据一个NDK 接口nativePollOnce()来控制当前循环 是否需要挂起，如果没有被挂起则根据时间进行消息筛选并返回给Looper，那么问题又来了？如果消息全部发送完毕后被挂起，那么系统又如何唤醒循环呢？第一时间肯定想到是有消息进入队列的时候，那么我们回顾下上面的enqueueMsg()方法
+
+```java
+		//MessageQueue.java
+    boolean enqueueMessage(Message msg, long when) {
+        //...
+        // We can assume mPtr != 0 because mQuitting is false.
+        if (needWake) {
+             nativeWake(mPtr);
+           }
+        }
+        return true;
+    }
+```
+
+我们发现，每次有新消息入列的时候，都会去判断是否需要调用NDK的nativeWake()接口，其实整个唤醒和挂起 全都是通过C层来控制,具体C层的问题还请看下这篇博客[ Android 系统的血液：Handler][https://www.jianshu.com/p/53e740d6d8f0]， 调用流程写的很详细这里就不过多介绍了。
+
+
+
+其实到了这里，整个流成已经很清晰了，子线程通过Handler像线程中Looper的消息队列 enqueueMsg()，Looper.loop()方法循环从MessageQueue.next()方法里面获取数据，MessageQueue.next()会根据线程状态，消息时间，进行消息体的返回，Looper.loop()方法进行消息的分发。
+
+
 
 
 

@@ -1,6 +1,6 @@
+include ':module_login'
 include ':plugin_base'
 include ':module_account_book'
 include ':module_diary'
-include ':plugin_common'
 include ':app'
 rootProject.name = "AccountBooks"

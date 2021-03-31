@@ -44,4 +44,8 @@ dependencies {
 
     /*AndroidX 约束布局*/
     api library.androidx_constraintlayout
+
+    /*room 数据库*/
+    api library.room_runtime
+    annotationProcessor library.room_compiler
 }

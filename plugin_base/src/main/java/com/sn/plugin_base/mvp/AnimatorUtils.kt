@@ -1,4 +1,4 @@
-package com.sn.plugin_commin
+package com.sn.plugin_base.mvp
 
 import android.animation.ObjectAnimator
 import android.view.View

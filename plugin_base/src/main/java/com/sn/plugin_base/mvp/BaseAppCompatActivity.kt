@@ -1,4 +1,4 @@
-package com.sn.plugin_base.ui
+package com.sn.plugin_base.mvp
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

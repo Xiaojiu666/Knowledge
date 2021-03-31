@@ -10,7 +10,10 @@
 
    A : https://blog.csdn.net/wjzj000/article/details/95863976
 
-   
 
-   
+
+
+####	参考资料
+
+1.[数据库可视化工具SQLScout](https://blog.csdn.net/xhnmbest/article/details/105994122)
 

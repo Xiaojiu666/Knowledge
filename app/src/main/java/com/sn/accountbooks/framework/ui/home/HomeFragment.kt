@@ -9,7 +9,9 @@ class HomeFragment : BaseFragment() {
 
     private lateinit var homeViewModel: HomeViewModel
     override fun initView(view: View) {
+
     }
+
 
 //    override fun onCreateView(
 //        inflater: LayoutInflater,

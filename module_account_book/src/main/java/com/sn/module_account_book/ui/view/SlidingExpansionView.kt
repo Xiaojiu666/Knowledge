@@ -6,13 +6,12 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import android.view.View.OnLayoutChangeListener
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.core.view.ViewCompat
 import androidx.customview.widget.ViewDragHelper
-import com.sn.plugin_commin.AnimatorUtils
+import com.sn.plugin_base.base.AnimatorUtils
 
 /**
  * Created by GuoXu on 2020/10/19 17:22.

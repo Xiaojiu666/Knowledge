@@ -22,6 +22,7 @@ def dagger2 = '2.11'
 def navigationVersion = '2.2.0'
 def lifecycle_extensions= '2.2.0'
 def datastore= '1.0.0-alpha06'
+def room_version = "2.2.6"
 
 ext {
     dependencies = [
@@ -58,7 +59,10 @@ ext {
             "MPchart"                    : 'com.github.PhilJay:MPAndroidChart:v3.1.0',
             "lifecycle_extensions"       : "androidx.lifecycle:lifecycle-extensions:${lifecycle_extensions}",
             "datastore_core"             : "androidx.datastore:datastore-preferences:${datastore}",
-            "datastore_preferences"      : "androidx.datastore:datastore-preferences-core:${datastore}"
+            "datastore_preferences"      : "androidx.datastore:datastore-preferences-core:${datastore}",
+            "room_runtime"               :  "androidx.room:room-runtime:${room_version}",
+            "room_compiler"              :  "androidx.room:room-compiler:${room_version}"
+
     ]
 
     versions = [

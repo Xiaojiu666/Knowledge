@@ -1,0 +1,28 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorAppTheme</item>
+        <item name="colorPrimaryDark">@color/colorAppTheme</item>
+        <item name="colorAccent">@color/colorAppTheme</item>
+    </style>
+
+
+    <!--配置下面两项，否则导航栏颜色无效-->
+    <style name="AppTheme.NoActionBar">
+        <!--        <item name="windowActionBar">false</item>-->
+        <!--        <item name="windowNoTitle">true</item>-->
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
+        <item name="background">@color/colorAccent</item>
+    </style>
+
+    <style name="AppWhiteTitleStyle">
+        <item name="android:textColor">@color/color_white</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+</resources>

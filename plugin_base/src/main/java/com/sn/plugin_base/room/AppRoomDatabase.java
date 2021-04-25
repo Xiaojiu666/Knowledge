@@ -12,7 +12,7 @@ import com.sn.plugin_base.data.UserInfo;
  * @Date 2021/3/5 10:14
  * Describe
  */
-@Database(entities = {UserInfo.class}, version = 1)
+//@Database(entities = {UserInfo.class}, version = 1)
 public abstract class AppRoomDatabase extends RoomDatabase {
 
     public abstract UserInfo firmwareUpgradeInfoDao();

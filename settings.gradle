@@ -1,3 +1,4 @@
+include ':plugin_common'
 include ':module_login'
 include ':plugin_base'
 include ':module_account_book'

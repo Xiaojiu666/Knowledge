@@ -1,6 +1,6 @@
 include ':plugin_common'
-include ':module_login'
 include ':plugin_base'
+include ':module_login'
 include ':module_account_book'
 include ':module_diary'
 include ':app'

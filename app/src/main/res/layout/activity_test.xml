@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.sn.plugin_common.ui.RichEditText
+    <com.sn.plugin_common.ui.rich_edittext.RichEditText
         android:id="@+id/richEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -14,7 +14,9 @@
 
 
 
-##	三、ItemD
+##	三、ItemDecoration
+
+- https://blog.csdn.net/a62321780/article/details/54411580  //使用ItemDecoration打造列表顶部悬浮效果
 
 
 
@@ -23,3 +25,4 @@
 
 
 ##	四、SnapHelper
+

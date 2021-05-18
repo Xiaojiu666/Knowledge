@@ -1,4 +1,4 @@
-##	JVM内存管理
+##	1. JVM内存管理
 
 ![img](https://img-blog.csdnimg.cn/2019040912492050.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jvbmd0YW91cA==,size_16,color_FFFFFF,t_70)
 
@@ -6,7 +6,9 @@ JVM 的运行时数据区主要包括：**堆、栈、方法区、程序计数�
 
 
 
-#### 栈：
+##	2. 栈(线程私有)
+
+
 
 ![img](https://img-blog.csdnimg.cn/20190409163129199.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jvbmd0YW91cA==,size_16,color_FFFFFF,t_70)
 
@@ -18,6 +20,24 @@ JVM 的运行时数据区主要包括：**堆、栈、方法区、程序计数�
 
 作用：存放java方法执行时的所有的数据
 组成：由栈帧组成，一个栈帧代表一个方法的执行
+
+#### 2.1 局部变量表
+
+####	2.2 操作数表
+
+## 3.堆
+
+##	4. 方法区
+
+##	5. 程序计数器
+
+
+
+
+
+
+
+
 
 
 

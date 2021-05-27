@@ -19,7 +19,50 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7b1adccf-1c65-47c5-8ad1-965998a9ab93" name="Default Changelist" comment="+*  多媒体知识" />
+    <list default="true" id="7b1adccf-1c65-47c5-8ad1-965998a9ab93" name="Default Changelist" comment="+*  多媒体知识">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/.idea/codeStyles/Project.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/.idea/gradle.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/.idea/runConfigurations.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/app/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/app/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/app/proguard-rules.pro" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/app/src/androidTest/java/com/study/xiaojiu/algorithm/ExampleInstrumentedTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/app/src/main/AndroidManifest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/app/src/main/java/com/study/xiaojiu/algorithm/BaseAlgorithm.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/app/src/main/java/com/study/xiaojiu/algorithm/MainActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/app/src/main/java/com/study/xiaojiu/algorithm/SimpleAlgorithm.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/app/src/main/res/drawable/ic_launcher_background.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/app/src/main/res/layout/activity_main.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/app/src/main/res/mipmap-hdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/app/src/main/res/mipmap-hdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/app/src/main/res/mipmap-mdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/app/src/main/res/mipmap-mdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/app/src/main/res/mipmap-xhdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/app/src/main/res/mipmap-xhdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/app/src/main/res/mipmap-xxhdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/app/src/main/res/values/colors.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/app/src/main/res/values/strings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/app/src/main/res/values/styles.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/app/src/test/java/com/study/xiaojiu/algorithm/ExampleUnitTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/gradle.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/gradlew" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/gradlew.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/Algorithm/settings.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/二叉树.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithm/算法.md" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -107,13 +150,19 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="572" y="371" key="VCS.ChangelistChooser/0.0.1440.900@0.0.1440.900" timestamp="1615195962390" />
-    <state x="320" y="190" key="Vcs.Push.Dialog.v2" timestamp="1615446825205">
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2" timestamp="1621855406154">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="320" y="190" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1615446825205" />
-    <state x="511" y="371" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1615446809437">
-      <screen x="0" y="0" width="1440" height="900" />
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1621855406154" />
+    <state x="320" y="195" key="Vcs.Push.Dialog.v2/0.23.1440.814@0.23.1440.814" timestamp="1621324364674" />
+    <state x="511" y="359" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1621324184490">
+      <screen x="0" y="23" width="1440" height="814" />
     </state>
     <state x="511" y="371" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1440.900@0.0.1440.900" timestamp="1615446809437" />
+    <state x="511" y="359" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.23.1440.814@0.23.1440.814" timestamp="1621324184490" />
+    <state x="412" y="225" key="git4idea.merge.GitPullDialog" timestamp="1621324180157">
+      <screen x="0" y="23" width="1440" height="814" />
+    </state>
+    <state x="412" y="225" key="git4idea.merge.GitPullDialog/0.23.1440.814@0.23.1440.814" timestamp="1621324180157" />
   </component>
 </project>

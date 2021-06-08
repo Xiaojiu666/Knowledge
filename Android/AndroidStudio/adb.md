@@ -1,0 +1,1 @@
+##  https://www.cnblogs.com/samgxw/p/9425196.html       android抓取日志方法

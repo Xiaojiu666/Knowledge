@@ -4,6 +4,8 @@ import com.sn.accountbooks.R;
 import com.sn.accountbooks.base.BaseAppCompatActivity;
 
 public class TestActivity extends BaseAppCompatActivity {
+
+
     @Override
     public void init() {
 

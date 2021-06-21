@@ -23,6 +23,7 @@ def navigationVersion = '2.2.0'
 def lifecycle_extensions= '2.2.0'
 def datastore= '1.0.0-alpha06'
 def room_version = "2.2.6"
+def common_email = "1.6.0"
 
 ext {
     dependencies = [
@@ -61,7 +62,9 @@ ext {
             "datastore_core"             : "androidx.datastore:datastore-preferences:${datastore}",
             "datastore_preferences"      : "androidx.datastore:datastore-preferences-core:${datastore}",
             "room_runtime"               :  "androidx.room:room-runtime:${room_version}",
-            "room_compiler"              :  "androidx.room:room-compiler:${room_version}"
+            "room_compiler"              :  "androidx.room:room-compiler:${room_version}",
+            "common_email"               :  "com.sun.mail:android-mail:${common_email}",
+            "common_email_activation"    :  "com.sun.mail:android-activation:${common_email}",
 
     ]
 

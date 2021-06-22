@@ -18,6 +18,7 @@ import com.sn.module_login.R
 import com.sn.plugin_common.utils.email.EMailSenderConfig
 import com.sn.plugin_common.utils.email.EMailSenderMessage
 import com.sn.plugin_common.utils.email.EmailManager
+import com.sn.plugin_common.utils.log.LogUtil
 
 
 class LoginActivity : AppCompatActivity() {
@@ -89,6 +90,7 @@ class LoginActivity : AppCompatActivity() {
             eMailSenderMessage.attachFileNames = files
             eMailSenderConfig.eMailSenderMessage = eMailSenderMessage
             EmailManager.sendEmail(eMailSenderConfig)
+            LogUtil.e("EMailSenderConfig","EMailSenderConfig");
         }).start()
         password.apply {
             afterTextChanged {

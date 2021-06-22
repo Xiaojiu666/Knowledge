@@ -9,7 +9,9 @@ import javax.mail.internet.MimeBodyPart
 import javax.mail.internet.MimeMessage
 import javax.mail.internet.MimeMultipart
 
-
+/**
+ * https://blog.csdn.net/tangedegushi/article/details/81238136
+ */
 object EmailManager {
     var SMTP = "smtp.163.com"
     var SEND_EMAIL = "18810798425@163.com"
@@ -57,17 +59,17 @@ object EmailManager {
         val attachFileNames = sendMessage!!.attachFileNames
         if (attachFileNames != null && !attachFileNames.isEmpty()) {
             Log.e(TAG, "attachFileNames.size : ${attachFileNames.size}")
-            for (index in 1 until attachFileNames.size) {
+            for (index in attachFileNames.indices) {
                 val bodyPart = MimeBodyPart()
                 try {
+                    Log.e(TAG, "attachFileNames.size : $index")
                     bodyPart.attachFile(attachFileNames[index])
-                }catch (e: IOException){
+                } catch (e: IOException) {
                     e.printStackTrace()
                 }
                 multipart.addBodyPart(bodyPart);
             }
         }
-
         mailMessage.setContent(multipart)
         return mailMessage
     }

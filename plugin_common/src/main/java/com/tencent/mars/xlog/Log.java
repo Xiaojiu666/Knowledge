@@ -1,4 +1,4 @@
-package com.sn.plugin_common.utils.log;
+package com.tencent.mars.xlog;
 
 import android.content.Context;
 import android.os.Handler;

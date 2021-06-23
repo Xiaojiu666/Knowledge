@@ -1,4 +1,4 @@
-package com.sn.plugin_common.utils.log;
+package com.tencent.mars.xlog;
 
 public class Xlog implements Log.LogImp {
 

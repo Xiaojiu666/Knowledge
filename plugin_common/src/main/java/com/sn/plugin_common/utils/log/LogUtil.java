@@ -4,10 +4,10 @@ package com.sn.plugin_common.utils.log;
 import android.text.TextUtils;
 
 
-import com.sn.plugin_common.BuildConfig;
+import com.tencent.mars.xlog.Log;
+import com.tencent.mars.xlog.Xlog;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -16,10 +16,10 @@ import java.io.IOException;
  */
 public class LogUtil {
 
-    public static final String TAG = "AccountBook.xlog";
+    public static final String TAG = "AccountBook";
 
     static {
-        System.loadLibrary("c++_shared");
+        System.loadLibrary("stlport_shared");
         System.loadLibrary("marsxlog");
     }
 

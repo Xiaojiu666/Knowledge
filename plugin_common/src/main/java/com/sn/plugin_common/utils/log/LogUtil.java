@@ -4,6 +4,7 @@ package com.sn.plugin_common.utils.log;
 import android.text.TextUtils;
 
 
+import com.sn.plugin_common.BuildConfig;
 import com.tencent.mars.xlog.Log;
 import com.tencent.mars.xlog.Xlog;
 
@@ -13,31 +14,30 @@ import java.io.IOException;
 
 
 /**
+ *
  */
 public class LogUtil {
 
-    public static final String TAG = "AccountBook";
+    public static final String TAG = "LogUtil";
 
     static {
         System.loadLibrary("stlport_shared");
         System.loadLibrary("marsxlog");
     }
 
-    public static void initLog(String logPath,String cachePath) {
+    public static void initLog(String logPath, String cachePath) {
 //        boolean debug = isLogDebug();
-        Xlog.appenderOpen(Xlog.LEVEL_DEBUG, Xlog.AppednerModeAsync, cachePath, logPath, TAG, "");
-//        if (BuildConfig.DEBUG) {
-//            Xlog.appenderOpen(Xlog.LEVEL_DEBUG, Xlog.AppednerModeAsync, cachePath, logPath, TAG, "");
-//            Xlog.setConsoleLogOpen(true);
-//
-//        } else {
-//            Xlog.appenderOpen(Xlog.LEVEL_INFO, Xlog.AppednerModeAsync, cachePath, logPath, TAG, "");
-//            Xlog.setConsoleLogOpen(false);
-//        }
-//
-//        Log.setLogImp(new Xlog());
-//        Log.appenderFlush(true);
-//        android.util.Log.w(TAG, String.format("initLog debug: %b, logPath: %s, cachePath: %s, fileName: %s", false, logPath, cachePath, TAG));
+        if (BuildConfig.DEBUG) {
+            Xlog.appenderOpen(Xlog.LEVEL_DEBUG, Xlog.AppednerModeAsync, cachePath, logPath, TAG, "");
+            Xlog.setConsoleLogOpen(true);
+        } else {
+            Xlog.appenderOpen(Xlog.LEVEL_INFO, Xlog.AppednerModeAsync, cachePath, logPath, TAG, "");
+            Xlog.setConsoleLogOpen(false);
+        }
+        Log.setLogImp(new Xlog());
+        Log.appenderFlush(true);
+        d(TAG, Log.getSysInfo());
+        android.util.Log.w(TAG, String.format("initLog debug: %b, logPath: %s, cachePath: %s, fileName: %s", false, logPath, cachePath, TAG));
     }
 
     /**

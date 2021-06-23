@@ -25,15 +25,6 @@ public class Xlog implements Log.LogImp {
 		public long maintid;
 	}
 
-	public static void open(boolean isLoadLib, int level, int mode, String cacheDir, String logDir, String nameprefix, String pubkey) {
-		if (isLoadLib) {
-			System.loadLibrary("libc++_shared");
-			System.loadLibrary("libmarsxlog");
-		}
-
-		appenderOpen(level, mode, cacheDir, logDir, nameprefix, pubkey);
-	}
-
 	private static String decryptTag(String tag) {
 		return tag;
 	}

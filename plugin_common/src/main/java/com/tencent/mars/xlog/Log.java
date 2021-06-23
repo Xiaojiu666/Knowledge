@@ -21,7 +21,7 @@ public class Log {
     public static final int LEVEL_NONE = 6;
 
     // defaults to LEVEL_NONE
-    private static int level = LEVEL_NONE;
+    private static int level = LEVEL_VERBOSE;
     public static Context toastSupportContext = null;
 
     public interface LogImp {
@@ -298,20 +298,34 @@ public class Log {
     static {
         final StringBuilder sb = new StringBuilder();
         try {
-            sb.append("VERSION.RELEASE:[" + android.os.Build.VERSION.RELEASE);
-            sb.append("] VERSION.CODENAME:[" + android.os.Build.VERSION.CODENAME);
-            sb.append("] VERSION.INCREMENTAL:[" + android.os.Build.VERSION.INCREMENTAL);
-            sb.append("] BOARD:[" + android.os.Build.BOARD);
-            sb.append("] DEVICE:[" + android.os.Build.DEVICE);
-            sb.append("] DISPLAY:[" + android.os.Build.DISPLAY);
-            sb.append("] FINGERPRINT:[" + android.os.Build.FINGERPRINT);
-            sb.append("] HOST:[" + android.os.Build.HOST);
-            sb.append("] MANUFACTURER:[" + android.os.Build.MANUFACTURER);
-            sb.append("] MODEL:[" + android.os.Build.MODEL);
-            sb.append("] PRODUCT:[" + android.os.Build.PRODUCT);
-            sb.append("] TAGS:[" + android.os.Build.TAGS);
-            sb.append("] TYPE:[" + android.os.Build.TYPE);
-            sb.append("] USER:[" + android.os.Build.USER + "]");
+            sb.append("VERSION.RELEASE:[ " + android.os.Build.VERSION.RELEASE+" ]");
+            sb.append("\r\n");
+            sb.append("VERSION.CODENAME:[ " + android.os.Build.VERSION.CODENAME+" ] ");
+            sb.append("\r\n");
+            sb.append(" VERSION.INCREMENTAL:[ " + android.os.Build.VERSION.INCREMENTAL+" ] ");
+            sb.append("\r\n");
+            sb.append(" BOARD:[ " + android.os.Build.BOARD+" ] ");
+            sb.append("\r\n");
+            sb.append(" DEVICE:[ " + android.os.Build.DEVICE+" ] ");
+            sb.append("\r\n");
+            sb.append(" DISPLAY:[ " + android.os.Build.DISPLAY+" ] ");
+            sb.append("\r\n");
+            sb.append(" FINGERPRINT:[ " + android.os.Build.FINGERPRINT+" ] ");
+            sb.append("\r\n");
+            sb.append(" HOST:[ " + android.os.Build.HOST+" ] ");
+            sb.append("\r\n");
+            sb.append(" MANUFACTURER:[ " + android.os.Build.MANUFACTURER+" ] ");
+            sb.append("\r\n");
+            sb.append(" MODEL:[ " + android.os.Build.MODEL+" ] ");
+            sb.append("\r\n");
+            sb.append(" PRODUCT:[ " + android.os.Build.PRODUCT+" ] ");
+            sb.append("\r\n");
+            sb.append(" TAGS:[ " + android.os.Build.TAGS+" ] ");
+            sb.append("\r\n");
+            sb.append(" TYPE:[ " + android.os.Build.TYPE+" ] ");
+            sb.append("\r\n");
+            sb.append(" USER:[ " + android.os.Build.USER + " ]");
+            sb.append("\r\n");
         } catch (Throwable e) {
             e.printStackTrace();
         }

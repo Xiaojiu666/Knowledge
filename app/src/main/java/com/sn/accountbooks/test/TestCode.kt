@@ -1,10 +1,10 @@
 package com.sn.accountbooks.test
 
-class TestCode{
+class TestCode {
 
     val items = listOf("apple", "banana", "kiwifruit")
 
-    fun sum(a:Int,b:Int ) = a+b
+    fun sum(a: Int, b: Int) = a + b
 
     fun getStringLength(obj: Any): Int? {
         if (obj is String) {
@@ -16,19 +16,25 @@ class TestCode{
         return null
     }
 
+    var change = "test1"
 
-    fun forFun(){
+    fun modifyVar(){
+
+        change = "bbbb";
+    }
+
+    fun forFun() {
         for (item in items) {
             println(item)
         }
     }
 
-    fun filterList(){
-        val positives = items.filter { it.equals("apple")  }
+    fun filterList() {
+        val positives = items.filter { it.equals("apple") }
         println(positives)
     }
 
-    fun getString():String{
+    fun getString(): String {
         return "AAAA"
     }
 

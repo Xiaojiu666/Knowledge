@@ -1,4 +1,4 @@
-package com.sn.plugin_common.utils.email
+package com.sn.utils.email
 
 import android.util.Log
 import java.io.IOException

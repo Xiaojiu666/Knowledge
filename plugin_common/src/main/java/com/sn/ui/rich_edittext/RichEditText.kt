@@ -1,9 +1,7 @@
-package com.sn.plugin_common.ui.rich_edittext
+package com.sn.ui.rich_edittext
 
 import android.content.Context
-import android.graphics.Typeface
 import android.text.Spanned
-import android.text.style.ImageSpan
 import android.text.style.StyleSpan
 import android.util.AttributeSet
 import android.util.Log

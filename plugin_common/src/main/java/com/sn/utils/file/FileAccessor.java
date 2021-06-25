@@ -1,4 +1,4 @@
-package com.sn.plugin_common.utils.file;
+package com.sn.utils.file;
 
 /**
  *  项目文件存储类

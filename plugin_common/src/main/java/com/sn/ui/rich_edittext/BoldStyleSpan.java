@@ -1,8 +1,7 @@
-package com.sn.plugin_common.ui.rich_edittext;
+package com.sn.ui.rich_edittext;
 
 import android.graphics.Typeface;
 import android.os.Parcel;
-import android.text.Editable;
 import android.text.style.StyleSpan;
 
 import androidx.annotation.NonNull;

@@ -151,7 +151,6 @@ public class Log {
     public static void setLevel(final int level, final boolean jni) {
         Log.level = level;
         android.util.Log.w(TAG, "new log level: " + level);
-
         if (jni) {
             Xlog.setLogLevel(level);
             //android.util.Log.e(TAG, "no jni log level support");
@@ -293,47 +292,4 @@ public class Log {
         }
     }
 
-    private static final String SYS_INFO;
-
-    static {
-        final StringBuilder sb = new StringBuilder();
-        try {
-            sb.append("VERSION.RELEASE:[ " + android.os.Build.VERSION.RELEASE+" ]");
-            sb.append("\r\n");
-            sb.append("VERSION.CODENAME:[ " + android.os.Build.VERSION.CODENAME+" ] ");
-            sb.append("\r\n");
-            sb.append(" VERSION.INCREMENTAL:[ " + android.os.Build.VERSION.INCREMENTAL+" ] ");
-            sb.append("\r\n");
-            sb.append(" BOARD:[ " + android.os.Build.BOARD+" ] ");
-            sb.append("\r\n");
-            sb.append(" DEVICE:[ " + android.os.Build.DEVICE+" ] ");
-            sb.append("\r\n");
-            sb.append(" DISPLAY:[ " + android.os.Build.DISPLAY+" ] ");
-            sb.append("\r\n");
-            sb.append(" FINGERPRINT:[ " + android.os.Build.FINGERPRINT+" ] ");
-            sb.append("\r\n");
-            sb.append(" HOST:[ " + android.os.Build.HOST+" ] ");
-            sb.append("\r\n");
-            sb.append(" MANUFACTURER:[ " + android.os.Build.MANUFACTURER+" ] ");
-            sb.append("\r\n");
-            sb.append(" MODEL:[ " + android.os.Build.MODEL+" ] ");
-            sb.append("\r\n");
-            sb.append(" PRODUCT:[ " + android.os.Build.PRODUCT+" ] ");
-            sb.append("\r\n");
-            sb.append(" TAGS:[ " + android.os.Build.TAGS+" ] ");
-            sb.append("\r\n");
-            sb.append(" TYPE:[ " + android.os.Build.TYPE+" ] ");
-            sb.append("\r\n");
-            sb.append(" USER:[ " + android.os.Build.USER + " ]");
-            sb.append("\r\n");
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-
-        SYS_INFO = sb.toString();
-    }
-
-    public static String getSysInfo() {
-        return SYS_INFO;
-    }
 }

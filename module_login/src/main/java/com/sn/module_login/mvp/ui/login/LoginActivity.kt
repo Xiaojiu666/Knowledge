@@ -1,11 +1,7 @@
 package com.sn.module_login.mvp.ui.login
 
 import android.app.Activity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -14,11 +10,15 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.sn.module_login.R
-import com.sn.plugin_common.utils.email.EMailSenderConfig
-import com.sn.plugin_common.utils.email.EMailSenderMessage
-import com.sn.plugin_common.utils.email.EmailManager
-import com.sn.plugin_common.utils.log.LogUtil
+import com.sn.utils.email.EMailSenderConfig
+import com.sn.utils.email.EMailSenderMessage
+import com.sn.utils.email.EmailManager
+import com.sn.utils.log.LogUtil
 
 
 class LoginActivity : AppCompatActivity() {
@@ -51,7 +51,6 @@ class LoginActivity : AppCompatActivity() {
                 password.error = getString(loginState.passwordError)
             }
         })
-
         loginViewModel.loginResult.observe(this@LoginActivity, Observer {
             val loginResult = it ?: return@Observer
 

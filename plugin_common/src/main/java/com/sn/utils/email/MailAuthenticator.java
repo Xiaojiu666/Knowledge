@@ -1,4 +1,4 @@
-package com.sn.plugin_common.utils.email;
+package com.sn.utils.email;
 
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;

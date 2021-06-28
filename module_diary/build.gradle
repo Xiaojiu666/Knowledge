@@ -5,18 +5,18 @@ if (isModule.toBoolean()) {
 }
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-def librarys = rootProject.ext.dependencies
+def library = rootProject.ext.dependencies
 def androidX = rootProject.ext.androidX
-
+def versions = rootProject.ext.versions
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+    compileSdkVersion versions.compileSdkVersion
+    buildToolsVersion versions.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion 18
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion versions.minSdkVersion
+        targetSdkVersion versions.targetSdkVersion
+        versionCode versions.versionCode
+        versionName versions.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -44,8 +44,7 @@ dependencies {
     implementation project(path: ':plugin_base')
     implementation project(path: ':plugin_common')
 
-    implementation librarys.lifecycle_extensions
-
+    implementation library.lifecycle_extensions
 
 //    implementation librarys.datastore_core
 //    implementation librarys.datastore_preferences

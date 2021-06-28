@@ -12,7 +12,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
-import com.sn.accountbooks.base.BaseAppCompatActivity
+import com.sn.plugin_base.base.BaseAppCompatActivity
 
 class HomeActivity : BaseAppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration

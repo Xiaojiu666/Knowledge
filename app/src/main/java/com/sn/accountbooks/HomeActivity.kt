@@ -10,10 +10,13 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.alibaba.android.arouter.facade.annotation.Route
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
+import com.sn.config.AppConfig
 import com.sn.plugin_base.base.BaseAppCompatActivity
 
+@Route(path = AppConfig.ACTIVITY_LOGIN)
 class HomeActivity : BaseAppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
 

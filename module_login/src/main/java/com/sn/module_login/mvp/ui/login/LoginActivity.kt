@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.sn.config.AppConfig
 import com.sn.module_login.R
 import com.sn.utils.email.EMailSenderConfig
 import com.sn.utils.email.EMailSenderMessage
@@ -22,7 +23,7 @@ import com.sn.utils.email.EmailManager
 import com.sn.utils.log.LogUtil
 
 
-@Route(path = "/app/loginactivity")
+//@Route(path = AppConfig.ACTIVITY_LOGIN)
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel

@@ -3,8 +3,10 @@ if (isModule.toBoolean()) {
 } else {
     apply plugin: 'com.android.library'
 }
-apply plugin:  'kotlin-android'
+apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
 def library = rootProject.ext.dependencies
 def androidX = rootProject.ext.androidX
 def versions = rootProject.ext.versions
@@ -24,6 +26,12 @@ android {
         ndk {
             abiFilters  "armeabi-v7a"
         }
+
+        kapt {
+            arguments {
+                arg("AROUTER_MODULE_NAME", project.getName())
+            }
+        }
     }
 
     buildTypes {
@@ -36,10 +44,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
 
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']
@@ -67,4 +76,6 @@ dependencies {
     implementation project(path: ':plugin_common')
 
 
+    implementation "com.alibaba:arouter-api:1.4.1"
+    kapt "com.alibaba:arouter-compiler:1.2.2"
 }

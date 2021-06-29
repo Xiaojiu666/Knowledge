@@ -24,6 +24,7 @@
             </intent-filter>
         </activity>
 
+        <activity android:name="com.sn.module_login.mvp.ui.login.LoginActivity"/>
     </application>
 
 </manifest>

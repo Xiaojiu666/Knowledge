@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.sn.config.AppConfig
+import com.sn.plugin_base.config.AppConfig
 import com.sn.module_login.R
 import com.sn.utils.email.EMailSenderConfig
 import com.sn.utils.email.EMailSenderMessage

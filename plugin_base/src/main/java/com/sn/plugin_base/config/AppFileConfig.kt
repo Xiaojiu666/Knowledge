@@ -1,6 +1,4 @@
-package com.sn.config
-
-import com.sn.utils.apk.AppInfoUtil
+package com.sn.plugin_base.config
 
 object AppFileConfig {
 

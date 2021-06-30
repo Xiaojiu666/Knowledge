@@ -1,4 +1,4 @@
-package com.sn.config
+package com.sn.plugin_base.config
 
 object AppConfig {
 

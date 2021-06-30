@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.os.Environment
 import com.alibaba.android.arouter.launcher.ARouter
-import com.sn.config.AppFileConfig
+import com.sn.plugin_base.config.AppFileConfig
 import com.sn.plugin_common.BuildConfig
 import com.sn.utils.apk.AppInfoUtil
 import com.sn.utils.log.LogUtil

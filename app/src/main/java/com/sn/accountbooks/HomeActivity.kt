@@ -16,7 +16,7 @@ import com.google.android.material.navigation.NavigationView
 import com.sn.config.AppConfig
 import com.sn.plugin_base.base.BaseAppCompatActivity
 
-@Route(path = AppConfig.ACTIVITY_LOGIN)
+
 class HomeActivity : BaseAppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
 

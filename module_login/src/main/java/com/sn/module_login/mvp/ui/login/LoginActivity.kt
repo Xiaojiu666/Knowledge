@@ -23,7 +23,7 @@ import com.sn.utils.email.EmailManager
 import com.sn.utils.log.LogUtil
 
 
-//@Route(path = AppConfig.ACTIVITY_LOGIN)
+@Route(path = AppConfig.ACTIVITY_LOGIN)
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel

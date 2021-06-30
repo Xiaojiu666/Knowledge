@@ -14,17 +14,18 @@ abstract class BaseApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        initRoom(applicationContext)
         initBasePlugin()
+        initRoom(applicationContext)
         initARouter()
     }
 
     private fun initARouter() {
-        ARouter.init(this@BaseApplication)
         if (BuildConfig.DEBUG){
+            //openDebug 必须在init之前，他决定是否从缓存中读取数据
             ARouter.openLog()
             ARouter.openDebug()
         }
+        ARouter.init(this@BaseApplication)
     }
 
     abstract fun initRoom(application: Context)
@@ -32,6 +33,7 @@ abstract class BaseApplication : Application() {
     private fun initBasePlugin(){
         initFileRootConfig();
         initLogUtil()
+        LogUtil.e("BaseApplication onCreate")
     }
 
     private fun initFileRootConfig() {

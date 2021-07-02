@@ -71,5 +71,8 @@ dependencies {
     implementation "com.alibaba:arouter-api:1.4.1"
     kapt "com.alibaba:arouter-compiler:1.2.2"
 
+    /* 携程框架 */
+    api library.ktx_coroutines
+    api library.ktx_coroutines_android
 
 }

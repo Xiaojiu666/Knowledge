@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
  */
 abstract class BaseAppCompatActivity : AppCompatActivity() {
 
+    val TAG: String = javaClass.name
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         init()
@@ -21,4 +23,5 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
     abstract fun initView()
 
     abstract fun setViewId(): Int
+
 }

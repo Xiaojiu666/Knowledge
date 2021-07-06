@@ -1,0 +1,463 @@
+Index: app/src/main/java/com/sn/accountbooks/base/BaseAppCompatActivity.kt
+===================================================================
+--- app/src/main/java/com/sn/accountbooks/base/BaseAppCompatActivity.kt	(revision 21cb85a218f2eeb2c6a61ede84df8cc6619c0960)
++++ app/src/main/java/com/sn/accountbooks/base/BaseAppCompatActivity.kt	(revision 21cb85a218f2eeb2c6a61ede84df8cc6619c0960)
+@@ -1,28 +0,0 @@
+-package com.sn.accountbooks.base
+-
+-import android.os.Bundle
+-import androidx.appcompat.app.AppCompatActivity
+-import butterknife.ButterKnife
+-
+-/**
+- * Created by GuoXu on 2020/10/13 19:26.
+- */
+-abstract class BaseAppCompatActivity : AppCompatActivity() {
+-
+-    override fun onCreate(savedInstanceState: Bundle?) {
+-        super.onCreate(savedInstanceState)
+-        init()
+-        setContentView(setViewId())
+-        //绑定到butterKnife
+-        initView()
+-    }
+-
+-    abstract fun init()
+-
+-    abstract fun initView()
+-
+-    abstract fun setViewId(): Int
+-
+-
+-
+-}
+\ No newline at end of file
+Index: app/src/main/java/com/sn/accountbooks/base/BaseFragment.kt
+===================================================================
+--- app/src/main/java/com/sn/accountbooks/base/BaseFragment.kt	(revision 21cb85a218f2eeb2c6a61ede84df8cc6619c0960)
++++ app/src/main/java/com/sn/accountbooks/base/BaseFragment.kt	(revision 21cb85a218f2eeb2c6a61ede84df8cc6619c0960)
+@@ -1,34 +0,0 @@
+-package com.sn.accountbooks.base
+-
+-import android.os.Bundle
+-import android.view.LayoutInflater
+-import android.view.View
+-import android.view.ViewGroup
+-import androidx.fragment.app.Fragment
+-import com.gyf.immersionbar.ImmersionBar
+-
+-/**
+- * Created by GuoXu on 2020/10/14 16:34.
+- *
+- */
+-abstract class BaseFragment : Fragment() {
+-
+-
+-    override fun onCreateView(inflater: LayoutInflater,
+-        container: ViewGroup?,
+-        savedInstanceState: Bundle?
+-    ): View? {
+-        val inflate = inflater.inflate(getLayoutId(), container, false);
+-        return inflate
+-    }
+-
+-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+-        super.onViewCreated(view, savedInstanceState)
+-        initView(view);
+-    }
+-
+-    abstract fun initView(view: View)
+-
+-
+-    abstract fun getLayoutId(): Int
+-}
+\ No newline at end of file
+Index: app/src/main/java/com/sn/accountbooks/test/TestActivity.java
+===================================================================
+--- app/src/main/java/com/sn/accountbooks/test/TestActivity.java	(revision 21cb85a218f2eeb2c6a61ede84df8cc6619c0960)
++++ app/src/main/java/com/sn/accountbooks/test/TestActivity.java	(revision 21cb85a218f2eeb2c6a61ede84df8cc6619c0960)
+@@ -1,23 +0,0 @@
+-package com.sn.accountbooks.test;
+-
+-import com.sn.accountbooks.R;
+-import com.sn.accountbooks.base.BaseAppCompatActivity;
+-
+-public class TestActivity extends BaseAppCompatActivity {
+-
+-
+-    @Override
+-    public void init() {
+-
+-    }
+-
+-    @Override
+-    public void initView() {
+-
+-    }
+-
+-    @Override
+-    public int setViewId() {
+-        return R.layout.activity_test;
+-    }
+-}
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>apply plugin: 'com.android.application'\napply plugin: 'kotlin-android'\napply plugin: 'kotlin-android-extensions'\ndef librarys = rootProject.ext.dependencies\ndef androidX = rootProject.ext.androidX\n\nandroid {\n    compileSdkVersion ANDROID_COMPILE_SDKVERSION as int\n    buildToolsVersion ANDROID_BUILD_TOOLS_VERSION\n\n    defaultConfig {\n        applicationId \"com.sn.accountbooks\"\n        minSdkVersion 23\n        targetSdkVersion ANDROID_COMPILE_SDKVERSION\n        versionCode 1\n        versionName \"1.0\"\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\n    }\n\n    buildTypes {\n        release {\n            minifyEnabled false\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\n        }\n    }\n\n    compileOptions {\n        sourceCompatibility JavaVersion.VERSION_1_8\n        targetCompatibility JavaVersion.VERSION_1_8\n    }\n\n    kotlinOptions {\n        jvmTarget = JavaVersion.VERSION_1_8\n    }\n}\n\ndependencies {\n    implementation fileTree(dir: \"libs\", include: [\"*.jar\"])\n    implementation \"org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version\"\n    implementation 'androidx.core:core-ktx:1.3.1'\n    implementation 'androidx.appcompat:appcompat:1.2.0'\n    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'\n    implementation project(path: ':plugin_base')\n\n    testImplementation 'junit:junit:4.12'\n    androidTestImplementation 'androidx.test.ext:junit:1.1.2'\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'\n    if (!isModule.toBoolean()) {\n        implementation project(path: ':module_account_book')\n    }\n\n//    implementation \"androidx.datastore:datastore-preferences:1.0.0-alpha06\"\n//    implementation \"androidx.datastore:datastore-preferences-core:1.0.0-alpha06\"\n\n\n    implementation librarys.lifecycle_extensions\n\n    /**\n     *  沉浸式导航栏\n     */\n    api librarys.immersionbar\n    api librarys.immersionbar_components\n\n    /**\n     * 快速解析View butterKnife\n     */\n    implementation librarys.butterKnife_support\n    annotationProcessor librarys.butterKnife_compiler\n\n    /**\n     * androidXUI导航\n     */\n    api androidX.androidx_navigation_ragment_ktx\n    api androidX.androidx_navigation_ui_ktx\n    /**\n     * 报表\n     */\n    api librarys.MPchart\n\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/build.gradle	(revision 21cb85a218f2eeb2c6a61ede84df8cc6619c0960)
++++ app/build.gradle	(date 1624879678000)
+@@ -3,18 +3,23 @@
+ apply plugin: 'kotlin-android-extensions'
+ def librarys = rootProject.ext.dependencies
+ def androidX = rootProject.ext.androidX
++def versions = rootProject.ext.versions
+ 
+ android {
+-    compileSdkVersion ANDROID_COMPILE_SDKVERSION as int
+-    buildToolsVersion ANDROID_BUILD_TOOLS_VERSION
++    compileSdkVersion versions.compileSdkVersion
++    buildToolsVersion versions.buildToolsVersion
+ 
+     defaultConfig {
+-        applicationId "com.sn.accountbooks"
+-        minSdkVersion 23
+-        targetSdkVersion ANDROID_COMPILE_SDKVERSION
+-        versionCode 1
+-        versionName "1.0"
++        applicationId versions.applicationId
++        minSdkVersion versions.minSdkVersion
++        targetSdkVersion versions.targetSdkVersion
++        versionCode versions.versionCode
++        versionName versions.versionName
+         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
++
++        ndk {
++            abiFilters  "armeabi-v7a"
++        }
+     }
+ 
+     buildTypes {
+@@ -32,7 +37,14 @@
+     kotlinOptions {
+         jvmTarget = JavaVersion.VERSION_1_8
+     }
++
++    sourceSets {
++        main {
++            jniLibs.srcDirs = ['libs']
++        }
++    }
+ }
++
+ 
+ dependencies {
+     implementation fileTree(dir: "libs", include: ["*.jar"])
+@@ -41,12 +53,14 @@
+     implementation 'androidx.appcompat:appcompat:1.2.0'
+     implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
+     implementation project(path: ':plugin_base')
++    implementation project(path: ':plugin_common')
+ 
+     testImplementation 'junit:junit:4.12'
+     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+     if (!isModule.toBoolean()) {
+         implementation project(path: ':module_account_book')
++        implementation project(path: ':module_login')
+     }
+ 
+ //    implementation "androidx.datastore:datastore-preferences:1.0.0-alpha06"
+Index: module_login/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>if (isModule.toBoolean()) {\n    apply plugin: 'com.android.application'\n} else {\n    apply plugin: 'com.android.library'\n}\napply plugin:  'kotlin-android'\napply plugin: 'kotlin-android-extensions'\n\nandroid {\n    compileSdkVersion 30\n    buildToolsVersion \"30.0.3\"\n\n    defaultConfig {\n        minSdkVersion 21\n        targetSdkVersion 30\n        versionCode 1\n        versionName \"1.0\"\n\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\n        consumerProguardFiles \"consumer-rules.pro\"\n\n        ndk {\n            abiFilters  \"armeabi-v7a\"\n        }\n    }\n\n    buildTypes {\n        release {\n            minifyEnabled false\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\n        }\n    }\n    compileOptions {\n        sourceCompatibility JavaVersion.VERSION_1_8\n        targetCompatibility JavaVersion.VERSION_1_8\n    }\n    kotlinOptions {\n        jvmTarget = '1.8'\n    }\n\n    sourceSets {\n        main {\n            jniLibs.srcDirs = ['libs']\n        }\n    }\n}\n\ndependencies {\n\n    implementation \"org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version\"\n    implementation 'androidx.core:core-ktx:1.2.0'\n    implementation 'androidx.appcompat:appcompat:1.1.0'\n    implementation 'com.google.android.material:material:1.1.0'\n    implementation 'androidx.annotation:annotation:1.1.0'\n    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'\n    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'\n    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'\n    implementation 'androidx.navigation:navigation-fragment-ktx:2.2.2'\n    implementation 'androidx.navigation:navigation-ui-ktx:2.2.2'\n    testImplementation 'junit:junit:4.+'\n    androidTestImplementation 'androidx.test.ext:junit:1.1.1'\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'\n\n    implementation project(path: ':plugin_base')\n    implementation project(path: ':plugin_common')\n\n\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- module_login/build.gradle	(revision 21cb85a218f2eeb2c6a61ede84df8cc6619c0960)
++++ module_login/build.gradle	(date 1624879567000)
+@@ -5,16 +5,18 @@
+ }
+ apply plugin:  'kotlin-android'
+ apply plugin: 'kotlin-android-extensions'
+-
++def library = rootProject.ext.dependencies
++def androidX = rootProject.ext.androidX
++def versions = rootProject.ext.versions
+ android {
+-    compileSdkVersion 30
+-    buildToolsVersion "30.0.3"
++    compileSdkVersion versions.compileSdkVersion
++    buildToolsVersion versions.buildToolsVersion
+ 
+     defaultConfig {
+-        minSdkVersion 21
+-        targetSdkVersion 30
+-        versionCode 1
+-        versionName "1.0"
++        minSdkVersion versions.minSdkVersion
++        targetSdkVersion versions.targetSdkVersion
++        versionCode versions.versionCode
++        versionName versions.versionName
+ 
+         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+         consumerProguardFiles "consumer-rules.pro"
+Index: app/src/main/java/com/sn/accountbooks/test/TestActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/sn/accountbooks/test/TestActivity.kt	(date 1624878270000)
++++ app/src/main/java/com/sn/accountbooks/test/TestActivity.kt	(date 1624878270000)
+@@ -0,0 +1,17 @@
++package com.sn.accountbooks.test
++
++import android.view.View
++import com.alibaba.android.arouter.launcher.ARouter
++import com.sn.accountbooks.R
++import com.sn.plugin_base.base.BaseAppCompatActivity
++import kotlinx.android.synthetic.main.activity_test.*
++
++class TestActivity : BaseAppCompatActivity() {
++    override fun init() {}
++    override fun initView() {
++        editTextTextPersonName.setOnClickListener { ARouter.getInstance().build("/app/loginactivity").navigation();  }
++    }
++    override fun setViewId(): Int {
++        return R.layout.activity_test
++    }
++}
+\ No newline at end of file
+Index: module_account_book/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>if (isModule.toBoolean()) {\n    apply plugin: 'com.android.application'\n} else {\n    apply plugin: 'com.android.library'\n}\napply plugin: 'kotlin-android'\napply plugin: 'kotlin-android-extensions'\n\nandroid {\n    compileSdkVersion 30\n    buildToolsVersion \"30.0.3\"\n\n    defaultConfig {\n        minSdkVersion 21\n        targetSdkVersion 30\n        versionCode 1\n        versionName \"1.0\"\n\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\n        consumerProguardFiles \"consumer-rules.pro\"\n    }\n\n    buildTypes {\n        release {\n            minifyEnabled false\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\n        }\n    }\n}\n\ndependencies {\n    implementation fileTree(dir: \"libs\", include: [\"*.jar\"])\n    implementation \"org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version\"\n    implementation 'androidx.core:core-ktx:1.3.2'\n    implementation 'androidx.appcompat:appcompat:1.2.0'\n    implementation project(path: ':plugin_base')\n    testImplementation 'junit:junit:4.12'\n    androidTestImplementation 'androidx.test.ext:junit:1.1.2'\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'\n\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- module_account_book/build.gradle	(revision 21cb85a218f2eeb2c6a61ede84df8cc6619c0960)
++++ module_account_book/build.gradle	(date 1624879637000)
+@@ -5,16 +5,16 @@
+ }
+ apply plugin: 'kotlin-android'
+ apply plugin: 'kotlin-android-extensions'
+-
++def versions = rootProject.ext.versions
+ android {
+-    compileSdkVersion 30
+-    buildToolsVersion "30.0.3"
++    compileSdkVersion versions.compileSdkVersion
++    buildToolsVersion versions.buildToolsVersion
+ 
+     defaultConfig {
+-        minSdkVersion 21
+-        targetSdkVersion 30
+-        versionCode 1
+-        versionName "1.0"
++        minSdkVersion versions.minSdkVersion
++        targetSdkVersion versions.targetSdkVersion
++        versionCode versions.versionCode
++        versionName versions.versionName
+ 
+         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+         consumerProguardFiles "consumer-rules.pro"
+@@ -37,5 +37,6 @@
+     testImplementation 'junit:junit:4.12'
+     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+-
++    implementation project(path: ':plugin_base')
++    implementation project(path: ':plugin_common')
+ }
+\ No newline at end of file
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"com.sn.accountbooks\">\n\n    <application\n        android:allowBackup=\"true\"\n        android:icon=\"@mipmap/ic_launcher\"\n        android:label=\"@string/app_name\"\n        android:roundIcon=\"@mipmap/ic_launcher_round\"\n        android:supportsRtl=\"true\"\n        android:theme=\"@style/AppTheme\">\n\n        <activity android:name=\".HomeActivity\">\n\n        </activity>\n        <activity android:name=\".test.TestActivity\">\n            <intent-filter>\n                <action android:name=\"android.intent.action.MAIN\" />\n\n                <category android:name=\"android.intent.category.LAUNCHER\" />\n            </intent-filter>\n        </activity>\n\n    </application>\n\n</manifest>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/AndroidManifest.xml	(revision 21cb85a218f2eeb2c6a61ede84df8cc6619c0960)
++++ app/src/main/AndroidManifest.xml	(date 1624878530000)
+@@ -1,5 +1,6 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <manifest xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:tools="http://schemas.android.com/tools"
+     package="com.sn.accountbooks">
+ 
+     <application
+@@ -8,6 +9,8 @@
+         android:label="@string/app_name"
+         android:roundIcon="@mipmap/ic_launcher_round"
+         android:supportsRtl="true"
++        android:name=".MainApplication"
++        tools:replace="android:name"
+         android:theme="@style/AppTheme">
+ 
+         <activity android:name=".HomeActivity">
+Index: app/src/main/java/com/sn/accountbooks/HomeActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.sn.accountbooks\n\nimport android.util.Log\nimport android.view.Menu\nimport androidx.appcompat.widget.Toolbar\nimport androidx.drawerlayout.widget.DrawerLayout\nimport androidx.navigation.NavController\nimport androidx.navigation.findNavController\nimport androidx.navigation.ui.AppBarConfiguration\nimport androidx.navigation.ui.navigateUp\nimport androidx.navigation.ui.setupActionBarWithNavController\nimport androidx.navigation.ui.setupWithNavController\nimport com.google.android.material.floatingactionbutton.FloatingActionButton\nimport com.google.android.material.navigation.NavigationView\nimport com.sn.accountbooks.base.BaseAppCompatActivity\n\nclass HomeActivity : BaseAppCompatActivity() {\n    private lateinit var appBarConfiguration: AppBarConfiguration\n\n    override fun init() {\n    }\n\n    override fun initView() {\n        val toolbar: Toolbar = findViewById(R.id.toolbar)\n        setSupportActionBar(toolbar)\n        val fab: FloatingActionButton = findViewById(R.id.fab)\n        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)\n        val navView: NavigationView = findViewById(R.id.nav_view)\n        val navController = findNavController(R.id.nav_host_fragment)\n        // 为导航组件配置NavigationUI\n//        appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)\n        appBarConfiguration = AppBarConfiguration(\n            setOf(\n                R.id.menu_home, R.id.menu_account, R.id.menu_diary\n            ), drawerLayout\n        )\n        setupActionBarWithNavController(navController, appBarConfiguration)\n        navView.setupWithNavController(navController)\n        // 动态修改左上角title\n        //TODO : BUG，如果监听放在set之前，监听无效\n        navController.addOnDestinationChangedListener { controller, destination, arguments ->\n            Log.e(\"navController\", destination.label.toString());\n            Log.e(\"navController\", destination.toString());\n//            toolbar.title = getString(R.string.app_name)\n//            toolbar.title = \"2020/10/18\"\n        }\n    }\n\n\n    override fun setViewId(): Int {\n        return R.layout.activity_main\n    }\n\n    override fun onCreateOptionsMenu(menu: Menu): Boolean {\n        menuInflater.inflate(R.menu.main, menu)\n        return true\n    }\n\n    override fun onSupportNavigateUp(): Boolean {\n        val navController = findNavController(R.id.nav_host_fragment)\n        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()\n    }\n}\n\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/sn/accountbooks/HomeActivity.kt	(revision 21cb85a218f2eeb2c6a61ede84df8cc6619c0960)
++++ app/src/main/java/com/sn/accountbooks/HomeActivity.kt	(date 1624865835000)
+@@ -12,7 +12,7 @@
+ import androidx.navigation.ui.setupWithNavController
+ import com.google.android.material.floatingactionbutton.FloatingActionButton
+ import com.google.android.material.navigation.NavigationView
+-import com.sn.accountbooks.base.BaseAppCompatActivity
++import com.sn.plugin_base.base.BaseAppCompatActivity
+ 
+ class HomeActivity : BaseAppCompatActivity() {
+     private lateinit var appBarConfiguration: AppBarConfiguration
+@@ -46,7 +46,6 @@
+         }
+     }
+ 
+-
+     override fun setViewId(): Int {
+         return R.layout.activity_main
+     }
+Index: app/src/main/java/com/sn/accountbooks/MainApplication.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/sn/accountbooks/MainApplication.kt	(date 1624863392000)
++++ app/src/main/java/com/sn/accountbooks/MainApplication.kt	(date 1624863392000)
+@@ -0,0 +1,10 @@
++package com.sn.accountbooks
++
++import android.content.Context
++import com.sn.plugin_base.application.BaseApplication
++
++class MainApplication : BaseApplication() {
++
++    override fun initRoom(application: Context) {
++    }
++}
+\ No newline at end of file
+Index: app/src/main/res/layout/activity_test.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<androidx.constraintlayout.widget.ConstraintLayout\n    xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\n    xmlns:tools=\"http://schemas.android.com/tools\"\n    android:layout_width=\"match_parent\"\n    android:layout_height=\"match_parent\">\n\n    <com.sn.ui.rich_edittext.RichEditText\n        android:id=\"@+id/richEditText\"\n        android:layout_width=\"wrap_content\"\n        android:layout_height=\"wrap_content\"\n        android:text=\"Name\"\n        app:layout_constraintEnd_toEndOf=\"parent\"\n        app:layout_constraintStart_toStartOf=\"parent\"\n        app:layout_constraintTop_toTopOf=\"parent\" />\n\n    <EditText\n        android:id=\"@+id/editTextTextPersonName\"\n        android:layout_width=\"wrap_content\"\n        android:layout_height=\"wrap_content\"\n        android:text=\"Name\"\n        app:layout_constraintEnd_toEndOf=\"parent\"\n        app:layout_constraintStart_toStartOf=\"parent\"\n        app:layout_constraintTop_toBottomOf=\"@+id/richEditText\" />\n\n</androidx.constraintlayout.widget.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_test.xml	(revision 21cb85a218f2eeb2c6a61ede84df8cc6619c0960)
++++ app/src/main/res/layout/activity_test.xml	(date 1624862401000)
+@@ -15,7 +15,7 @@
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent" />
+ 
+-    <EditText
++    <TextView
+         android:id="@+id/editTextTextPersonName"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+Index: module_login/src/main/java/com/sn/module_login/mvp/ui/login/LoginActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.sn.module_login.mvp.ui.login\n\nimport android.app.Activity\nimport android.os.Bundle\nimport android.text.Editable\nimport android.text.TextWatcher\nimport android.view.View\nimport android.view.inputmethod.EditorInfo\nimport android.widget.Button\nimport android.widget.EditText\nimport android.widget.ProgressBar\nimport android.widget.Toast\nimport androidx.annotation.StringRes\nimport androidx.appcompat.app.AppCompatActivity\nimport androidx.lifecycle.Observer\nimport androidx.lifecycle.ViewModelProvider\nimport com.sn.module_login.R\nimport com.sn.utils.email.EMailSenderConfig\nimport com.sn.utils.email.EMailSenderMessage\nimport com.sn.utils.email.EmailManager\nimport com.sn.utils.log.LogUtil\n\n\nclass LoginActivity : AppCompatActivity() {\n\n    private lateinit var loginViewModel: LoginViewModel\n\n    override fun onCreate(savedInstanceState: Bundle?) {\n        super.onCreate(savedInstanceState)\n\n        setContentView(R.layout.activity_login)\n\n        val username = findViewById<EditText>(R.id.username)\n        val password = findViewById<EditText>(R.id.password)\n        val login = findViewById<Button>(R.id.login)\n        val loading = findViewById<ProgressBar>(R.id.loading)\n\n        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())\n            .get(LoginViewModel::class.java)\n\n        loginViewModel.loginFormState.observe(this@LoginActivity, Observer {\n            val loginState = it ?: return@Observer\n\n            // disable login button unless both username / password is valid\n            login.isEnabled = loginState.isDataValid\n\n            if (loginState.usernameError != null) {\n                username.error = getString(loginState.usernameError)\n            }\n            if (loginState.passwordError != null) {\n                password.error = getString(loginState.passwordError)\n            }\n        })\n        loginViewModel.loginResult.observe(this@LoginActivity, Observer {\n            val loginResult = it ?: return@Observer\n\n            loading.visibility = View.GONE\n            if (loginResult.error != null) {\n                showLoginFailed(loginResult.error)\n            }\n            if (loginResult.success != null) {\n                updateUiWithUser(loginResult.success)\n            }\n            setResult(Activity.RESULT_OK)\n\n            //Complete and destroy login activity once successful\n            finish()\n        })\n\n        username.afterTextChanged {\n            loginViewModel.loginDataChanged(\n                username.text.toString(),\n                password.text.toString()\n            )\n        }\n        var files = arrayOf(\"/storage/emulated/0/ATOM/Camera 2/Image/Snapshot/7CDDE9010470_1624269525365.png\")\n        Thread(Runnable {\n            val eMailSenderConfig = EMailSenderConfig()\n            eMailSenderConfig.mailServerHost = EmailManager.SMTP;//smtp地址\n            eMailSenderConfig.mailServerPort = \"25\"\n            eMailSenderConfig.isValidate = true\n            eMailSenderConfig.userName = EmailManager.SEND_EMAIL// 发送方邮件地址\n            eMailSenderConfig.password = EmailManager.RECV_EMAIL_PASSWORD// 邮箱POP3/SMTP服务授权码\n            eMailSenderConfig.fromAddress = EmailManager.SEND_EMAIL// 发送方邮件地址\n            eMailSenderConfig.toAddress = EmailManager.RECV_EMAIL//接受方邮件地址\n            val eMailSenderMessage = EMailSenderMessage()\n            eMailSenderMessage.subject = \"title\"//设置邮箱标题\n            eMailSenderMessage.content = \"NBNBNBNB\"//设置邮箱标题\n            eMailSenderMessage.attachFileNames = files\n            eMailSenderConfig.eMailSenderMessage = eMailSenderMessage\n            EmailManager.sendEmail(eMailSenderConfig)\n            LogUtil.e(\"EMailSenderConfig\",\"EMailSenderConfig\");\n        }).start()\n        password.apply {\n            afterTextChanged {\n                loginViewModel.loginDataChanged(\n                    username.text.toString(),\n                    password.text.toString()\n                )\n            }\n\n            setOnEditorActionListener { _, actionId, _ ->\n                when (actionId) {\n                    EditorInfo.IME_ACTION_DONE ->\n                        loginViewModel.login(\n                            username.text.toString(),\n                            password.text.toString()\n                        )\n                }\n                false\n            }\n\n            login.setOnClickListener {\n                loading.visibility = View.VISIBLE\n                loginViewModel.login(username.text.toString(), password.text.toString())\n            }\n        }\n    }\n\n    private fun updateUiWithUser(model: LoggedInUserView) {\n        val welcome = getString(R.string.welcome)\n        val displayName = model.displayName\n        // TODO : initiate successful logged in experience\n        Toast.makeText(\n            applicationContext,\n            \"$welcome $displayName\",\n            Toast.LENGTH_LONG\n        ).show()\n    }\n\n    private fun showLoginFailed(@StringRes errorString: Int) {\n        Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()\n    }\n}\n\n/**\n * Extension function to simplify setting an afterTextChanged action to EditText components.\n */\nfun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {\n    this.addTextChangedListener(object : TextWatcher {\n        override fun afterTextChanged(editable: Editable?) {\n            afterTextChanged.invoke(editable.toString())\n        }\n\n        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}\n\n        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}\n    })\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- module_login/src/main/java/com/sn/module_login/mvp/ui/login/LoginActivity.kt	(revision 21cb85a218f2eeb2c6a61ede84df8cc6619c0960)
++++ module_login/src/main/java/com/sn/module_login/mvp/ui/login/LoginActivity.kt	(date 1624878682000)
+@@ -14,6 +14,7 @@
+ import androidx.appcompat.app.AppCompatActivity
+ import androidx.lifecycle.Observer
+ import androidx.lifecycle.ViewModelProvider
++import com.alibaba.android.arouter.facade.annotation.Route
+ import com.sn.module_login.R
+ import com.sn.utils.email.EMailSenderConfig
+ import com.sn.utils.email.EMailSenderMessage
+@@ -21,6 +22,7 @@
+ import com.sn.utils.log.LogUtil
+ 
+ 
++@Route(path = "/app/loginactivity")
+ class LoginActivity : AppCompatActivity() {
+ 
+     private lateinit var loginViewModel: LoginViewModel
+Index: module_diary/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>if (isModule.toBoolean()) {\n    apply plugin: 'com.android.application'\n} else {\n    apply plugin: 'com.android.library'\n}\napply plugin: 'kotlin-android'\napply plugin: 'kotlin-android-extensions'\ndef librarys = rootProject.ext.dependencies\ndef androidX = rootProject.ext.androidX\n\nandroid {\n    compileSdkVersion 30\n    buildToolsVersion \"30.0.3\"\n\n    defaultConfig {\n        minSdkVersion 18\n        targetSdkVersion 30\n        versionCode 1\n        versionName \"1.0\"\n\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\n        consumerProguardFiles \"consumer-rules.pro\"\n    }\n\n    buildTypes {\n        release {\n            minifyEnabled false\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\n        }\n    }\n}\n\ndependencies {\n    implementation fileTree(dir: \"libs\", include: [\"*.jar\"])\n    implementation \"org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version\"\n    implementation 'androidx.core:core-ktx:1.3.2'\n    implementation 'androidx.appcompat:appcompat:1.2.0'\n    implementation 'androidx.legacy:legacy-support-v4:1.0.0'\n    implementation 'androidx.recyclerview:recyclerview:1.1.0'\n    testImplementation 'junit:junit:4.12'\n    androidTestImplementation 'androidx.test.ext:junit:1.1.2'\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'\n\n    implementation project(path: ':plugin_base')\n    implementation project(path: ':plugin_common')\n\n    implementation librarys.lifecycle_extensions\n\n\n//    implementation librarys.datastore_core\n//    implementation librarys.datastore_preferences\n//    implementation \"androidx.datastore:datastore-preferences:1.0.0-alpha03\"\n//    implementation \"androidx.datastore:datastore-preferences-core:1.0.0-alpha03\"\n    /**\n     * androidXUI导航\n     */\n    api androidX.androidx_navigation_ragment_ktx\n    api androidX.androidx_navigation_ui_ktx\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- module_diary/build.gradle	(revision 21cb85a218f2eeb2c6a61ede84df8cc6619c0960)
++++ module_diary/build.gradle	(date 1624879637000)
+@@ -5,18 +5,18 @@
+ }
+ apply plugin: 'kotlin-android'
+ apply plugin: 'kotlin-android-extensions'
+-def librarys = rootProject.ext.dependencies
++def library = rootProject.ext.dependencies
+ def androidX = rootProject.ext.androidX
+-
++def versions = rootProject.ext.versions
+ android {
+-    compileSdkVersion 30
+-    buildToolsVersion "30.0.3"
++    compileSdkVersion versions.compileSdkVersion
++    buildToolsVersion versions.buildToolsVersion
+ 
+     defaultConfig {
+-        minSdkVersion 18
+-        targetSdkVersion 30
+-        versionCode 1
+-        versionName "1.0"
++        minSdkVersion versions.minSdkVersion
++        targetSdkVersion versions.targetSdkVersion
++        versionCode versions.versionCode
++        versionName versions.versionName
+ 
+         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+         consumerProguardFiles "consumer-rules.pro"
+@@ -44,8 +44,7 @@
+     implementation project(path: ':plugin_base')
+     implementation project(path: ':plugin_common')
+ 
+-    implementation librarys.lifecycle_extensions
+-
++    implementation library.lifecycle_extensions
+ 
+ //    implementation librarys.datastore_core
+ //    implementation librarys.datastore_preferences
+Index: plugin_base/src/main/java/com/sn/plugin_base/application/BaseApplication.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.sn.plugin_base.application\n\nimport android.app.Application\nimport android.content.Context\nimport android.os.Environment\nimport com.sn.config.AppFileConfig\nimport com.sn.utils.apk.AppInfoUtil\nimport com.sn.utils.log.LogUtil\n\nabstract class BaseApplication : Application() {\n\n\n    override fun onCreate() {\n        super.onCreate()\n        initRoom(applicationContext)\n        initBasePlugin()\n    }\n\n    abstract fun initRoom(application: Context)\n\n    private fun initBasePlugin(){\n        initFileRootConfig();\n        initLogUtil()\n    }\n\n    private fun initFileRootConfig() {\n        val rootPath  = Environment.getExternalStorageDirectory().absolutePath + \"/\" + AppInfoUtil.getAppName(applicationContext)\n        AppFileConfig.initRootPath(rootPath)\n    }\n\n    private fun initLogUtil() {\n        LogUtil.initLog(AppFileConfig.FILE_XLOG, AppFileConfig.FILE_XLOG_CACHE)\n        LogUtil.printHeader(applicationContext)\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- plugin_base/src/main/java/com/sn/plugin_base/application/BaseApplication.kt	(revision 21cb85a218f2eeb2c6a61ede84df8cc6619c0960)
++++ plugin_base/src/main/java/com/sn/plugin_base/application/BaseApplication.kt	(date 1624862597000)
+@@ -3,6 +3,7 @@
+ import android.app.Application
+ import android.content.Context
+ import android.os.Environment
++import com.alibaba.android.arouter.launcher.ARouter
+ import com.sn.config.AppFileConfig
+ import com.sn.utils.apk.AppInfoUtil
+ import com.sn.utils.log.LogUtil
+@@ -14,6 +15,11 @@
+         super.onCreate()
+         initRoom(applicationContext)
+         initBasePlugin()
++        initARouter()
++    }
++
++    private fun initARouter() {
++        ARouter.getInstance().inject(this);
+     }
+ 
+     abstract fun initRoom(application: Context)

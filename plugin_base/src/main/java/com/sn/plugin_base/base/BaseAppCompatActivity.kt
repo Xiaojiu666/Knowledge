@@ -14,7 +14,6 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         init()
         setContentView(setViewId())
-        //绑定到butterKnife
         initView()
     }
 

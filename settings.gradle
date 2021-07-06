@@ -1,3 +1,4 @@
+include ':library_v_editor'
 include ':plugin_common'
 include ':plugin_base'
 include ':module_login'

@@ -9,7 +9,9 @@ def versions = rootProject.ext.versions
 android {
     compileSdkVersion versions.compileSdkVersion
     buildToolsVersion versions.buildToolsVersion
-
+    buildFeatures {
+        dataBinding true
+    }
     defaultConfig {
         applicationId versions.applicationId
         minSdkVersion versions.minSdkVersion

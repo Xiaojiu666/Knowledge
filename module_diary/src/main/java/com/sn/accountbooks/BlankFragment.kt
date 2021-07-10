@@ -5,8 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.ViewDataBinding
+import androidx.databinding.adapters.AbsListViewBindingAdapter
 import androidx.navigation.findNavController
 import com.sn.module_diary.R
+import com.sn.module_diary.databinding.FragmentBlankBinding
 import kotlinx.android.synthetic.main.fragment_blank.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -30,7 +33,6 @@ class BlankFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

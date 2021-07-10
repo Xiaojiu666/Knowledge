@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/moreinfo_item_tv_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/my_gray"
+        android:padding="5dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/moreinfo_item_tv_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="更多"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/moreinfo_item_tv_name"
+        app:layout_constraintEnd_toStartOf="@+id/imageView3"
+        app:layout_constraintTop_toTopOf="@+id/moreinfo_item_tv_name" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/moreinfo_item_tv_more"
+        app:layout_constraintEnd_toEndOf="@+id/moreinfo_item_tv_name"
+        app:layout_constraintTop_toTopOf="@+id/moreinfo_item_tv_more"
+        app:srcCompat="@mipmap/hht_more_info" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/moreinfo_item_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/moreinfo_item_tv_name" />
+</android.support.constraint.ConstraintLayout>

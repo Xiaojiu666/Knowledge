@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/menu_home"
-        android:name="com.sn.accountbooks.framework.ui.home.HomeFragment"
+        android:name="com.gx.accountbooks.framework.ui.home.HomeFragment"
         android:label="@string/menu_home">
         <action
             android:id="@+id/action_nav_home_to_nav_account_book"
@@ -19,12 +19,12 @@
 
     <fragment
         android:id="@+id/menu_account"
-        android:name="com.sn.module_account_book.ui.account.AccountBookFragment"
+        android:name="com.gx.module_account_book.ui.account.AccountBookFragment"
         android:label="@string/menu_account_book" />
 
     <fragment
         android:id="@+id/menu_diary"
-        android:name="com.sn.module_account_book.ui.SlideshowFragment"
+        android:name="com.gx.module_account_book.ui.SlideshowFragment"
         android:label="@string/menu_diary" />
 
 </navigation>

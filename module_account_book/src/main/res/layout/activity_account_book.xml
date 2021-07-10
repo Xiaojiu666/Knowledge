@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
     <fragment
         android:id="@+id/begin_fragment"
-        android:name="com.sn.module_account_book.ui.account.AccountBookFragment"
+        android:name="com.gx.module_account_book.ui.account.AccountBookFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />

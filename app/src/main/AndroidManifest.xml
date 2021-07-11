@@ -14,14 +14,14 @@
         android:theme="@style/AppTheme">
 
         <activity android:name="com.gx.accountbooks.HomeActivity">
-
-        </activity>
-        <activity android:name="com.gx.accountbooks.test.TestActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name="com.gx.accountbooks.test.TestActivity">
+
         </activity>
 
         <activity android:name="com.gx.module_login.mvp.ui.login.LoginActivity"/>

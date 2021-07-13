@@ -1,4 +1,4 @@
-package com.gx.plugin_base.base
+package com.gx.plugin_base
 
 import android.animation.ObjectAnimator
 import android.view.View

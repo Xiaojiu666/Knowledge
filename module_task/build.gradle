@@ -5,6 +5,8 @@ if (isModule.toBoolean()) {
 }
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
+
 def library = rootProject.ext.dependencies
 def androidX = rootProject.ext.androidX
 def versions = rootProject.ext.versions

@@ -58,4 +58,6 @@ dependencies {
 
     implementation librarys.common_email
     implementation librarys.common_email_activation
+
+    api librarys.androidx_recyclerview
 }

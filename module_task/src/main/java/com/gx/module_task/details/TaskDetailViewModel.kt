@@ -9,5 +9,9 @@ class TaskDetailViewModel : ViewModel() {
     val taskDetail: MutableLiveData<TaskDetailInfo> by lazy {
         MutableLiveData<TaskDetailInfo>()
     }
+
+    fun upDataTaskDetailInfo(){
+        taskDetail.value =  TaskDetailInfo(1)
+    }
 }
 

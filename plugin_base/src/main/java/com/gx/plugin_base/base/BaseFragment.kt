@@ -12,13 +12,14 @@ import androidx.fragment.app.Fragment
  */
 abstract class BaseFragment : Fragment() {
 
+    val TAG  by lazy { this.javaClass.name }
 
-    override fun onCreateView(inflater: LayoutInflater,
+    override fun onCreateView(
+        inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val inflate = inflater.inflate(getLayoutId(), container, false);
-        return inflate
+        return getLayoutView(inflater)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -29,5 +30,5 @@ abstract class BaseFragment : Fragment() {
     abstract fun initView(view: View)
 
 
-    abstract fun getLayoutId(): Int
+    abstract fun getLayoutView(inflater: LayoutInflater): View?
 }

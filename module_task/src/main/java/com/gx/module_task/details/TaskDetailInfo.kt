@@ -1,13 +1,12 @@
 package com.gx.module_task.details
 
-object TaskDetailInfo {
+data class TaskDetailInfo(var taskId:Int) {
     var taskTitle: String? = null
 
     var taskContent :String?=null
 
-
     override fun toString(): String {
-        return "taskTitle $taskTitle + taskContent$ $taskContent"
+        return "taskTitle $taskTitle + taskContent$ $taskContent + taskId $taskId "
     }
 
 }

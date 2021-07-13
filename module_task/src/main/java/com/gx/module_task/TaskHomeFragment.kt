@@ -1,9 +1,12 @@
 package com.gx.module_task
 
+import android.view.LayoutInflater
 import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
+import android.widget.LinearLayout
+import androidx.recyclerview.widget.RecyclerView
 import com.gx.accountbooks.base.BaseFragment
-import com.gx.module_task.databinding.FragmentTaskListBinding
+import com.gx.module_task.databinding.FragmentTaskHomeBinding
 import com.gx.module_task.dummy.DummyContent
 import com.gx.module_task.ui.adapter.RvTaskListAdapter
 
@@ -12,19 +15,19 @@ import com.gx.module_task.ui.adapter.RvTaskListAdapter
  */
 class TaskHomeFragment : BaseFragment() {
 
-    override fun initView(view: View) {
-        val fragmentTaskListBinding = FragmentTaskListBinding.inflate(layoutInflater)
-        fragmentTaskListBinding.taskRecyclerView.layoutManager =LinearLayoutManager(context)
-        fragmentTaskListBinding.taskRecyclerView.adapter = RvTaskListAdapter(DummyContent.ITEMS)
+    var dataBinding : FragmentTaskHomeBinding? = null
 
-//        with(fragmentTaskListBinding.taskRecyclerView) {
-//            layoutManager = LinearLayoutManager(context)
-//            adapter = RvTaskListAdapter(DummyContent.ITEMS)
-//        }
+    override fun initView(view: View) {
+        val taskRecyclerView = dataBinding?.taskRecyclerView
+        with(taskRecyclerView!!) {
+            layoutManager = LinearLayoutManager(context)
+            adapter = RvTaskListAdapter(DummyContent.ITEMS)
+        }
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_task_list
+    override fun getLayoutView(inflater: LayoutInflater): View? {
+        dataBinding = FragmentTaskHomeBinding.inflate(layoutInflater)
+        return dataBinding?.root
     }
 
 }

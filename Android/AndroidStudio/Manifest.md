@@ -1,4 +1,6 @@
-##  meta-data
+###  meta-data
+
+
 
 ####  语法
     <meta-data
@@ -89,3 +91,13 @@
         } catch (NullPointerException e) {
             Log.e(this.getClass().getSimpleName(), "Failed to load meta-data, NullPointer: " + e.getMessage());
         }
+
+### 属性
+- tools:replace属性
+        https://blog.csdn.net/abcdef314159/article/details/112579357
+
+- exported
+https://blog.csdn.net/yanxiaosa/article/details/77028279
+
+- allowBackup
+https://blog.csdn.net/mysimplelove/article/details/84073013

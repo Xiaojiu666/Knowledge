@@ -9,23 +9,29 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.gx.accountbooks.base.BaseFragment
 import com.gx.module_task.R
+import com.gx.module_task.TaskApplication
 import com.gx.module_task.databinding.FragmentTaskDetailBinding
 import com.gx.utils.log.LogUtil
 import com.tencent.mars.xlog.Log
 
 class TaskDetailFragment : BaseFragment() {
 
-    private lateinit var viewModel: TaskDetailViewModel
     var inflate: FragmentTaskDetailBinding? = null
+    var taskViewModel: TaskDetailViewModel? = null
+    init {
+
+    }
+
 
     override fun initView(view: View) {
-        viewModel = ViewModelProvider(this).get(TaskDetailViewModel::class.java)
+        val appContainer = (activity?.application as TaskApplication).appContainer
+        taskViewModel = appContainer.taskDetailViewModel.create()
         LogUtil.e(TAG, "TaskDetail ")
-        viewModel.taskDetail.observe(this, Observer {
+        taskViewModel!!.taskDetail.observe(this, Observer {
             LogUtil.e(TAG, "TaskDetail ${it.toString()}")
         })
         inflate?.textView2?.setOnClickListener {
-            viewModel.upDataTaskDetailInfo()
+            taskViewModel!!.upDataTaskDetailInfo()
         }
     }
 

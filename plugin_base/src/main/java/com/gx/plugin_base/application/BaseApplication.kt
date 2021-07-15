@@ -30,7 +30,7 @@ abstract class BaseApplication : Application() {
 
     abstract fun initRoom(application: Context)
 
-    private fun initBasePlugin(){
+     open fun initBasePlugin(){
         initFileRootConfig();
         initLogUtil()
         LogUtil.e("BaseApplication onCreate")

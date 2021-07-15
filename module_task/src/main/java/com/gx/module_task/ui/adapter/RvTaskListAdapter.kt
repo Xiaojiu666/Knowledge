@@ -30,13 +30,11 @@ class RvTaskListAdapter(mList: MutableList<DummyItem>?) :
     inner class TaskListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val idView: TextView = view.findViewById(R.id.item_number)
         val contentView: TextView = view.findViewById(R.id.content)
-
         init {
             setOnItemClickListener(OnItemClickListener { view, position ->
                 navigateToPlant(0, view)
             })
         }
-
         private fun navigateToPlant(plantId: Int, view: View) {
             val direction = TaskHomeFragmentDirections.actionTaskHomeDetail(0)
             view.findNavController().navigate(direction)

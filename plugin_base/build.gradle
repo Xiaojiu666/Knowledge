@@ -75,4 +75,7 @@ dependencies {
     api library.ktx_coroutines
     api library.ktx_coroutines_android
 
+    /* Dagger2 */
+    api library.dagger2
+    kapt library.dagger2
 }

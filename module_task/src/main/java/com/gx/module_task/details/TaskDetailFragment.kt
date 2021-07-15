@@ -13,15 +13,12 @@ import com.gx.module_task.TaskApplication
 import com.gx.module_task.databinding.FragmentTaskDetailBinding
 import com.gx.utils.log.LogUtil
 import com.tencent.mars.xlog.Log
+import javax.inject.Inject
 
 class TaskDetailFragment : BaseFragment() {
 
     var inflate: FragmentTaskDetailBinding? = null
     var taskViewModel: TaskDetailViewModel? = null
-    init {
-
-    }
-
 
     override fun initView(view: View) {
         val appContainer = (activity?.application as TaskApplication).appContainer

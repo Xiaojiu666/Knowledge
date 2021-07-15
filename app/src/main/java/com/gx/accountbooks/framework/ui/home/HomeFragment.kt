@@ -1,5 +1,6 @@
 package com.gx.accountbooks.framework.ui.home
 
+import android.view.LayoutInflater
 import android.view.View
 import com.gx.accountbooks.R
 import com.gx.accountbooks.base.BaseFragment
@@ -9,6 +10,10 @@ class HomeFragment : BaseFragment() {
 
     private lateinit var homeViewModel: HomeViewModel
     override fun initView(view: View) {
+    }
+
+    override fun getLayoutView(inflater: LayoutInflater): View? {
+        TODO("Not yet implemented")
     }
 
 //    override fun onCreateView(
@@ -113,7 +118,7 @@ class HomeFragment : BaseFragment() {
 //    }
 
 
-    override fun getLayoutId(): Int {
+     fun getLayoutId(): Int {
         return R.layout.fragment_home
     }
 }

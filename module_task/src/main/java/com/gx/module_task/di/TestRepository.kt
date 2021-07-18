@@ -7,4 +7,7 @@ class TestRepository @Inject constructor(
     val testLocalDataSource: TestLocalDataSource
 ) {
 
+    fun returnName():String{
+        return "TestRepository"
+    }
 }

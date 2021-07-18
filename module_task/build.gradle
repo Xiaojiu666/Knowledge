@@ -69,11 +69,11 @@ dependencies {
     api androidX.androidx_navigation_ragment_ktx
     api androidX.androidx_navigation_ui_ktx
 
-    /* Dagger2 * 只有这种方法，才会依赖成功，我也不知道为啥/
+    /* Dagger2 * 只有这种方法，才会依赖成功，我也不知道为啥 */
     implementation 'com.google.dagger:dagger:2.31.2'
     kapt 'com.google.dagger:dagger-compiler:2.31.2'
 
-     */
+
     /* Dagger2 */
 //    implementation library.dagger2
 //    kapt library.dagger2

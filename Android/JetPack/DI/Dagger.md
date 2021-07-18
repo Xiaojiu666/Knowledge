@@ -6,13 +6,14 @@
     1.类构造其所需的依赖项。Car 将创建并初始化自己的 Engine 实例。
     2.从其他地方抓取。某些 Android API（如 Context getter 和 getSystemService()）的工作原理便是如此。
     3.以参数形式提供。应用可以在构造类时提供这些依赖项，或者将这些依赖项传入需要各个依赖项的函数。
-   第三种方式，其实就算是手动依赖注入，通俗来讲就是
+   第三种方式，其实就算是手动依赖注入
 
 ```Java
     class Car {
-
-        private Engine engine = new Engine();
-
+        private Engine engine = null;
+        public Car(Engine engine){
+           engine = engine;
+        }
         public void start() {
             engine.start();
         }
@@ -20,19 +21,24 @@
 
     class MyApp {
         public static void main(String[] args) {
+            Engine engine = new Engine();
             Car car = new Car();
             car.start();
         }
     }
-
 ```
+##### 理解
+    与其叫做依赖注入，不如叫作注入依赖，像某个对象中注入所需要的另外一个对象。
+
 ##### Android 中有两种主要的依赖项注入方式(手动依赖项注入)：
+##### 手动依赖注入
     自行创建、提供并管理不同类的依赖项，而不依赖于库。这称为手动依赖项注入或人工依赖项注入。
 - 构造函数
 - 字段注入(或 setter 注入)
 
 ##### 自动依赖注入
-    手动依赖注入，在只有一个依赖项会很简洁，但依赖项和类越多，手动依赖项注入就越繁琐。手动依赖项注入还会带来多个问题：  
+    手动依赖注入，在只有一个依赖项会很简洁，但依赖项和类越多，手动依赖项注入就越繁琐。
+    手动依赖项注入还会带来多个问题：  
 - 对于大型应用，获取所有依赖项并正确连接它们可能需要大量样板代码。在多层架构中，要为顶层创建一个对象，必须提供其下层的所有依赖项。例如，要制造一辆真车，可能需要引擎、传动装置、底盘以及其他部件；而要制造引擎，则需要汽缸和火花塞。
 ```Java
     public void main(String[] args) {
@@ -41,7 +47,6 @@
           Engine engine = new Engine(engineConfig, engineConfigB);
           Car car = new Car(engine);
       }
-
       class Car {
           // 构造注入
           public Car(Engine engine) { }
@@ -107,8 +112,6 @@ class MyApp {
 - 服务定位器所需的依赖项集合使得代码更难测试，因为所有测试都必须与同一全局服务定位器进行交互。
 
 
-### 手动依赖注入
-
 ### Dagger
 ##### 什么是Dagger
   Dagger 可以执行以下操作，使您无需再编写冗长乏味又容易出错的样板代码：
@@ -116,6 +119,142 @@ class MyApp {
 - 为应用图中提供的类创建 factory。这就是在内部满足依赖关系的方式。
 - 重复使用依赖项或创建类型的新实例，具体取决于您如何使用作用域配置该类型。
 - 为特定流程创建容器，操作方法与上一部分中使用 Dagger 子组件为登录流程创建容器的方法相同。这样可以释放内存中不再需要的对象，从而提升应用性能。
+
+只要您声明类的依赖项并指定如何使用注释满足它们的依赖关系，Dagger 便会在构建时自动执行以上所有操作。Dagger 生成的代码与您手动编写的代码类似。在内部，Dagger 会创建一个对象图，然后它可以参考该图来找到提供类实例的方式。对于图中的每个类，Dagger 都会生成一个 factory 类型类，它会使用该类在内部获取该类型的实例。
+
+##### 普通使用方式
+  1 依赖/配置
+  ```Java
+  implementation 'com.google.dagger:dagger:2.x'
+  annotationProcessor 'com.google.dagger:dagger-compiler:2.x'
+  ```
+  2 构造注入并向外提供依赖
+  ```Java
+  @Component
+  interface TestContainer {
+      //顶层Container 为全局提供对象
+      fun repository(): TestRepository
+  }
+  // 双层对象传递
+  class TestLocalDataSource @Inject constructor() {
+}
+  class TestRemoteDataSource @Inject constructor()  {
+}
+  // 使用@Inject 标记 TestRepository 需要注入 TestRemoteDataSource&&TestLocalDataSource 依赖
+  class TestRepository @Inject constructor(
+  val testRemoteDataSource: TestRemoteDataSource,
+  val testLocalDataSource: TestLocalDataSource) {}
+  // 在需要全局提供的对象的构造参数上 加上 @Inject 在全局提供的地方加上@Component  ，
+  // build 模块 ，自动生成Dagger+ 接口名称
+  ```
+  2.1 原理
+  ```Java
+  public final class DaggerTestContainer implements TestContainer {
+  //通过JavaPoet +注解 自动生成代码
+  //通过建造者，帮忙自动生成一个对象
+  private DaggerTestContainer() {  }
+
+  public static Builder builder() {  return new Builder();}
+
+  public static TestContainer create() {  return new Builder().build();  }
+
+  @Override
+  public TestRepository repository() {  
+      return new TestRepository(new TestRemoteDataSource(), new TestLocalDataSource());  
+  }
+
+  public static final class Builder {
+    private Builder() {}
+
+    public TestContainer build() {
+      return new DaggerTestContainer();
+    }
+  }
+}
+
+  ```
+  3 无构造注入注入依赖
+
+  由于某些 Android 框架类（如 Activity 和 Fragment）由系统实例化，因此 Dagger 无法使用@Inject 进行注入对象，对于字段注入，应将 @Inject 注释应用于您要从 Dagger 图中获取的字段。
+
+  3.1 实现
+  ```Java
+    class TestkActivity : Activity {
+      //需要注入到Activity中的对象，注入的字段不能为私有字段
+      @Inject lateinit var testRepository: TestRepository
+
+      override fun onCreate() {
+          //注入绑定
+          DaggerTestContainer.create().inject(this)
+          Log.e(TAG, "testRepository name : ${testRepository.returnName()}")
+          Log.e(TAG, "testRepository.remote name : ${testRepository.testRemoteDataSource.returnName()}")
+      }
+    }
+
+    @Component
+    interface TestContainer {
+      //容器接口
+      fun inject(taskActivity: TaskActivity)
+    }
+    // 需要注入到Activity中的类
+    class TestRepository @Inject constructor(
+    val testRemoteDataSource: TestRemoteDataSource,
+    val testLocalDataSource: TestLocalDataSource
+    ) {
+        fun returnName():String{
+            return "TestRepository"
+        }
+    }
+
+    class TestRemoteDataSource @Inject constructor()  {
+
+    fun returnName():String{
+        return "TestRemoteDataSource"
+    }
+}
+  ```
+  3.2 原理
+
+  原理和2.1很基本一样，区别在于，一个是提供一个对象，而另一个则是需要绑定两个对象
+  ```Java
+public final class DaggerTestContainer implements TestContainer {
+
+  //省略相同代码···
+
+  //@Inject 帮助生成对象
+  private TestRepository testRepository() {
+    return new TestRepository(new TestRemoteDataSource(), new TestLocalDataSource());
+  }
+
+  @Override
+  public void inject(TaskActivity taskActivity) {
+    // 传入一个需要绑定的对象
+    injectTaskActivity(taskActivity);
+  }
+
+  private TaskActivity injectTaskActivity(TaskActivity instance) {
+    //绑定Activty 和 需要绑定的对象
+    TaskActivity_MembersInjector.injectTestRepository(instance, testRepository());
+    return instance;
+  }
+}
+
+public final class TaskActivity_MembersInjector implements MembersInjector<TaskActivity> {
+  //省略部分代码···
+  @InjectedFieldSignature("com.gx.module_task.TaskActivity.testRepository")
+  public static void injectTestRepository(TaskActivity instance, TestRepository testRepository) {
+    instance.testRepository = testRepository;
+  }
+}
+  ```
+  4 总结
+  - @Injcet 注释为核心，可以注释在构造和对象上
+    - 构造：根据构造所需要的参数，自动帮忙创建对象(参考2.1)。
+    - 对象：再无法实例化的类中，无法通过构造注入，则通过绑定的方式注入(参考3.2)，
+  - @Component  
+
+
+### Dagger进阶
 
 
 ### QA

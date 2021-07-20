@@ -371,11 +371,13 @@ public final class TaskActivity_MembersInjector implements MembersInjector<TaskA
   ```
 
 
-##### Dagger 范围
+##### Dagger 范围@Singleton
     上面的注释和方法，都是帮助注入一个新的实例，一般项目中，有很多需要单例的对象，如:会议项目中的会议室，那如何保证单例呢，
     Dagger提供了@Singleton，@Singleton是唯一一个作用域注释。可以使用它为 @Component接口 以及要在整个应用中重复使用的对象添加注释。
-    1、使用
-    ```Java
+
+1、使用
+
+```Java
     //1. 注释在Container
     @Singleton
     @Component(modules = [BaseModule::class])
@@ -383,9 +385,16 @@ public final class TaskActivity_MembersInjector implements MembersInjector<TaskA
         fun inject(baseActivity: BaseActivity)
     }
     //2 .注释在@injcet 构造或者 @Provides 方法上
-    ```
-    2、源码分析
+```
+
+2、源码分析
     通过观察源码发现，被@Singleton注释的类，会在BaseContainer创建时创建BasePresenter_Factory，保证工厂唯一就保证了工厂的get方法提供的实例始终是一个。
+```java
+    private void initialize(final BaseModule baseModuleParam) {
+      this.basePresenterProvider = DoubleCheck.provider(BasePresenter_Factory.create());
+      this.getViewProvider = DoubleCheck.provider(BaseModule_GetViewFactory.create(baseModuleParam));
+    }
+```
 
 ##### Dagger 子组件
 

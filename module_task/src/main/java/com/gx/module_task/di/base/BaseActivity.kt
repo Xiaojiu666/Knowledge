@@ -15,7 +15,12 @@ class BaseActivity : AppCompatActivity() {
     lateinit var basePresenter: BasePresenter
 
     @Inject
+    lateinit var basePresenterCopy: BasePresenter
+
+    @Inject
     lateinit var view: View
+    @Inject
+    lateinit var view1: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,5 +28,8 @@ class BaseActivity : AppCompatActivity() {
         DaggerBaseContainer.builder().baseModule(BaseModule(baseContext)).build().inject(this)
         LogUtil.e("BaseActivity", basePresenter.getData())
         LogUtil.e("BaseActivity", view.toString())
+        LogUtil.e("BaseActivity", view1.toString())
+        LogUtil.e("BaseActivity", basePresenter.toString())
+        LogUtil.e("BaseActivity", basePresenterCopy.toString())
     }
 }

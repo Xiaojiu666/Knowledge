@@ -122,6 +122,8 @@ class MyApp {
 
 只要您声明类的依赖项并指定如何使用注释满足它们的依赖关系，Dagger 便会在构建时自动执行以上所有操作。Dagger 生成的代码与您手动编写的代码类似。在内部，Dagger 会创建一个对象图，然后它可以参考该图来找到提供类实例的方式。对于图中的每个类，Dagger 都会生成一个 factory 类型类，它会使用该类在内部获取该类型的实例。
 
+![Dagger2](E:\Doc\Knowledge\image\Dagger2.png)
+
 ##### 普通使用方式
   1 依赖/配置
   ```Java
@@ -252,13 +254,143 @@ public final class TaskActivity_MembersInjector implements MembersInjector<TaskA
     - 构造：根据构造所需要的参数，自动帮忙创建对象(参考2.1)。
     - 对象：再无法实例化的类中，无法通过构造注入，则通过绑定的方式注入(参考3.2)，
   - @Component  
-
+    - 桥梁：通过自动生成帮助类
 
 ### Dagger进阶
+##### Dagger 模块
+  通过 <无构造注入注入依赖> ,解决了无构造时，如何帮助一个类，提供其他实例的注入。
+  随之而来的问题就是，如果一个类 需要多个实例的注入，如何解决？Dagger2 提供了一种解决方案，@Module + @Provides
 
+  1、使用
+  ```Java
+  // 1 为Container创建 一个module
+  // 通过@Provides 可以提供多个实例
+  @Module
+  class BaseModule constructor(var context: Context){
+      @Provides
+      fun getView(): View {
+          return LayoutInflater.from(context).inflate(R.layout.fragment_task_home, null)
+      }
+
+      @Provides
+      fun....
+  }
+  // 2 为Container绑定Module
+  @Component(modules = [BaseModule::class])
+  interface BaseContainer {
+      //提供一个接收注入类的实例
+      fun inject(baseActivity: BaseActivity)
+  }
+
+  // 3 调用
+  DaggerBaseContainer.builder().baseModule(BaseModule(baseContext)).build().inject(this)
+  ```
+  2、源码解析
+  ```Java
+  // 由Provides 生成，通过get方法，调用@Provides所注解的方法 ，对外返回一个实例
+  public final class BaseModule_GetViewFactory implements Factory<View> {
+    private final BaseModule module;
+
+    public BaseModule_GetViewFactory(BaseModule module) {
+      this.module = module;
+    }
+
+    @Override
+    public View get() {
+      return getView(module);
+    }
+
+    public static BaseModule_GetViewFactory create(BaseModule module) {
+      return new BaseModule_GetViewFactory(module);
+    }
+
+    public static View getView(BaseModule instance) {
+      return Preconditions.checkNotNullFromProvides(instance.getView());
+    }
+  }
+  // 由Component生成 进行绑定
+  public final class DaggerBaseContainer implements BaseContainer {
+      // 省略部分代码...
+      private final BaseModule baseModule;
+      private DaggerBaseContainer(BaseModule baseModuleParam) {
+        this.baseModule = baseModuleParam;
+      }
+      //注入需要接收的实例
+      @Override
+      public void inject(BaseActivity baseActivity) {
+        injectBaseActivity(baseActivity);
+      }
+      private BaseActivity injectBaseActivity(BaseActivity instance) {
+        BaseActivity_MembersInjector.injectBasePresenter(instance, new BasePresenter());
+        //核心2
+        BaseActivity_MembersInjector.injectView(instance, BaseModule_GetViewFactory.getView(baseModule));
+        return instance;
+      }
+
+      public static final class Builder {
+        private BaseModule baseModule;
+
+        private Builder() {
+        }
+        public Builder baseModule(BaseModule baseModule) {
+          //核心1
+          this.baseModule = Preconditions.checkNotNull(baseModule);
+          return this;
+        }
+
+        public BaseContainer build() {
+          Preconditions.checkBuilderRequirement(baseModule, BaseModule.class);
+          return new DaggerBaseContainer(baseModule);
+        }
+  }
+}
+
+  ```
+  3、总结
+
+  3.1、会根据@Module + @Provides 会生成工厂类，专门生产@Provides所注释方法返回的实例，如果有多个Module 或者 Provides,则生产多个工厂类。
+  ```Java
+  @Override
+  public View get() {
+    return getView(module);
+  }
+  public static View getView(BaseModule instance) {
+    return Preconditions.checkNotNullFromProvides(instance.getView());
+  }
+  ```
+  3.2 仍然由@Component(modules = [BaseModule::class]) 所注释的接口管理，和@Inject方式一样，通过工厂获取实例，通过双向绑定，将实例传递到接收者
+  ```java
+  private BaseActivity injectBaseActivity(BaseActivity instance) {
+      BaseActivity_MembersInjector.injectView(instance, BaseModule_GetViewFactory.getView(baseModule));
+      return instance;
+  }
+  public static void injectView(BaseActivity instance, View view) {
+      instance.view = view;
+ }
+}
+  ```
+
+
+##### Dagger 范围
+    上面的注释和方法，都是帮助注入一个新的实例，一般项目中，有很多需要单例的对象，如:会议项目中的会议室，那如何保证单例呢，
+    Dagger提供了@Singleton，@Singleton是唯一一个作用域注释。可以使用它为 @Component接口 以及要在整个应用中重复使用的对象添加注释。
+    1、使用
+    ```Java
+    //1. 注释在Container
+    @Singleton
+    @Component(modules = [BaseModule::class])
+    interface BaseContainer {
+        fun inject(baseActivity: BaseActivity)
+    }
+    //2 .注释在@injcet 构造或者 @Provides 方法上
+    ```
+    2、源码分析
+    通过观察源码发现，被@Singleton注释的类，会在BaseContainer创建时创建BasePresenter_Factory，保证工厂唯一就保证了工厂的get方法提供的实例始终是一个。
+
+##### Dagger 子组件
 
 ### QA
-
+- @Componen 接口中，可以injcet 多个参数么？ 不可以，会报错
 
 ### 参考资料
 - [Android 中的依赖项注入](https://developer.android.google.cn/training/dependency-injection#java)

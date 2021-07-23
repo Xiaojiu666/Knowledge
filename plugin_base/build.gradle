@@ -1,21 +1,29 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
 def library = rootProject.ext.dependencies
 def androidX = rootProject.ext.androidX
-
+def versions = rootProject.ext.versions
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+    compileSdkVersion versions.compileSdkVersion
+    buildToolsVersion versions.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion versions.minSdkVersion
+        targetSdkVersion versions.targetSdkVersion
+        versionCode versions.versionCode
+        versionName versions.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+
+        kapt {
+            arguments {
+                arg("AROUTER_MODULE_NAME", project.getName())
+            }
+        }
     }
 
     buildTypes {
@@ -23,6 +31,15 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
     }
 }
 
@@ -35,6 +52,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+    implementation project(path: ':plugin_common')
 
     /* 图表/报表库*/
     api library.MPchart
@@ -48,4 +66,16 @@ dependencies {
     /*room 数据库*/
     api library.room_runtime
     annotationProcessor library.room_compiler
+
+
+    implementation "com.alibaba:arouter-api:1.4.1"
+    kapt "com.alibaba:arouter-compiler:1.2.2"
+
+    /* 携程框架 */
+    api library.ktx_coroutines
+    api library.ktx_coroutines_android
+
+    /* Dagger2 */
+//    api library.dagger2
+//    kapt library.dagger2
 }

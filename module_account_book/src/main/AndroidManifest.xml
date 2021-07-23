@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.sn.module_account_book">
+    package="com.gx.module_account_book">
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"

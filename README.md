@@ -5,21 +5,11 @@ a normal AccountBooks
 
 
 
-## Android Jetpack
+## Android Jetpack Study
 
 #### View层 
-######  Navigation
-
-- NavigationUI 
-  - 控制Fragment 切换绑定，通过setupWithNavController，无需通过FragmentManager
-- 
-
-```java
-
-
-
-```
-
+######  DataBinding
+######
 
 
 

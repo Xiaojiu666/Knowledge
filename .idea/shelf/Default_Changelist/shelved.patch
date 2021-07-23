@@ -1,0 +1,33 @@
+Index: plugin_common/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>plugins {\n    id 'com.android.library'\n    id 'kotlin-android'\n}\n\ndef librarys = rootProject.ext.dependencies\ndef androidX = rootProject.ext.androidX\n\nandroid {\n    compileSdkVersion 30\n    buildToolsVersion \"30.0.3\"\n\n    defaultConfig {\n        minSdkVersion 21\n        targetSdkVersion 30\n        versionCode 1\n        versionName \"1.0\"\n\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\n        consumerProguardFiles \"consumer-rules.pro\"\n\n\n    }\n\n    buildTypes {\n        release {\n            minifyEnabled false\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\n        }\n    }\n    compileOptions {\n        sourceCompatibility JavaVersion.VERSION_1_8\n        targetCompatibility JavaVersion.VERSION_1_8\n    }\n    kotlinOptions {\n        jvmTarget = '1.8'\n    }\n\n    sourceSets {\n        main {\n            jniLibs.srcDirs = ['libs']\n        }\n    }\n}\n\ndependencies {\n\n    implementation \"org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version\"\n    implementation 'androidx.core:core-ktx:1.2.0'\n    implementation 'androidx.appcompat:appcompat:1.1.0'\n    implementation 'com.google.android.material:material:1.1.0'\n    testImplementation 'junit:junit:4.+'\n    androidTestImplementation 'androidx.test.ext:junit:1.1.1'\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'\n\n\n\n\n    implementation librarys.common_email\n    implementation librarys.common_email_activation\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- plugin_common/build.gradle	(revision 21cb85a218f2eeb2c6a61ede84df8cc6619c0960)
++++ plugin_common/build.gradle	(date 1624850826000)
+@@ -5,16 +5,16 @@
+ 
+ def librarys = rootProject.ext.dependencies
+ def androidX = rootProject.ext.androidX
+-
++def versions = rootProject.ext.versions
+ android {
+-    compileSdkVersion 30
+-    buildToolsVersion "30.0.3"
++    compileSdkVersion versions.compileSdkVersion
++    buildToolsVersion versions.buildToolsVersion
+ 
+     defaultConfig {
+-        minSdkVersion 21
+-        targetSdkVersion 30
+-        versionCode 1
+-        versionName "1.0"
++        minSdkVersion versions.minSdkVersion
++        targetSdkVersion versions.targetSdkVersion
++        versionCode versions.versionCode
++        versionName versions.versionName
+ 
+         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+         consumerProguardFiles "consumer-rules.pro"

@@ -1,0 +1,54 @@
+Index: plugin_base/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>apply plugin: 'com.android.library'\napply plugin: 'kotlin-android'\napply plugin: 'kotlin-android-extensions'\ndef library = rootProject.ext.dependencies\ndef androidX = rootProject.ext.androidX\n\nandroid {\n    compileSdkVersion 30\n    buildToolsVersion \"30.0.3\"\n\n    defaultConfig {\n        minSdkVersion 21\n        targetSdkVersion 30\n        versionCode 1\n        versionName \"1.0\"\n\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\n        consumerProguardFiles \"consumer-rules.pro\"\n    }\n\n    buildTypes {\n        release {\n            minifyEnabled false\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\n        }\n    }\n}\n\ndependencies {\n    implementation fileTree(dir: \"libs\", include: [\"*.jar\"])\n    implementation \"org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version\"\n    implementation 'androidx.core:core-ktx:1.3.2'\n    implementation 'androidx.appcompat:appcompat:1.2.0'\n    testImplementation 'junit:junit:4.12'\n    androidTestImplementation 'androidx.test.ext:junit:1.1.2'\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'\n\n    implementation project(path: ':plugin_common')\n\n    /* 图表/报表库*/\n    api library.MPchart\n\n    /*生命周期扩展库，不加AppCompatActivity报错*/\n    api library.lifecycle_extensions\n\n    /*AndroidX 约束布局*/\n    api library.androidx_constraintlayout\n\n    /*room 数据库*/\n    api library.room_runtime\n    annotationProcessor library.room_compiler\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- plugin_base/build.gradle	(revision 21cb85a218f2eeb2c6a61ede84df8cc6619c0960)
++++ plugin_base/build.gradle	(date 1624879953000)
+@@ -3,19 +3,25 @@
+ apply plugin: 'kotlin-android-extensions'
+ def library = rootProject.ext.dependencies
+ def androidX = rootProject.ext.androidX
+-
++def versions = rootProject.ext.versions
+ android {
+-    compileSdkVersion 30
+-    buildToolsVersion "30.0.3"
++    compileSdkVersion versions.compileSdkVersion
++    buildToolsVersion versions.buildToolsVersion
+ 
+     defaultConfig {
+-        minSdkVersion 21
+-        targetSdkVersion 30
+-        versionCode 1
+-        versionName "1.0"
++        minSdkVersion versions.minSdkVersion
++        targetSdkVersion versions.targetSdkVersion
++        versionCode versions.versionCode
++        versionName versions.versionName
+ 
+         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+         consumerProguardFiles "consumer-rules.pro"
++
++        javaCompileOptions {
++
++            annotationProcessorOptions {
++                arguments = [moduleName :project.getName() ]
++            } }
+     }
+ 
+     buildTypes {
+@@ -49,4 +55,10 @@
+     /*room 数据库*/
+     api library.room_runtime
+     annotationProcessor library.room_compiler
++
++
++    api 'com.alibaba:arouter-api:1.3.1'
++    annotationProcessor 'com.alibaba:arouter-compiler:1.1.4'
++
++
+ }
+\ No newline at end of file

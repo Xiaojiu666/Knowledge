@@ -18,11 +18,13 @@ def constraintlayout = '1.1.3'
 def material = '1.1.0'
 def banner = '2.0.12'
 def ratingbar = '1.4.0'
-def dagger2 = '2.11'
+def dagger2 = '2.31.2'
 def navigationVersion = '2.2.0'
 def lifecycle_extensions= '2.2.0'
 def datastore= '1.0.0-alpha06'
 def room_version = "2.2.6"
+def common_email = "1.6.0"
+def coroutines = "1.3.7-mpp-dev-11"
 
 ext {
     dependencies = [
@@ -61,13 +63,19 @@ ext {
             "datastore_core"             : "androidx.datastore:datastore-preferences:${datastore}",
             "datastore_preferences"      : "androidx.datastore:datastore-preferences-core:${datastore}",
             "room_runtime"               :  "androidx.room:room-runtime:${room_version}",
-            "room_compiler"              :  "androidx.room:room-compiler:${room_version}"
+            "room_compiler"              :  "androidx.room:room-compiler:${room_version}",
+            "common_email"               :  "com.sun.mail:android-mail:${common_email}",
+            "common_email_activation"    :  "com.sun.mail:android-activation:${common_email}",
+            "ktx_coroutines"             :  "org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutines}",
+            "ktx_coroutines_android"     :  "org.jetbrains.kotlinx:kotlinx-coroutines-android:${coroutines}"
+
 
     ]
 
     versions = [
-            "buildToolsVersion": "28.0.3",
-            "compileSdkVersion": 28,
+            "applicationId"    : "com.gx.accountbooks",
+            "buildToolsVersion": "30.0.3",
+            "compileSdkVersion": 30,
             "minSdkVersion"    : 18,
             "targetSdkVersion" : 28,
             "versionCode"      : 1,

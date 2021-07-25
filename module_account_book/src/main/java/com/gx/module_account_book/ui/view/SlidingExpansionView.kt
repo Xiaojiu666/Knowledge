@@ -11,7 +11,7 @@ import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.core.view.ViewCompat
 import androidx.customview.widget.ViewDragHelper
-import com.gx.plugin_base.AnimatorUtils
+import com.gx.base.AnimatorUtils
 
 /**
  * Created by GuoXu on 2020/10/19 17:22.

@@ -2,7 +2,7 @@ package com.gx.module_login;
 
 import android.content.Context;
 
-import com.gx.plugin_base.application.BaseApplication;
+import com.gx.base.application.BaseApplication;
 
 import org.jetbrains.annotations.NotNull;
 

@@ -1,7 +1,8 @@
 package com.gx.module_diary.editor
 
+import android.view.View
 import com.gx.module_diary.R
-import com.gx.plugin_base.base.BaseAppCompatActivity
+import com.gx.base.base.BaseAppCompatActivity
 
 class DiaryEditorActivity : BaseAppCompatActivity() {
 
@@ -12,7 +13,6 @@ class DiaryEditorActivity : BaseAppCompatActivity() {
 
     }
 
-    override fun setViewId(): Int {
-        return R.layout.activity_diary_editor;
-    }
+    override fun getLayoutView(): View = View.inflate(baseContext,R.layout.activity_diary_editor,null)
+
 }

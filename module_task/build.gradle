@@ -11,6 +11,8 @@ apply plugin: 'androidx.navigation.safeargs.kotlin'
 def library = rootProject.ext.dependencies
 def androidX = rootProject.ext.androidX
 def versions = rootProject.ext.versions
+
+
 android {
     compileSdkVersion versions.compileSdkVersion
     buildToolsVersion versions.buildToolsVersion
@@ -41,7 +43,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions{
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
 }
+
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])

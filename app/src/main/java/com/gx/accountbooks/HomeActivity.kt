@@ -2,9 +2,9 @@ package com.gx.accountbooks
 
 import android.util.Log
 import android.view.Menu
+import android.view.View
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -12,7 +12,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
-import com.gx.plugin_base.base.BaseAppCompatActivity
+import com.gx.base.base.BaseAppCompatActivity
 
 
 class HomeActivity : BaseAppCompatActivity() {
@@ -47,10 +47,7 @@ class HomeActivity : BaseAppCompatActivity() {
         }
     }
 
-
-    override fun setViewId(): Int {
-        return R.layout.activity_main
-    }
+    override fun getLayoutView(): View = View.inflate(baseContext,R.layout.activity_main,null)
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main, menu)

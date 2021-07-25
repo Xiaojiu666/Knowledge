@@ -6,6 +6,12 @@ apply plugin: 'kotlin-kapt'
 def library = rootProject.ext.dependencies
 def androidX = rootProject.ext.androidX
 def versions = rootProject.ext.versions
+def google = rootProject.ext.google
+
+def srcDirs=[
+        'themeswitcher'
+]
+
 android {
     compileSdkVersion versions.compileSdkVersion
     buildToolsVersion versions.buildToolsVersion
@@ -25,13 +31,32 @@ android {
             }
         }
     }
+    sourceSets {
+        main {
+            srcDirs.forEach {
+                res.srcDirs += 'src/main/java/com/gx/base/' + it + '/res'
+            }
+        }
+    }
 
+//    sourceSets{
+//        main{
+////            res.srcDirs = ['java/com/gx/base/res']
+////            com.gx.base.themeswitcher
+//            res.srcDirs = ['java/com/gx/base/themeswitcher/res']
+////            srcDirs.forEach {
+////                res.srcDirs += 'java/com/gx/base/themeswitcher/res'
+////            }
+//        }
+//    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -74,6 +99,9 @@ dependencies {
     /* 携程框架 */
     api library.ktx_coroutines
     api library.ktx_coroutines_android
+
+    /* MD 控件*/
+    api google.material
 
     /* Dagger2 */
 //    api library.dagger2

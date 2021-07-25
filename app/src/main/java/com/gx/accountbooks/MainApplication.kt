@@ -1,7 +1,7 @@
 package com.gx.accountbooks
 
 import android.content.Context
-import com.gx.plugin_base.application.BaseApplication
+import com.gx.base.application.BaseApplication
 
 class MainApplication : BaseApplication() {
 

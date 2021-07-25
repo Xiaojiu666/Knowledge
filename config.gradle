@@ -47,7 +47,6 @@ ext {
             "permissions"                : "org.permissionsdispatcher:permissionsdispatcher:${permissions}",
             "permissions_processor"      : "org.permissionsdispatcher:permissionsdispatcher-processor:${permissions}",
             "androidx_appcompat"         : "androidx.appcompat:appcompat:${appcompat}",
-            "androidx_material"          : "com.google.android.material:material:${material}",
             "androidx_swiperefreshlayout": "androidx.swiperefreshlayout:swiperefreshlayout:${swiperefreshlayout}",
             "androidx_constraintlayout"  : "androidx.constraintlayout:constraintlayout:${constraintlayout}",
             "androidx_recyclerview"      : "androidx.recyclerview:recyclerview:${recyclerview}",
@@ -67,16 +66,14 @@ ext {
             "common_email"               :  "com.sun.mail:android-mail:${common_email}",
             "common_email_activation"    :  "com.sun.mail:android-activation:${common_email}",
             "ktx_coroutines"             :  "org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutines}",
-            "ktx_coroutines_android"     :  "org.jetbrains.kotlinx:kotlinx-coroutines-android:${coroutines}"
-
-
+            "ktx_coroutines_android"     :  "org.jetbrains.kotlinx:kotlinx-coroutines-android:${coroutines}",
     ]
 
     versions = [
             "applicationId"    : "com.gx.accountbooks",
             "buildToolsVersion": "30.0.3",
             "compileSdkVersion": 30,
-            "minSdkVersion"    : 18,
+            "minSdkVersion"    : 26,
             "targetSdkVersion" : 28,
             "versionCode"      : 1,
             "versionName"      : "1.0.0"
@@ -85,5 +82,9 @@ ext {
     androidX = [
             "androidx_navigation_ragment_ktx": "androidx.navigation:navigation-fragment-ktx:${navigationVersion}",
             "androidx_navigation_ui_ktx"     : "androidx.navigation:navigation-ui-ktx:${navigationVersion}"
+    ]
+
+    google =[
+            "material"     :  "com.google.android.material:material:${material}",
     ]
 }

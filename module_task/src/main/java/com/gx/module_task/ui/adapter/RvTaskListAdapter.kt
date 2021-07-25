@@ -1,18 +1,15 @@
 package com.gx.module_task.ui.adapter
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.gx.module_task.R
-import com.gx.module_task.TaskHomeFragment
 import com.gx.module_task.TaskHomeFragmentDirections
 import com.gx.module_task.dummy.DummyContent.DummyItem
-import com.gx.plugin_base.base.BaseRecyclerViewAdapter
-import com.gx.plugin_base.base.interfaces.OnItemClickListener
-import com.gx.utils.log.LogUtil
+import com.gx.base.base.BaseRecyclerViewAdapter
+import com.gx.base.base.interfaces.OnItemClickListener
 
 
 class RvTaskListAdapter(mList: MutableList<DummyItem>?) :

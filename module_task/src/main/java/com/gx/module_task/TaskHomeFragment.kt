@@ -1,28 +1,36 @@
 package com.gx.module_task
 
 import android.view.LayoutInflater
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
-import android.widget.LinearLayout
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.gx.accountbooks.base.BaseFragment
+import com.gx.base.base.ToolbarFragment
+import com.gx.base.themeswitcher.ThemeSwitcherHelper
 import com.gx.module_task.databinding.FragmentTaskHomeBinding
 import com.gx.module_task.dummy.DummyContent
 import com.gx.module_task.ui.adapter.RvTaskListAdapter
+import com.gx.utils.log.LogUtil
 
 /**
  * A fragment representing a list of Items.
  */
-class TaskHomeFragment : BaseFragment() {
-
-    var dataBinding : FragmentTaskHomeBinding? = null
+class TaskHomeFragment : ToolbarFragment() {
+    var themeSwitcherHelper: ThemeSwitcherHelper? = null
+    var dataBinding: FragmentTaskHomeBinding? = null
 
     override fun initView(view: View) {
+        super.initView(view)
+        LogUtil.i(TAG, "initView")
+        themeSwitcherHelper = ThemeSwitcherHelper(parentFragmentManager)
         val taskRecyclerView = dataBinding?.taskRecyclerView
         with(taskRecyclerView!!) {
             layoutManager = LinearLayoutManager(context)
             adapter = RvTaskListAdapter(DummyContent.ITEMS)
         }
+        dataBinding!!.textView.setOnClickListener {
+            themeSwitcherHelper!!.showThemeSwitcher();
+        }
+
     }
 
     override fun getLayoutView(inflater: LayoutInflater): View? {

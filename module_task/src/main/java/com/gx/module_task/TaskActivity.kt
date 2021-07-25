@@ -1,9 +1,9 @@
 package com.gx.module_task
 
-import com.gx.module_task.details.TaskDetailInfo
+import android.view.View
 import com.gx.module_task.di.DaggerTestContainer
 import com.gx.module_task.di.TestRepository
-import com.gx.plugin_base.base.BaseAppCompatActivity
+import com.gx.base.base.BaseAppCompatActivity
 import com.tencent.mars.xlog.Log
 import javax.inject.Inject
 
@@ -22,8 +22,6 @@ class TaskActivity : BaseAppCompatActivity() {
             "testRepository.remote name : ${testRepository.testRemoteDataSource.returnName()}"
         )
     }
+    override fun getLayoutView(): View = createView(R.layout.activity_task)
 
-    override fun setViewId(): Int {
-        return R.layout.activity_task
-    }
 }

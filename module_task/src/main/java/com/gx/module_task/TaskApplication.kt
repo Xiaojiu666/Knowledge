@@ -2,7 +2,7 @@ package com.gx.module_task
 
 import android.content.Context
 import com.gx.module_task.repository.AppContainer
-import com.gx.plugin_base.application.BaseApplication
+import com.gx.base.application.BaseApplication
 
 class TaskApplication : BaseApplication() {
 

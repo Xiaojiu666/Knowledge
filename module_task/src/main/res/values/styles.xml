@@ -8,7 +8,7 @@
 
     <style name="Widget.Catalog.Toolbar" parent="Widget.MaterialComponents.Toolbar.PrimarySurface">
         <!-- Toolbar should always be within an AppBarLayout which provides the background. -->
-        <item name="android:background">@null</item>
+<!--        <item name="android:background">@color/black_overlay</item>-->
     </style>
     <style name="Widget.Catalog.Toolbar.WithCloseButton" parent="Widget.Catalog.Toolbar">
         <item name="navigationContentDescription">@string/menu_home</item>

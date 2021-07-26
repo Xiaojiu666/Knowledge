@@ -8,6 +8,7 @@
         android:layout_height="match_parent">
 
         <com.gx.base.view.BaseToolbar
+            style="?attr/catalogToolbarWithCloseButtonStyle"
             android:id="@+id/baseToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

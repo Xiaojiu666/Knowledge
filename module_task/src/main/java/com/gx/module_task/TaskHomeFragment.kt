@@ -19,10 +19,10 @@ class TaskHomeFragment : ToolbarFragment() {
     var dataBinding: FragmentTaskHomeBinding? = null
 
     override fun initView(view: View) {
-        super.initView(view)
         LogUtil.i(TAG, "initView")
         themeSwitcherHelper = ThemeSwitcherHelper(parentFragmentManager)
         val taskRecyclerView = dataBinding?.taskRecyclerView
+        toolbar = dataBinding!!.baseToolbar
         with(taskRecyclerView!!) {
             layoutManager = LinearLayoutManager(context)
             adapter = RvTaskListAdapter(DummyContent.ITEMS)
@@ -30,12 +30,17 @@ class TaskHomeFragment : ToolbarFragment() {
         dataBinding!!.textView.setOnClickListener {
             themeSwitcherHelper!!.showThemeSwitcher();
         }
-
+        super.initView(view)
     }
 
     override fun getLayoutView(inflater: LayoutInflater): View? {
         dataBinding = FragmentTaskHomeBinding.inflate(layoutInflater)
         return dataBinding?.root
     }
+
+    override fun getToolBarTitle(): String {
+        return TAG
+    }
+
 
 }

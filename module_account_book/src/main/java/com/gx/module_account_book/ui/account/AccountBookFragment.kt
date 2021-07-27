@@ -1,5 +1,6 @@
 package com.gx.module_account_book.ui.account
 
+import android.view.LayoutInflater
 import android.view.View
 import com.gx.accountbooks.base.BaseFragment
 import com.gx.module_account_book.R
@@ -54,8 +55,10 @@ class AccountBookFragment : BaseFragment() {
 //        setData(2, 10.0f);
     }
 
+    override fun getLayoutView(inflater: LayoutInflater): View? = createView(R.layout.fragment_account_home)
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_account_home
-    }
+
+//    override fun getLayoutId(): Int {
+//        return R.layout.fragment_account_home
+//    }
 }

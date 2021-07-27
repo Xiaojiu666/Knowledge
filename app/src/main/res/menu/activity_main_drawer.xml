@@ -7,14 +7,18 @@
         <item
             android:id="@+id/menu_home"
             android:icon="@drawable/ic_menu_camera"
-            android:title="@string/menu_home" />
+            android:title="@string/app_home" />
         <item
             android:id="@+id/menu_account"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_account_book" />
-<!--        <item-->
-<!--            android:id="@+id/menu_diary"-->
-<!--            android:icon="@drawable/ic_menu_slideshow"-->
-<!--            android:title="@string/menu_diary" />-->
+            android:title="@string/app_account_book" />
+        <item
+            android:id="@+id/menu_diary"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/app_diary" />
+        <item
+            android:id="@+id/menu_task"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/app_task" />
     </group>
 </menu>

@@ -15,6 +15,12 @@
         <action
             android:id="@+id/action_nav_home_to_nav_diary"
             app:destination="@id/menu_diary" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_account"
+            app:destination="@id/menu_diary" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_task"
+            app:destination="@id/menu_diary" />
     </fragment>
 
     <fragment
@@ -24,7 +30,12 @@
 
     <fragment
         android:id="@+id/menu_diary"
-        android:name="com.gx.module_account_book.ui.SlideshowFragment"
+        android:name="com.gx.module_diary.DiaryFragment"
         android:label="@string/menu_diary" />
+
+    <fragment
+        android:id="@+id/menu_task"
+        android:name="com.gx.module_task.TaskHomeFragment"
+        android:label="@string/app_task" />
 
 </navigation>

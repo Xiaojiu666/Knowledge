@@ -12,9 +12,7 @@ class HomeFragment : BaseFragment() {
     override fun initView(view: View) {
     }
 
-    override fun getLayoutView(inflater: LayoutInflater): View? {
-        TODO("Not yet implemented")
-    }
+    override fun getLayoutView(inflater: LayoutInflater): View? = createView(R.layout.fragment_home)
 
 //    override fun onCreateView(
 //        inflater: LayoutInflater,
@@ -117,8 +115,4 @@ class HomeFragment : BaseFragment() {
 //        chart.invalidate()
 //    }
 
-
-     fun getLayoutId(): Int {
-        return R.layout.fragment_home
-    }
 }

@@ -8,7 +8,7 @@ def androidX = rootProject.ext.androidX
 def versions = rootProject.ext.versions
 def google = rootProject.ext.google
 
-def srcDirs=[
+def srcDirs = [
         'themeswitcher'
 ]
 
@@ -33,29 +33,23 @@ android {
     }
     sourceSets {
         main {
+            if (isModule.toBoolean()) {
+                manifest.srcFile 'src/main/manifest/AndroidManifest.xml'
+            } else {
+                manifest.srcFile 'src/main/AndroidManifest.xml'
+            }
             srcDirs.forEach {
                 res.srcDirs += 'src/main/java/com/gx/base/' + it + '/res'
             }
         }
     }
 
-//    sourceSets{
-//        main{
-////            res.srcDirs = ['java/com/gx/base/res']
-////            com.gx.base.themeswitcher
-//            res.srcDirs = ['java/com/gx/base/themeswitcher/res']
-////            srcDirs.forEach {
-////                res.srcDirs += 'java/com/gx/base/themeswitcher/res'
-////            }
-//        }
-//    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
 
 
     compileOptions {

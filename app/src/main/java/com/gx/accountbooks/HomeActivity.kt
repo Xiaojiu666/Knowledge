@@ -32,7 +32,7 @@ class HomeActivity : BaseAppCompatActivity() {
 //        appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.menu_home, R.id.menu_account, R.id.menu_diary
+                R.id.menu_home, R.id.menu_account, R.id.menu_diary,R.id.menu_task
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -47,7 +47,7 @@ class HomeActivity : BaseAppCompatActivity() {
         }
     }
 
-    override fun getLayoutView(): View = View.inflate(baseContext,R.layout.activity_main,null)
+    override fun getLayoutView(): View = createView(R.layout.activity_main)
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main, menu)

@@ -20,5 +20,10 @@
             android:id="@+id/menu_task"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/app_task" />
+
+        <item
+            android:id="@+id/menu_setting"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/app_setting" />
     </group>
 </menu>

@@ -5,6 +5,7 @@
     <string name="app_login">登陆模块</string>
     <string name="app_diary">日记模块</string>
     <string name="app_account_book">账本模块</string>
+    <string name="app_setting">设置模块</string>
 
 
     <string name="navigation_drawer_open">Open navigation drawer</string>

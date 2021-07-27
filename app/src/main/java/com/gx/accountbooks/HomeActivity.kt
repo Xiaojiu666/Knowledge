@@ -32,7 +32,7 @@ class HomeActivity : BaseAppCompatActivity() {
 //        appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.menu_home, R.id.menu_account, R.id.menu_diary,R.id.menu_task
+                R.id.menu_home, R.id.menu_account, R.id.menu_diary,R.id.menu_task,R.id.menu_setting
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -42,8 +42,6 @@ class HomeActivity : BaseAppCompatActivity() {
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             Log.e("navController", destination.label.toString());
             Log.e("navController", destination.toString());
-//            toolbar.title = getString(R.string.app_name)
-//            toolbar.title = "2020/10/18"
         }
     }
 

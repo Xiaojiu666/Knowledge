@@ -17,13 +17,13 @@
             <option value="$PROJECT_DIR$/module_account_book" />
             <option value="$PROJECT_DIR$/module_diary" />
             <option value="$PROJECT_DIR$/module_login" />
+            <option value="$PROJECT_DIR$/module_setting" />
             <option value="$PROJECT_DIR$/module_task" />
             <option value="$PROJECT_DIR$/plugin_base" />
             <option value="$PROJECT_DIR$/plugin_common" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
-        <option name="useQualifiedModuleNames" value="true" />
       </GradleProjectSettings>
     </option>
   </component>

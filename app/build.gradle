@@ -74,6 +74,7 @@ dependencies {
         implementation project(path: ':module_login')
         implementation project(path: ':module_task')
         implementation project(path: ':module_diary')
+        implementation project(path: ':module_setting')
     }
 
 //    implementation "androidx.datastore:datastore-preferences:1.0.0-alpha06"

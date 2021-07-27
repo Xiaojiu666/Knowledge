@@ -80,6 +80,7 @@ ext {
     ]
 
     androidX = [
+
             "androidx_navigation_ragment_ktx": "androidx.navigation:navigation-fragment-ktx:${navigationVersion}",
             "androidx_navigation_ui_ktx"     : "androidx.navigation:navigation-ui-ktx:${navigationVersion}"
     ]

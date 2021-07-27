@@ -4,7 +4,4 @@
         <attr name="fullscreenTextColor" format="color" />
     </declare-styleable>
 
-    <attr name="catalogToolbarStyle" format="reference"/>
-    <attr name="catalogToolbarWithCloseButtonStyle" format="reference"/>
-    <attr name="textInputSignInStyle" format="reference"/>
 </resources>

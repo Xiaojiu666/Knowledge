@@ -1,0 +1,10 @@
+<resources>
+
+    <style name="Theme.Note" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="catalogToolbarStyle">@style/Widget.Catalog.Toolbar</item>
+        <item name="catalogToolbarWithCloseButtonStyle">@style/Widget.Catalog.Toolbar.WithCloseButton</item>
+        <item name="textInputSignInStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox</item>
+<!--        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.Catalog.BottomSheetDialog</item>-->
+        <item name="windowActionModeOverlay">true</item>
+    </style>
+</resources>

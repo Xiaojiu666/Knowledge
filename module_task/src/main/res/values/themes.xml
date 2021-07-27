@@ -1,15 +1,3 @@
 <resources>
 
-    <style name="ThemeOverlay.AccountBooks.FullscreenContainer" parent="">
-        <item name="fullscreenBackgroundColor">@color/light_blue_600</item>
-        <item name="fullscreenTextColor">@color/light_blue_A200</item>
-    </style>
-
-    <style name="Theme.Catalog" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="catalogToolbarStyle">@style/Widget.Catalog.Toolbar</item>
-        <item name="catalogToolbarWithCloseButtonStyle">@style/Widget.Catalog.Toolbar.WithCloseButton</item>
-        <item name="textInputSignInStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox</item>
-<!--        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.Catalog.BottomSheetDialog</item>-->
-        <item name="windowActionModeOverlay">true</item>
-    </style>
 </resources>

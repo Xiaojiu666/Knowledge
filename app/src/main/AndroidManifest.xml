@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:name="com.gx.accountbooks.MainApplication"
         tools:replace="android:name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/Theme.Note">
 
         <activity android:name="com.gx.accountbooks.HomeActivity">
             <intent-filter>

@@ -2,8 +2,7 @@
 <com.gx.module_account_book.ui.view.SlidingExpansionView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/sliding_expansion_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?attr/colorAccent">
+    android:layout_height="match_parent">
 
     <include layout="@layout/sliding_background" />
 

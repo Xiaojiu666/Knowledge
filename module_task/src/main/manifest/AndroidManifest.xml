@@ -12,9 +12,9 @@
         android:label="@string/app_task"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:name=".TaskApplication"
+        android:name="com.gx.task.TaskApplication"
         android:theme="@style/Theme.Note">
-        <activity android:name="TaskActivity">
+        <activity android:name="com.gx.task.TaskActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".di.base.BaseActivity">
+        <activity android:name="com.gx.task.di.base.BaseActivity">
 
         </activity>
     </application>

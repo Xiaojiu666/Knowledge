@@ -33,11 +33,6 @@ android {
     }
     sourceSets {
         main {
-            if (isModule.toBoolean()) {
-                manifest.srcFile 'src/main/manifest/AndroidManifest.xml'
-            } else {
-                manifest.srcFile 'src/main/AndroidManifest.xml'
-            }
             srcDirs.forEach {
                 res.srcDirs += 'src/main/java/com/gx/base/' + it + '/res'
             }

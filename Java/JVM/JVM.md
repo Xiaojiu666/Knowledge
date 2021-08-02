@@ -9,7 +9,6 @@ JVM 的运行时数据区主要包括：**堆、栈、方法区、程序计数�
 ##	2. 栈(线程私有)
 
 
-
 ![img](https://img-blog.csdnimg.cn/20190409163129199.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jvbmd0YW91cA==,size_16,color_FFFFFF,t_70)
 
 栈是**线程私有**的，他的生命周期与线程相同。每个线程都会分配一个栈的空间，即**每个线程拥有独立的栈空间**。
@@ -44,6 +43,3 @@ JVM 的运行时数据区主要包括：**堆、栈、方法区、程序计数�
 
 
 ()https://blog.csdn.net/rongtaoup/article/details/89142396
-
-
-

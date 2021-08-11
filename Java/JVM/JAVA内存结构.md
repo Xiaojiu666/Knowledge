@@ -281,4 +281,3 @@ public static void main(String[] args){
 ### 参考资料
 - [一文搞懂JVM内存结构](https://blog.csdn.net/rongtaoup/article/details/89142396)
 - [JVM系列（1）java8的内存结构](https://zhuanlan.zhihu.com/p/68145978)
-- [学习java应该如何理解反射？](https://www.zhihu.com/question/24304289)

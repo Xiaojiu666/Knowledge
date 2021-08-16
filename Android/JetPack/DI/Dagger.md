@@ -113,7 +113,7 @@ class MyApp {
 
 
 ### Dagger
-##### 什么是Dagger
+#### 什么是Dagger
   Dagger 可以执行以下操作，使您无需再编写冗长乏味又容易出错的样板代码：
 - 生成您在手动 DI 部分手动实现的 AppContainer 代码（应用图）。
 - 为应用图中提供的类创建 factory。这就是在内部满足依赖关系的方式。
@@ -124,13 +124,14 @@ class MyApp {
 
 ![Dagger2](E:\Doc\Knowledge\image\Dagger2.png)
 
-##### 普通使用方式
-  1 依赖/配置
+#### 普通使用方式
+######  1 依赖/配置
   ```Java
   implementation 'com.google.dagger:dagger:2.x'
   annotationProcessor 'com.google.dagger:dagger-compiler:2.x'
   ```
-  2 构造注入并向外提供依赖
+######  2 构造注入
+假设`TestRepository` 在创建时需要 `TestRemoteDataSource` 和 `TestLocalDataSource`对象，通过在`TestRepository`(需要注入的对象)和 `TestRemoteDataSource`(被注入的对象)的构造上添加`@Inject`注解，通知Dagger，就会自动创建实例
   ```Java
   @Component
   interface TestContainer {
@@ -149,7 +150,7 @@ class MyApp {
   // 在需要全局提供的对象的构造参数上 加上 @Inject 在全局提供的地方加上@Component  ，
   // build 模块 ，自动生成Dagger+ 接口名称
   ```
-  2.1 原理
+######    2.1 原理
   ```Java
   public final class DaggerTestContainer implements TestContainer {
   //通过JavaPoet +注解 自动生成代码
@@ -175,11 +176,10 @@ class MyApp {
 }
 
   ```
-  3 无构造注入注入依赖
+######  3 无构造注入(字段注入)
 
   由于某些 Android 框架类（如 Activity 和 Fragment）由系统实例化，因此 Dagger 无法使用@Inject 进行注入对象，对于字段注入，应将 @Inject 注释应用于您要从 Dagger 图中获取的字段。
 
-  3.1 实现
   ```Java
     class TestkActivity : Activity {
       //需要注入到Activity中的对象，注入的字段不能为私有字段
@@ -192,7 +192,7 @@ class MyApp {
           Log.e(TAG, "testRepository.remote name : ${testRepository.testRemoteDataSource.returnName()}")
       }
     }
-
+    -------------------------------------------
     @Component
     interface TestContainer {
       //容器接口
@@ -207,7 +207,7 @@ class MyApp {
             return "TestRepository"
         }
     }
-
+    -------------------------------------------
     class TestRemoteDataSource @Inject constructor()  {
 
     fun returnName():String{
@@ -215,7 +215,7 @@ class MyApp {
     }
 }
   ```
-  3.2 原理
+######    3.1 原理
 
   原理和2.1很基本一样，区别在于，一个是提供一个对象，而另一个则是需要绑定两个对象
   ```Java
@@ -249,7 +249,7 @@ public final class TaskActivity_MembersInjector implements MembersInjector<TaskA
   }
 }
   ```
-  4 总结
+######  4 总结
   - @Injcet 注释为核心，可以注释在构造和对象上
     - 构造：根据构造所需要的参数，自动帮忙创建对象(参考2.1)。
     - 对象：再无法实例化的类中，无法通过构造注入，则通过绑定的方式注入(参考3.2)，

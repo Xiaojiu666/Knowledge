@@ -398,8 +398,16 @@ public final class TaskActivity_MembersInjector implements MembersInjector<TaskA
 
 ##### Dagger 子组件
 
+
+
+##### Dagger 注解
+######  Qualifier
+######  Binds
+
+
 ### QA
 - @Componen 接口中，可以injcet 多个参数么？ 不可以，会报错
-
+-
 ### 参考资料
 - [Android 中的依赖项注入](https://developer.android.google.cn/training/dependency-injection#java)
+- [Dagger2 自定义@Qualifier](https://blog.csdn.net/mqdxiaoxiao/article/details/92389729)

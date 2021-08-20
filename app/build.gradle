@@ -69,7 +69,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    if (!isModule.toBoolean()) {
+    if (isLirary.toBoolean()) {
         implementation project(path: ':module_account_book')
         implementation project(path: ':module_login')
         implementation project(path: ':module_task')

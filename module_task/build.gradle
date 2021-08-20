@@ -1,4 +1,4 @@
-if (isModule.toBoolean()) {
+if (isLirary.toBoolean()) {
     apply plugin: 'com.android.library'
 } else {
     apply plugin: 'com.android.application'
@@ -50,7 +50,7 @@ android {
     }
     sourceSets {
         main {
-            if (isModule.toBoolean()) {
+            if (isLirary.toBoolean()) {
                 manifest.srcFile 'src/main/AndroidManifest.xml'
             } else {
                 manifest.srcFile 'src/main/manifest/AndroidManifest.xml'

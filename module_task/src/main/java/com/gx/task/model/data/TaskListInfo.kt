@@ -6,4 +6,5 @@ data class TaskListInfo(var taskId: Int) {
     var taskEndTime: Long? = 0L
     var taskListTotalSize: Int = 0
     var taskListCompleteSize: Int = 0
+    var taskListStatus:TaskStatus = TaskStatus.IN_PROGRESS
 }

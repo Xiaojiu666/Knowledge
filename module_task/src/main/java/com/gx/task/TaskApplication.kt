@@ -13,6 +13,5 @@ class TaskApplication : BaseApplication() {
     override fun initBasePlugin() {
         super.initBasePlugin()
         val appContainer = AppContainer()
-
     }
 }

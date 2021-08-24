@@ -402,7 +402,7 @@ public final class TaskActivity_MembersInjector implements MembersInjector<TaskA
 
 ##### Dagger 注解
 ######  Qualifier
-######  Binds
+######  @Binds
 
 
 ### QA

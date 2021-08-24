@@ -87,3 +87,4 @@ class MyActivity : AppCompatActivity() {
 ### QA
 
 ### 参考资料
+- [ViewModel 四种集成方式](https://zhuanlan.zhihu.com/p/143346337)

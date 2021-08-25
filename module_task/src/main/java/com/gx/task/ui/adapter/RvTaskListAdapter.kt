@@ -2,22 +2,18 @@ package com.gx.task.ui.adapter
 
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.gx.task.TaskHomeFragmentDirections
-import com.gx.task.dummy.DummyContent.DummyItem
 import com.gx.base.base.BaseRecyclerViewAdapter
 import com.gx.base.base.interfaces.OnItemClickListener
 import com.gx.module_task.R
 import com.gx.module_task.databinding.ItemTaskListBinding
-import com.gx.task.model.data.TaskListInfo
+import com.gx.task.model.data.Task
 
 
-class RvTaskListAdapter(mList: MutableList<TaskListInfo>?) :
-    BaseRecyclerViewAdapter<TaskListInfo>(mList) {
+class RvTaskListAdapter(mList: MutableList<Task>?) :
+    BaseRecyclerViewAdapter<Task>(mList) {
 
     private var dataBinding: ItemTaskListBinding? = null
 

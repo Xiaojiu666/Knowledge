@@ -21,9 +21,9 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
         initView()
     }
 
-    abstract fun init()
+    public abstract fun init()
 
-    abstract fun initView()
+    public abstract fun initView()
 
     // 通过View 绑定，主要为了适用DataBinding
     abstract fun getLayoutView(): View

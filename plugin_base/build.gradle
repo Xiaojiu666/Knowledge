@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
+
 def library = rootProject.ext.dependencies
 def androidX = rootProject.ext.androidX
 def versions = rootProject.ext.versions
@@ -55,6 +56,7 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8
     }
+
 }
 
 dependencies {
@@ -77,9 +79,8 @@ dependencies {
     /*AndroidX 约束布局*/
     api library.androidx_constraintlayout
 
-    /*room 数据库*/
-    api library.room_runtime
-    annotationProcessor library.room_compiler
+
+
 
 
     implementation "com.alibaba:arouter-api:1.4.1"
@@ -91,6 +92,8 @@ dependencies {
 
     /* MD 控件*/
     api google.material
+
+
 
     /* Dagger2 */
 //    api library.dagger2

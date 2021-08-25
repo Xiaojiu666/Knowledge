@@ -23,7 +23,7 @@ class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base)
-        DaggerBaseContainer.builder().baseModule(BaseModule(baseContext)).build().inject(this)
+       // DaggerBaseContainer.builder().baseModule(BaseModule(baseContext)).build().inject(this)
         LogUtil.e("BaseActivity", basePresenter.getData())
         LogUtil.e("BaseActivity", view.toString())
         LogUtil.e("BaseActivity", view1.toString())

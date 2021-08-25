@@ -1,10 +1,10 @@
-package com.gx.task.model.repository
+package com.gx.task.repository
 
 import com.gx.task.model.data.TaskDetailInfo
-import com.gx.task.model.data.TaskListInfo
+import com.gx.task.model.data.Task
 
 class TaskDataLocalSource : TaskDataSource {
-    override fun getTaskList() = ArrayList<TaskListInfo>()
+    override fun getTaskList() = ArrayList<Task>()
 
     override fun getTaskDetails() = TaskDetailInfo(1)
 }

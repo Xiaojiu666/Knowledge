@@ -7,7 +7,7 @@
 
         <variable
             name="taskList"
-            type="com.gx.task.model.data.TaskListInfo" />
+            type="com.gx.task.model.data.Task" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -33,7 +33,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/base_margin_3"
-                android:text="@{taskList.taskTitle}"
+                android:text="@{taskList.taskName}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                 android:textSize="@dimen/base_list_title"
                 app:layout_constraintEnd_toStartOf="@+id/imageView2"
@@ -60,7 +60,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/textView3"
                 app:layout_constraintTop_toBottomOf="@+id/textView4"
-                app:srcCompat="@drawable/ic_end_time" />
+                app:srcCompat="@drawable/ic_alarm_time" />
 
             <ImageView
                 android:id="@+id/imageView2"

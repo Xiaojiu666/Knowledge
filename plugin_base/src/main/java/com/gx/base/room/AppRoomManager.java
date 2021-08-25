@@ -2,7 +2,6 @@ package com.gx.base.room;
 
 import android.content.Context;
 
-import androidx.room.Room;
 
 public class AppRoomManager {
 
@@ -21,7 +20,7 @@ public class AppRoomManager {
     }
 
     public void init(Context context){
-        appRoomDatabase = Room.databaseBuilder(context,AppRoomDatabase.class, APPDBNAME).fallbackToDestructiveMigration().build();
+//        appRoomDatabase = Room.databaseBuilder(context,AppRoomDatabase.class, APPDBNAME).fallbackToDestructiveMigration().build();
     }
 
 

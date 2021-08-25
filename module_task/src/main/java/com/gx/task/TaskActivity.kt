@@ -11,7 +11,7 @@ import com.tencent.mars.xlog.Log
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-@AndroidEntryPoint
+//@AndroidEntryPoint
 class TaskActivity : BaseAppCompatActivity() {
 
     @Inject

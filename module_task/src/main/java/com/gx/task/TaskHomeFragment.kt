@@ -7,6 +7,7 @@ import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gx.accountbooks.base.BaseFragment
 import com.gx.module_task.databinding.FragmentTaskHomeBinding
+import com.gx.task.di.demo.Person
 import com.gx.task.ui.adapter.RvTaskListAdapter
 import com.gx.task.vm.TaskViewModel
 import com.gx.utils.log.LogUtil
@@ -28,6 +29,7 @@ class TaskHomeFragment : BaseFragment() {
     private val viewModel: TaskViewModel by viewModels()
 
     override fun initView(view: View) {
+
         val taskRecyclerView = dataBinding?.taskRecyclerView
         with(taskRecyclerView!!) {
             layoutManager = LinearLayoutManager(context)

@@ -162,3 +162,6 @@ https://blog.csdn.net/weixin_42752574/article/details/106367959
 ​	Q:LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to github.com:443
 
 ​	A:git config --global http.sslBackend "openssl"
+
+### 参考资料
+- [MAC 443](https://blog.csdn.net/wufantastic/article/details/91488651)

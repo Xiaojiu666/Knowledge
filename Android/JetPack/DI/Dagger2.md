@@ -1,5 +1,5 @@
 ### 什么是Dagger2
-  首先我们有一个Person类 需要去实例化，通常手段都是`Person person = new Person()`, 如果 Person 中需要依赖一个Phone对象，一般情况下都是通过构造传入`new Person(new Phone)`，或者 set 方法 传入，这其实就是依赖注入最常见的两种方式，Dagger2 就是此两种方式上，通过`注解+JavaPoet`等手段，在编译期间，动态的生成 依赖方 所需要的对象。
+  当我们有一个Person类 需要去实例化，通常手段都是`Person person = new Person()`, 如果 Person 中需要依赖一个Phone对象，一般情况下都是通过构造传入`new Person(new Phone)`，或者 set 方法 传入，这其实就是依赖注入最常见的两种方式，Dagger2 就是此两种方式上，通过`注解+JavaPoet`等手段，在编译期间，动态的生成 依赖方 所需要的对象。
 
 ### 使用Dagger2
 

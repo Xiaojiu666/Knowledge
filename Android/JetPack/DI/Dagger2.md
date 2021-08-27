@@ -6,7 +6,7 @@
 #### 基础介绍
 围绕着上面的问题，我们尝试使用Dagger来试一下效果，并了解下其中原理
 ######  @Inject
-  最核心的注释，可以说其他的注释均为此类提供服务，主要注释在两个地方(构造函数和实例化)
+  最核心的注释，自动生成创建对象的工厂 可以说其他的注释均为此类提供服务，主要注释在两个地方(构造函数和全局变量)
 
   - 空构造函数:
 
@@ -54,6 +54,7 @@ public final class Phone_Factory implements Factory<Phone> {
   public final class Person_Factory implements Factory<Person> {
       private final Provider<Phone> phoneProvider;
 
+      //1、
       public Person_Factory(Provider<Phone> phoneProvider) {
         this.phoneProvider = phoneProvider;
       }
@@ -72,9 +73,13 @@ public final class Phone_Factory implements Factory<Phone> {
       }
     }
   ```
-  对比无参构造发现，两个大区别 1、Factory本身的创建方式需要提供一个Provider对象,如果你在上面细看过源码后，你会发现Factory 实现了Provider接口 ，那也就是说，这里可以理解为传入了一个Phone_Factory。2、Person newInstance的时候也需要一个参数，而这个参数，则是通过Phone_Factory.get()获取到的，其实这时候就关联起来了，这样我们就通过Person_Factory.get()方法拿到了一个带着Phone对象的Person引用
+  对比无参构造发现，你会发现两大区别
 
-  但这还是不够，没人会这样用，简直就是多此一举，接下来我们使用其他注解，继续完善代码。
+  1、Factory本身的创建方式需要提供一个Provider对象,如果你在上面细看过源码后，你会发现Factory 实现了Provider接口 ，那也就是说，这里可以理解为传入了一个Phone_Factory。
+
+  2、Person newInstance的时候也需要一个参数，而这个参数，则是通过Phone_Factory.get()获取到的，其实这时候就关联起来了，这样我们就通过Person_Factory.get()方法拿到了一个带着Phone对象的Person引用
+
+  但这还是不够，因为没人会这样用，简直就是多此一举，接下来我们使用其他注解，继续完善代码。
 
 
   - 成员变量:

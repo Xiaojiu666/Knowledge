@@ -178,12 +178,15 @@ public final class Phone_Factory implements Factory<Phone> {
   首先来看容器接口: 1、根据容器接口，生成容器实现类，通过`create()`方法使用BUilde模式，生成当前类的实例。2、实现接口方法`inject()`，将传入的person 和  `new phone()`进行绑定。
 
   再来看被我们注释的成员变量:1、Dagger检测到 Person类中有变量存在@Inject注释，自动根据Person(需求方的名字)+_MembersInjector 实现 MembersInjector生成一个类。2、构造仍然传入一个 `Provider<T>`(注入方的实例)，3、重写接口中`injectMembers()`方法，
-  4、和之前一样，通过`Create()`方法 对外提供当前类实例。5、核心关键`injectPhone()`方法，把phone的实例，赋值给person中的 phone变量。
+  4、和之前一样，通过`create()`方法 对外提供当前类实例。5、核心关键`injectPhone()`方法，把phone的实例，赋值给person中的 phone变量。
 
-  总结一下上面的
+
+最后我们总结一下@Inject注释：
+- 注解在构造:1、被注解的类，自动实现`Provider<T>`接口生成工厂类，通过实现接口中`get()`方法，用于提供注解类的对象。2、如果被注解的构造有参数，则会通过参数的`Provider<T>`的`get()`方法，注入到需求方。
+- 注解在变量:2、被注解变量所在的类，自动实现`MembersInjector<T>`接口生成帮助类，通过实现接口中的`injectMembers()`方法，进行赋值绑定。
 
 ######  @Component
-  我们之前说过，整个依赖注入里面可以包括三个模块，被注入方，提供依赖方，容器，上面我们的构造，其实就是提供依赖方，而被@Component注释的接口，就是我们的容器。
+  之前说过，整个依赖注入里面可以包括三个模块，被注入方，依赖提供方，容器。上面我们已经通过@Injected注释，讲了被注入方和提供方，接下来我们看看被@Component注释的接口。上面在注解成员变量的时候，我们有用过@Component注释的接口。那让分析下源码。
   @Component相对来说比较简单，只能用在接口上
   ```Java
   @Component

@@ -111,8 +111,9 @@ public final class Phone_Factory implements Factory<Phone> {
   ```
   rebuild项目生成代码
 
+  容器类
+
   ```Java
-  //容器类
   public final class DaggerPersonContainer implements PersonContainer {
       private final DaggerPersonContainer personContainer = this;
 
@@ -148,11 +149,11 @@ public final class Phone_Factory implements Factory<Phone> {
       }
   }
 ```
+根据依赖需求方 Person 中 被@Inject修饰的变量 生成此类
 ```Java
-  //根据依赖需求方 Person 中 被@Inject修饰的变量 生成此类
   public final class Person_MembersInjector implements MembersInjector<Person> {
       private final Provider<Phone> phoneProvider;
-
+      //构造
       public Person_MembersInjector(Provider<Phone> phoneProvider) {
         this.phoneProvider = phoneProvider;
       }
@@ -172,8 +173,14 @@ public final class Phone_Factory implements Factory<Phone> {
       }
 }
   ```
-来看`Person_MembersInjector`类，继承了MembersInjector接口，关键方法`injectPhone`，通过传入person 对象，和Phone对象，将Person中的中的空phone 进行赋值。
+  我们继续分析源码
 
+  首先来看容器接口: 1、根据容器接口，生成容器实现类，通过`create()`方法使用BUilde模式，生成当前类的实例。2、实现接口方法`inject()`，将传入的person 和  `new phone()`进行绑定。
+
+  再来看被我们注释的成员变量:1、Dagger检测到 Person类中有变量存在@Inject注释，自动根据Person(需求方的名字)+_MembersInjector 实现 MembersInjector生成一个类。2、构造仍然传入一个 `Provider<T>`(注入方的实例)，3、重写接口中`injectMembers()`方法，
+  4、和之前一样，通过`Create()`方法 对外提供当前类实例。5、核心关键`injectPhone()`方法，把phone的实例，赋值给person中的 phone变量。
+
+  总结一下上面的
 
 ######  @Component
   我们之前说过，整个依赖注入里面可以包括三个模块，被注入方，提供依赖方，容器，上面我们的构造，其实就是提供依赖方，而被@Component注释的接口，就是我们的容器。

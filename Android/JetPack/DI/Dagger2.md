@@ -111,12 +111,105 @@ public final class Phone_Factory implements Factory<Phone> {
   ```
   rebuild项目生成代码
 
-  容器类
+  容器接口暂时省略..
+  下面讲到在细说
 
+  根据依赖需求方 Person 中 被@Inject修饰的变量 生成此类
+```Java
+  //1
+  public final class Person_MembersInjector implements MembersInjector<Person> {
+      private final Provider<Phone> phoneProvider;
+      //2 构造
+      public Person_MembersInjector(Provider<Phone> phoneProvider) {
+        this.phoneProvider = phoneProvider;
+      }
+
+      public static MembersInjector<Person> create(Provider<Phone> phoneProvider) {
+        return new Person_MembersInjector(phoneProvider);
+      }
+
+      //3
+      @Override
+      public void injectMembers(Person instance) {
+        injectPhone(instance, phoneProvider.get());
+      }
+      //4
+      @InjectedFieldSignature("com.gx.task.di.demo.Person.phone")
+      public static void injectPhone(Person instance, Phone phone) {
+        instance.phone = phone;
+      }
+}
+  ```
+  我们继续分析源码
+
+  来看被我们注释的成员变量:1、Dagger检测到 Person类中有变量存在@Inject注释，自动根据Person(需求方的名字)+_MembersInjector 实现 MembersInjector生成一个类。2、构造仍然传入一个 `Provider<T>`(注入方的实例)，3、重写接口中`injectMembers()`方法，
+  4、核心关键`injectPhone()`方法，把phone的实例，赋值给person中的 phone变量,用于绑定。
+
+
+最后我们总结一下@Inject注释：
+- 注解在构造:1、被注解的类，自动实现`Provider<T>`接口生成工厂类，通过实现接口中`get()`方法，主要用于提供注解类的对象。2、如果被注解的构造有参数，则会通过参数的`Provider<T>`的`get()`方法，注入到需求方。
+- 注解在变量:2、被注解变量所在的类，自动实现`MembersInjector<T>`接口生成帮助类，通过实现接口中的`injectMembers()`方法，进行赋值绑定。
+
+######  @Component
+  之前说过，整个依赖注入里面可以包括三个模块，被注入方，依赖提供方，容器。上面我们已经通过@Injected注释，讲了被注入方和提供方，接下来我们看看被@Component注释的接口。上面在注解成员变量的时候，我们有用过@Component注释的接口。让我们继续看下源码。
+
+  @Component相对来说比较简单，只能用在接口上
+  - 简单对外提供实例
+
+  ```Java
+  @Component
+  interface PersonContainer {
+      fun person(): Person
+  }
+  // 调用DaggerPersonContainer.create().person();
+  ```
+  依旧是Build一下项目
+
+  ```Java
+    // 1
+    public final class DaggerPersonContainer implements PersonContainer {
+        private final DaggerPersonContainer personContainer = this;
+        private DaggerPersonContainer() {
+
+        }
+        public static Builder builder() {
+          return new Builder();
+        }
+        public static PersonContainer create() {
+          return new Builder().build();
+        }
+        // 2
+        @Override
+        public Person person() {
+          return new Person(new Phone());
+        }
+        public static final class Builder {
+          private Builder() {
+          }
+          public PersonContainer build() {
+            return new DaggerPersonContainer();
+          }
+        }
+  }
+  ```
+  继续枯燥的分析源码: 1、被@Component 注释的接口 会自动以`Dagger+接口名`生成实现类,通过一个Builder模式提供当容器类的实例(为什么用Builder模式后面会讲到) 2、重写接口方法，根据方法返回值，帮助生成对象。
+
+
+  - 赋值绑定
+
+  在参构造时，我们通过 把当前类当作参数传递给容器。
+  ```java
+    @Component
+      //@Component下面会说到用法
+      interface PersonContainer {
+          fun inject(person: Person)
+      }
+
+      //调用DaggerPersonContainer.create().inject(this);
+  ```
   ```Java
   public final class DaggerPersonContainer implements PersonContainer {
       private final DaggerPersonContainer personContainer = this;
-
       private DaggerPersonContainer() {
 
       }
@@ -149,77 +242,21 @@ public final class Phone_Factory implements Factory<Phone> {
       }
   }
 ```
-根据依赖需求方 Person 中 被@Inject修饰的变量 生成此类
-```Java
-  public final class Person_MembersInjector implements MembersInjector<Person> {
-      private final Provider<Phone> phoneProvider;
-      //构造
-      public Person_MembersInjector(Provider<Phone> phoneProvider) {
-        this.phoneProvider = phoneProvider;
-      }
+  首先来看容器接口: 1、根据容器接口，生成容器实现类，通过`create()`方法使用Builder模式，生成当前类的实例。2、实现接口方法`inject()`，将传入的person 和  `new phone()`传入到 上面提过的`Person_MembersInjector`类中，进行赋值绑定。
 
-      public static MembersInjector<Person> create(Provider<Phone> phoneProvider) {
-        return new Person_MembersInjector(phoneProvider);
-      }
-
-      @Override
-      public void injectMembers(Person instance) {
-        injectPhone(instance, phoneProvider.get());
-      }
-
-      @InjectedFieldSignature("com.gx.task.di.demo.Person.phone")
-      public static void injectPhone(Person instance, Phone phone) {
-        instance.phone = phone;
-      }
-}
-  ```
-  我们继续分析源码
-
-  首先来看容器接口: 1、根据容器接口，生成容器实现类，通过`create()`方法使用BUilde模式，生成当前类的实例。2、实现接口方法`inject()`，将传入的person 和  `new phone()`进行绑定。
-
-  再来看被我们注释的成员变量:1、Dagger检测到 Person类中有变量存在@Inject注释，自动根据Person(需求方的名字)+_MembersInjector 实现 MembersInjector生成一个类。2、构造仍然传入一个 `Provider<T>`(注入方的实例)，3、重写接口中`injectMembers()`方法，
-  4、和之前一样，通过`create()`方法 对外提供当前类实例。5、核心关键`injectPhone()`方法，把phone的实例，赋值给person中的 phone变量。
+简单总结一下@Component 注释:
+- 协助@Injcet 接口对外提供对象
+- 只能用于接口上，会根据接口自动生成类
+- 会根据接口的里面的方法自动生成实例(普通)，或者协助两个类做绑定(适用于无参构造)。
 
 
-最后我们总结一下@Inject注释：
-- 注解在构造:1、被注解的类，自动实现`Provider<T>`接口生成工厂类，通过实现接口中`get()`方法，用于提供注解类的对象。2、如果被注解的构造有参数，则会通过参数的`Provider<T>`的`get()`方法，注入到需求方。
-- 注解在变量:2、被注解变量所在的类，自动实现`MembersInjector<T>`接口生成帮助类，通过实现接口中的`injectMembers()`方法，进行赋值绑定。
+问题:
+往往在使用一个框架的时候，一定要经常问自己，为何这样设计？有什么好处？
 
-######  @Component
-  之前说过，整个依赖注入里面可以包括三个模块，被注入方，依赖提供方，容器。上面我们已经通过@Injected注释，讲了被注入方和提供方，接下来我们看看被@Component注释的接口。上面在注解成员变量的时候，我们有用过@Component注释的接口。那让分析下源码。
-  @Component相对来说比较简单，只能用在接口上
-  ```Java
-  @Component
-  interface PersonContainer {
-      fun person(): Person
-  }
-  ```
-  依旧是Build一下项目
-  ```Java
-  public final class DaggerPersonContainer implements PersonContainer {
-  private final DaggerPersonContainer personContainer = this;
-  private DaggerPersonContainer() {
+在简单的使用过程中，有几个疑问
+- @Inject 注释的类，已经可以提供实例了，为什么还需要容器类？
+- 为什么@Component注释生成的类 会通过Builder模式，提供实例，
 
-  }
-  public static Builder builder() {
-    return new Builder();
-  }
-  public static PersonContainer create() {
-    return new Builder().build();
-  }
-  @Override
-  public Person person() {
-    return new Person(new Phone());
-  }
-  public static final class Builder {
-    private Builder() {
-    }
-    public PersonContainer build() {
-      return new DaggerPersonContainer();
-    }
-  }
-}
-  ```
-  分析代码发现，还是挺简单的，被@Component 注释的借口 会自动以`Dagger+接口名`生成实现类,通过一个Builder模式创建自己(为什么用Builder模式后面会讲到)，并且根据接口的方法，自动去new 所需要的对象，这时候就可以通过`DaggerPersonContainer.create().person()` 获取对象了，其实到这里，就会产生很多疑问？既然Person 是直接new的 那Factory的作用呢？如果这里是直接new的，那构造是不是可以不用@Inject注释？事实证明，我们才刚刚学到了皮毛，真正的用法，还需要继续深入学习。
+
 
 #### 进阶-

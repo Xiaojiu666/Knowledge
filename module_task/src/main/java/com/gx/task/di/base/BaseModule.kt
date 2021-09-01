@@ -6,17 +6,13 @@ import android.view.View
 import com.gx.module_task.R
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Singleton
 
-//@Module
-//@InstallIn
+@Module
 class BaseModule{
 
-//    @Singleton
-//    @Provides
-//    fun getView(@ApplicationContext context: Context): View {
-//        return LayoutInflater.from(context).inflate(R.layout.fragment_task_home, null)
-//    }
+    @Provides
+    fun getView( context: Context): View {
+        return LayoutInflater.from(context).inflate(R.layout.fragment_task_home, null)
+    }
 }

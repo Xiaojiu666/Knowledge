@@ -3,9 +3,7 @@ package com.gx.task
 import android.content.Context
 import com.gx.task.repository.AppContainer
 import com.gx.base.application.BaseApplication
-import dagger.hilt.android.HiltAndroidApp
 
-@HiltAndroidApp
 class TaskApplication : BaseApplication() {
 
     val appContainer = AppContainer()

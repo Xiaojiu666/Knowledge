@@ -12,7 +12,6 @@ import com.gx.task.ui.adapter.RvTaskListAdapter
 import com.gx.task.vm.TaskViewModel
 import com.gx.utils.log.LogUtil
 import com.tencent.mars.xlog.Log
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -22,7 +21,6 @@ import javax.inject.Inject
 /**
  * A fragment representing a list of Items.
  */
-@AndroidEntryPoint
 class TaskHomeFragment : BaseFragment() {
     var dataBinding: FragmentTaskHomeBinding? = null
 

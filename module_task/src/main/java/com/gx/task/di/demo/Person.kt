@@ -7,11 +7,15 @@ class Person {
 
     @Inject
     @JvmField
-    public var phone: Phone? = null
+    var phone: Phone? = null
 
     @Inject
     @JvmField
-    public var computer: Computer? = null
+    var clothes: Clothes? = null
+
+    @Inject
+    @JvmField
+    var house: House? = null
 
     init {
         DaggerPersonContainer.create().inject(this)

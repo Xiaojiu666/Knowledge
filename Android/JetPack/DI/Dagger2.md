@@ -254,9 +254,48 @@ public final class Phone_Factory implements Factory<Phone> {
 往往在使用一个框架的时候，一定要经常问自己，为何这样设计？有什么好处？
 
 在简单的使用过程中，有几个疑问
-- @Inject 注释的类，已经可以提供实例了，为什么还需要容器类？
-- 为什么@Component注释生成的类 会通过Builder模式，提供实例，
+- @Inject 注释的类，已经可以提供实例了，为什么还需要容器类？而且容器类和Factory类也毫无关系？
+- 为什么@Component注释生成的类 会通过Builder模式，提供实例？
+
+随着问题，我们继续往下进阶研究
+
+### Dagger2进阶-模块
+在使用模块的时候，我们先考虑一个问题，我们上面的所有的demo `依赖提供方`都是可以
+通过new去实例化的类，但是在实际开发过程中，我们有很多类，是通过各种设计模式创建的(例如上面的Builder模式，单例等)，那这些类，如何提供依赖呢？由于@Component 修饰的容器只能是接口，Dagger2给我们提供了两个新的接口 @Module 和 @Provides 配合@Component使用
+
+假设我们现在有一个View，需要提供给多个Activity使用
 
 
+```Java
+//模块
+  @Module
+  class BaseModule{
+      @Provides
+      fun getView(@ApplicationContext context: Context): View {
+          return LayoutInflater.from(context).inflate(R.layout.fragment_task_home, null)
+      }
+  }
+```
 
-#### 进阶-
+```java
+//容器
+  @Component(modules = [BaseModule::class])
+  interface BaseContainer {
+      fun inject(baseActivity: BaseActivity)
+  }
+```
+
+```Java
+// 调用
+class BaseActivity : AppCompatActivity() {
+    @Inject
+    lateinit var view: View
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_base)
+       DaggerBaseContainer.builder().baseModule(BaseModule(baseContext)).build().inject(this)
+        LogUtil.e("BaseActivity", view.toString())
+    }
+}
+```

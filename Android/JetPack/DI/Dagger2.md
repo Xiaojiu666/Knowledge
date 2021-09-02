@@ -375,3 +375,9 @@ public final class DaggerBaseContainer implements BaseContainer {
   }
 ```
 1、根据`module名称+方法名称` 生成类 并实现Factory接口，说明当前类也支持提供对象的能力了，2、通过构造传入ViewModule的对象，并且调用我们写好的方法`getView`方法，来获取View的 对象。3、那问题来了，ViewModule的实例从哪里获取到的呢？在我们调用的时候，通过Builder传入的，这个时候，就可以明白， 为什么一定要用builder模式来构建容器类了，当有多个module的时候，builder模式就起到作用了。
+
+### Dagger2进阶-范围(单例)
+在前面的使用中，我们需求提供方每次都是一个新的实例，但是在实际开发中，我们有很多时候都希望项目中只存在一个实例，那就需要我们用到一个注解@Singleton
+
+
+### Dagger2进阶-子组建

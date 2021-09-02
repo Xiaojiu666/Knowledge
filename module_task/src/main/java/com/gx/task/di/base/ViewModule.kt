@@ -9,10 +9,11 @@ import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class BaseModule{
+class ViewModule constructor(var context: Context){
 
     @Provides
-    fun getView( context: Context): View {
+    @Singleton
+    fun getView(): View {
         return LayoutInflater.from(context).inflate(R.layout.fragment_task_home, null)
     }
 }

@@ -2,13 +2,12 @@ package com.gx.task
 
 import android.view.View
 import androidx.fragment.app.viewModels
-import com.gx.task.di.DaggerTestContainer
 import com.gx.task.di.TestRepository
 import com.gx.base.base.BaseAppCompatActivity
 import com.gx.module_task.R
+import com.gx.task.di.DaggerTestContainer
 import com.gx.task.model.data.Task
 import com.tencent.mars.xlog.Log
-import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 //@AndroidEntryPoint

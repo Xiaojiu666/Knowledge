@@ -15,15 +15,15 @@
         android:name="com.gx.task.TaskApplication"
         android:theme="@style/Theme.Note">
         <activity android:name="com.gx.task.TaskActivity">
+
+        </activity>
+
+        <activity android:name="com.gx.task.di.base.BaseActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <activity android:name="com.gx.task.di.base.BaseActivity">
-
         </activity>
     </application>
 

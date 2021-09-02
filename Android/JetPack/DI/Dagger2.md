@@ -263,17 +263,20 @@ public final class Phone_Factory implements Factory<Phone> {
 在使用模块的时候，我们先考虑一个问题，我们上面的所有的demo `依赖提供方`都是可以
 通过new去实例化的类，但是在实际开发过程中，我们有很多类，是通过各种设计模式创建的(例如上面的Builder模式，单例等)，那这些类，如何提供依赖呢？由于@Component 修饰的容器只能是接口，Dagger2给我们提供了两个新的接口 @Module 和 @Provides 配合@Component使用
 
-假设我们现在有一个View，需要提供给多个Activity使用
+假设我们现在有一个View，需要提供给某个Activity使用
 
-
+同时 我们在给Activty注入一个正常的Clothersd实例
 ```Java
 //模块
   @Module
-  class BaseModule{
+  class BaseModule constructor(var context: Context){
       @Provides
-      fun getView(@ApplicationContext context: Context): View {
+      fun getView(): View {
           return LayoutInflater.from(context).inflate(R.layout.fragment_task_home, null)
       }
+
+      @Provides
+      fun....
   }
 ```
 
@@ -291,11 +294,84 @@ class BaseActivity : AppCompatActivity() {
     @Inject
     lateinit var view: View
 
+    @Inject
+    lateinit var clothes: Clothes
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base)
-       DaggerBaseContainer.builder().baseModule(BaseModule(baseContext)).build().inject(this)
+        DaggerBaseContainer.builder().baseModule(BaseModule(baseContext)).build().inject(this)
         LogUtil.e("BaseActivity", view.toString())
     }
 }
 ```
+我们来看一下容器的源码
+```java
+public final class DaggerBaseContainer implements BaseContainer {
+  private final BaseModule baseModule;
+
+  private DaggerBaseContainer(BaseModule baseModuleParam) {
+    this.baseModule = baseModuleParam;
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
+  @Override
+  public void inject(BaseActivity baseActivity) {
+    injectBaseActivity(baseActivity);
+  }
+
+  private BaseActivity injectBaseActivity(BaseActivity instance) {
+    BaseActivity_MembersInjector.injectClothes(instance, new Clothes());
+    BaseActivity_MembersInjector.injectView(instance, BaseModule_GetViewFactory.getView(baseModule));
+    return instance;
+  }
+
+  public static final class Builder {
+    private BaseModule baseModule;
+
+    private Builder() {
+    }
+
+    public Builder baseModule(BaseModule baseModule) {
+      this.baseModule = Preconditions.checkNotNull(baseModule);
+      return this;
+    }
+
+    public BaseContainer build() {
+      Preconditions.checkBuilderRequirement(baseModule, BaseModule.class);
+      return new DaggerBaseContainer(baseModule);
+    }
+  }
+}
+```
+大致流程和之前的容器代码一样 1、根据接口生成代码 2、通过Budilder生成容器对象 3、将需要绑定的类和成员变量绑定
+
+唯一的差异化是 在生成容器类对象的时候 需要传入@Component 注释里面的参数类，在双向绑定的时候，`依赖提供方` 获取的方式也有所不同。并且我们发现在Buidler里面对module做了很多检查。 接下里我们看下 提供方`BaseModule_GetViewFactory.getView(baseModule)` 是从哪里来的
+
+```Java
+  //1 、
+  public final class ViewModule_GetViewFactory implements Factory<View> {
+    private final ViewModule module;
+
+    public ViewModule_GetViewFactory(ViewModule module) {
+      this.module = module;
+    }
+    //1 、
+    @Override
+    public View get() {
+      return getView(module);
+    }
+    //2
+    public static ViewModule_GetViewFactory create(ViewModule module) {
+      return new ViewModule_GetViewFactory(module);
+    }
+
+    public static View getView(ViewModule instance) {
+      return Preconditions.checkNotNullFromProvides(instance.getView());
+    }
+  }
+```
+1、根据`module名称+方法名称` 生成类 并实现Factory接口，说明当前类也支持提供对象的能力了，2、通过构造传入ViewModule的对象，并且调用我们写好的方法`getView`方法，来获取View的 对象。3、那问题来了，ViewModule的实例从哪里获取到的呢？在我们调用的时候，通过Builder传入的，这个时候，就可以明白， 为什么一定要用builder模式来构建容器类了，当有多个module的时候，builder模式就起到作用了。

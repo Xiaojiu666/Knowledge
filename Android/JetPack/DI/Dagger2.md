@@ -19,25 +19,25 @@ class Phone @Inject constructor() {
 ```
 上面讲过 ，Dagger2会在编译期生成代码，Rebuid一下项目，我们就会看到Dagger帮我们生成的代码，让我们查看一下
 ```Java
-//省略..。
-public final class Phone_Factory implements Factory<Phone> {
-        @Override
-        public Phone get() {
-          return newInstance();
-        }
+  //省略..。
+  public final class Phone_Factory implements Factory<Phone> {
+          @Override
+          public Phone get() {
+            return newInstance();
+          }
 
-        public static Phone_Factory create() {
-          return InstanceHolder.INSTANCE;
-        }
+          public static Phone_Factory create() {
+            return InstanceHolder.INSTANCE;
+          }
 
-        public static Phone newInstance() {
-          return new Phone();
-        }
+          public static Phone newInstance() {
+            return new Phone();
+          }
 
-        private static final class InstanceHolder {
-          private static final Phone_Factory INSTANCE = new Phone_Factory();
-        }
-}
+          private static final class InstanceHolder {
+            private static final Phone_Factory INSTANCE = new Phone_Factory();
+          }
+  }
 ```
 分析下生成的`Phone_Factory`类 首先不可修改 实现Factory工厂接口，主要就是做了两件事：1、重写get方法，返回我们@Inject 构造的对象，其实就是帮我们`new 了一个 Person()`。2、生成一个`Phone_Factory`的单例(注意，是Phone_Factory，而不是Person单例)。
 

@@ -5,5 +5,5 @@ import dagger.Component
 
 @Component
 interface PersonContainer {
-    fun inject(person: Person)
+//    fun inject(person: Person)
 }

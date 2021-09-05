@@ -5,6 +5,7 @@
 
 #### 基础介绍
 围绕着上面的问题，我们尝试使用Dagger来试一下效果，并了解下其中原理
+
 ######  @Inject
   最核心的注释，自动生成创建对象的工厂 可以说其他的注释均为此类提供服务，主要注释在两个地方(构造函数和全局变量)
 
@@ -19,7 +20,7 @@ class Phone @Inject constructor() {
 ```
 上面讲过 ，Dagger2会在编译期生成代码，Rebuid一下项目，我们就会看到Dagger帮我们生成的代码，让我们查看一下
 ```Java
-  //省略..。
+  //省略..
   public final class Phone_Factory implements Factory<Phone> {
           @Override
           public Phone get() {
@@ -348,7 +349,7 @@ public final class DaggerBaseContainer implements BaseContainer {
 }
 ```
 大致流程和之前的容器代码一样 1、根据接口生成代码 2、通过Budilder生成容器对象 3、将需要绑定的类和成员变量绑定
-
+###### @Module
 唯一的差异化是 在生成容器类对象的时候 需要传入@Component 注释里面的参数类，在双向绑定的时候，`依赖提供方` 获取的方式也有所不同。并且我们发现在Buidler里面对module做了很多检查。 接下里我们看下 提供方`BaseModule_GetViewFactory.getView(baseModule)` 是从哪里来的
 
 ```Java
@@ -377,7 +378,81 @@ public final class DaggerBaseContainer implements BaseContainer {
 1、根据`module名称+方法名称` 生成类 并实现Factory接口，说明当前类也支持提供对象的能力了，2、通过构造传入ViewModule的对象，并且调用我们写好的方法`getView`方法，来获取View的 对象。3、那问题来了，ViewModule的实例从哪里获取到的呢？在我们调用的时候，通过Builder传入的，这个时候，就可以明白， 为什么一定要用builder模式来构建容器类了，当有多个module的时候，builder模式就起到作用了。
 
 ### Dagger2进阶-范围(单例)
-在前面的使用中，我们需求提供方每次都是一个新的实例，但是在实际开发中，我们有很多时候都希望项目中只存在一个实例，那就需要我们用到一个注解@Singleton
+在前面的使用中，我们 `依赖提供方`每次提供的都是一个新的实例，但是在实际开发中，我们有很多时候都希望项目中只存在一个实例，那就需要我们用到一个注解@Singleton ，由于单例只针对 `依赖提供方` 所以，注释主要只在两个地方1、module 中 2、被@Injec修饰构造方法得类
+```Java
+    //1 还需要在容器接口上添加
+    @Provides
+    @Singleton
+    fun getView(): View {
+        return LayoutInflater.from(context).inflate(R.layout.fragment_task_home, null)
+    }
+
+    //2
+    @Singleton
+    class  Person @Inject constructor(){
+
+    }
+```
+##### @Singleton
+```
+  //省略部分代码
+  @Inject
+  lateinit var clothes: Clothes   //普通被@Inject和 @Singleton 注释的修饰构造的类
+  @Inject
+  lateinit var phone: Phone       //普通被@Inject注释的修饰构造的类
+  @Inject
+  lateinit var view: View         //通过Module单例提供的类
+  @Inject
+  lateinit var house: House       //通过Module提供的类
 
 
-### Dagger2进阶-子组建
+  //容器类
+  //省略部分代码...
+   BaseActivity_MembersInjector.injectClothes(instance, clothesProvider.get());
+   BaseActivity_MembersInjector.injectPhone(instance, new Phone());
+   BaseActivity_MembersInjector.injectView(instance, getViewProvider.get());
+   BaseActivity_MembersInjector.injectHouse(instance, TestModule_HouseFactory.house(testModule));
+
+```
+我们继续分析容器类，在上面我们通过成员变量注释，像需求方注入了很多实例，这些实例的提供方各不相同,但最终都是和`instance`进行绑定，我们逐个分析
+
+- Phone:`被@Inject注释修饰构造的类`之前已经讲过了。通过容器直接new 一个实例和 instance绑定
+
+- Clothes:`被@Inject和 @Singleton注释 修饰构造的类`，相对于Phone类，Clothes是多了一个@Singleton注释，
+```Java
+  //1、获取Clothes 实例
+  clothesProvider.get()
+  //2clothesProvider 其实就是Clothes_Factory的实例
+  this.clothesProvider = DoubleCheck.provider(Clothes_Factory.create());
+  //3 我们分析一下DoubleCheck.provider
+  //由于DoubleCheck也继承了Provider重写了get方法，
+  //4 DoubleCheck.get()通过双重判断单例，获取到provider.get()也就是Clothes对象，保证唯一
+  @Override
+  public T get() {
+    Object result = instance;
+    if (result == UNINITIALIZED) {
+      synchronized (this) {
+        result = instance;
+        if (result == UNINITIALIZED) {
+          result = provider.get();
+          instance = reentrantCheck(instance, result);
+          /* Null out the reference to the provider. We are never going to need it again, so we
+           * can make it eligible for GC. */
+          provider = null;
+        }
+      }
+    }
+    return (T) result;
+  }
+```
+- View:
+```Java
+    // 和Clothes相同
+    this.getViewProvider = DoubleCheck.provider(ViewModule_GetViewFactory.create(viewModuleParam));
+```
+- House:
+
+总结: @Singleton 保证提供对象时唯一的办法，就是通过调用`DoubleCheck`类中的get方法，通过单例进行判断
+
+
+### Dagger2进阶-子组件

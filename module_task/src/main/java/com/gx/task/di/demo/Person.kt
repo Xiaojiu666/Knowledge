@@ -18,7 +18,7 @@ class Person {
     var house: House? = null
 
     init {
-        DaggerPersonContainer.create().inject(this)
+//        DaggerPersonContainer.create().inject(this)
     }
 
 }

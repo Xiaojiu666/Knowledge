@@ -26,7 +26,6 @@ class BaseActivity : AppCompatActivity() {
     lateinit var house: House
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base)
@@ -35,7 +34,7 @@ class BaseActivity : AppCompatActivity() {
             .loginComponent().create().inject(this)
 //        LogUtil.e("BaseActivity", basePresenter.getData())
         LogUtil.e("BaseActivity", view.toString())
-        LogUtil.e("BaseActivity", view1.toString())
+        LogUtil.e("BaseActivity", house.getView())
 //        LogUtil.e("BaseActivity", view1.toString())
 //        LogUtil.e("BaseActivity", basePresenter.toString())
 //        LogUtil.e("BaseActivity", basePresenterCopy.toString())

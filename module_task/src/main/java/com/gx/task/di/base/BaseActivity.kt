@@ -9,6 +9,7 @@ import com.gx.task.di.demo.House
 import com.gx.task.di.demo.Person
 import com.gx.task.di.subcomponent.DaggerApplicationComponent
 import com.gx.utils.log.LogUtil
+import kotlinx.android.synthetic.main.activity_base.*
 import javax.inject.Inject
 
 class BaseActivity : AppCompatActivity() {
@@ -19,8 +20,8 @@ class BaseActivity : AppCompatActivity() {
     @Inject
     lateinit var view: View
 
-    @Inject
-    lateinit var view1: View
+//    @Inject
+//    lateinit var view1: View
 
     @Inject
     lateinit var house: House
@@ -29,14 +30,25 @@ class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base)
-        DaggerBaseContainer.builder().viewModule(ViewModule(baseContext)).build().inject(this)
+//        DaggerBaseContainer.builder().viewModule(ViewModule(baseContext)).build().inject(this)
         DaggerApplicationComponent.builder().viewModule(ViewModule(baseContext)).build()
             .loginComponent().create().inject(this)
 //        LogUtil.e("BaseActivity", basePresenter.getData())
         LogUtil.e("BaseActivity", view.toString())
         LogUtil.e("BaseActivity", house.getView())
+        LogUtil.e("BaseActivity", house.toString())
 //        LogUtil.e("BaseActivity", view1.toString())
 //        LogUtil.e("BaseActivity", basePresenter.toString())
 //        LogUtil.e("BaseActivity", basePresenterCopy.toString())
+
+        textView.setOnClickListener {
+            DaggerApplicationComponent.builder().viewModule(ViewModule(baseContext)).build()
+                .loginComponent().create().inject(this)
+            LogUtil.e("BaseActivity", view.toString())
+            LogUtil.e("BaseActivity", house.getView())
+            LogUtil.e("BaseActivity", house.toString())
+        }
     }
+
+
 }

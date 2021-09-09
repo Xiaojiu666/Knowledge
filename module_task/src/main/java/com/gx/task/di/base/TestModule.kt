@@ -12,8 +12,8 @@ import dagger.Provides
 @Module
 class TestModule {
 
-    @Provides
-    fun house(): House {
-        return House(Phone())
-    }
+//    @Provides
+//    fun house(): House {
+//        return House(View())
+//    }
 }

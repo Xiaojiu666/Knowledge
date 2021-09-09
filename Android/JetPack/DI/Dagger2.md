@@ -1,9 +1,11 @@
 ### 什么是Dagger2
   当我们有一个Person类 需要去实例化，通常手段都是`Person person = new Person()`, 如果 Person 中需要依赖一个Phone对象，一般情况下都是通过构造传入`new Person(new Phone)`，或者 set 方法 传入，这其实就是依赖注入最常见的两种方式，Dagger2 就是此两种方式上，通过`注解+JavaPoet`等手段，在编译期间，动态的生成 依赖方 所需要的对象。
+![](/image/Dagger2.png)
 
 ### 使用Dagger2
 
 #### 基础介绍
+
 围绕着上面的问题，我们尝试使用Dagger来试一下效果，并了解下其中原理
 
 ######  @Inject
@@ -394,7 +396,7 @@ public final class DaggerBaseContainer implements BaseContainer {
     }
 ```
 ##### @Singleton
-```
+```java
   //省略部分代码
   @Inject
   lateinit var clothes: Clothes   //普通被@Inject和 @Singleton 注释的修饰构造的类
@@ -406,7 +408,7 @@ public final class DaggerBaseContainer implements BaseContainer {
   lateinit var house: House       //通过Module提供的类
 
 
-  //容器类
+  //生成的容器类
   //省略部分代码...
    BaseActivity_MembersInjector.injectClothes(instance, clothesProvider.get());
    BaseActivity_MembersInjector.injectPhone(instance, new Phone());
@@ -456,3 +458,8 @@ public final class DaggerBaseContainer implements BaseContainer {
 
 
 ### Dagger2进阶-子组件
+在实际项目中，为了方便管理，我们通常会将各个容器进行统一管理，因为每个Module所提供的实例生命周期是不一样的，有很多需要常驻整个应用的例如
+
+
+### 参考资料
+- [@Component和@SubComponen](https://blog.csdn.net/soslinken/article/details/70231089)

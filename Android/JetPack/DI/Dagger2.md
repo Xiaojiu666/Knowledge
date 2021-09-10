@@ -458,7 +458,51 @@ public final class DaggerBaseContainer implements BaseContainer {
 
 
 ### Dagger2进阶-子组件
-在实际项目中，为了方便管理，我们通常会将各个容器进行统一管理，因为每个Module所提供的实例生命周期是不一样的，有很多需要常驻整个应用的例如
+在实际项目中，为了方便管理，我们通常会将各个容器进行统一管理，这样有一个好处，父容器所提供的实例，子容器也可以用，并且子容器的生命周期是可控的。
+
+######  @Subcomponent
+ 我们通过登陆模块进行详解，
+
+LoginComponent.class 子容器接口
+```Java
+// 1、 首先定义一个登陆容器接口
+@Subcomponent
+interface LoginComponent {
+    // 2、 提供一个接口 用来创建这个容器接口的实例
+    @Subcomponent.Factory
+    interface Factory {
+        fun create(): LoginComponent
+    }
+    // 3、 绑定一个BaseActivity
+    fun inject(loginActivity: BaseActivity)
+}
+
+```
+ApplicationComponent.class 父容器接口
+```Java
+@Singleton
+@Component(modules = [ViewModule::class, SubcomponentsModule::class])
+interface ApplicationComponent {
+    //提供一个方法，通过父容器获取子容器的实例
+    fun loginComponent(): LoginComponent.Factory
+}
+```
+
+SubcomponentsModule.class  
+```Java
+@Module(subcomponents = [LoginComponent::class])
+class SubcomponentsModule {
+}
+```
+
+
+
+
+
+
+
+
+在开发过程中，每个Module所提供实例的生命周期是不一样的，例如有很多需要常驻整个应用的实例，如网络的管理类NetworkModule，如本地数据库管理DatabaseModule，还有一些是不需要常驻整个应用的，需要每次都进行更新，
 
 
 ### 参考资料

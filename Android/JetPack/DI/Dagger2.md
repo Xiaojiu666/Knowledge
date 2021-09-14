@@ -1,5 +1,5 @@
 ### 什么是Dagger2
-  当我们有一个Person类 需要去实例化，通常手段都是`Person person = new Person()`, 如果 Person 中需要依赖一个Phone对象，一般情况下都是通过构造传入`new Person(new Phone)`，或者 set 方法 传入，这其实就是依赖注入最常见的两种方式，Dagger2 就是此两种方式上，通过`注解+JavaPoet`等手段，在编译期间，动态的生成 依赖方 所需要的对象。
+  当我们有一个Person类 需要去实例化，通常手段都是`Computer computer = new Computer()`, 如果 Computer 中需要依赖一个Phone对象，一般情况下都是通过构造传入`new Computer(new CPU)`，或者 set 方法 传入，这其实就是依赖注入最常见的两种方式，Dagger2 就是此两种方式上，通过`注解+JavaPoet`等手段，在编译期间，动态的生成 依赖方 所需要的对象。
 ![](/image/Dagger2.png)
 
 ### 使用Dagger2
@@ -11,76 +11,73 @@
 ######  @Inject
   最核心的注释，自动生成创建对象的工厂 可以说其他的注释均为此类提供服务，主要注释在两个地方(构造函数和全局变量)
 
+![](/image/Dagger2-@inject-构造.png)
+
   - 空构造函数:
 
-  被注解的类，Dagger会自动帮我们实例化对象，也就是 帮助我们做了`new Phone()`的动作，那让我们试一下，被`@Inject`注释的类会发生什么变化。
+  被注解的类，Dagger会自动帮我们实例化对象，也就是 帮助我们做了`new Computer()`的动作，那让我们试一下，被`@Inject`注释的类会发生什么变化。
 ```Java
-//手机类，@Inject 后，Rebuid一下项目
-class Phone @Inject constructor() {
-        var phoneName = "Huawei"
+//CPU类，@Inject 后，Rebuid一下项目
+class CPU {
+    fun getCpuName() = "I9-10900X"
 }
 ```
 上面讲过 ，Dagger2会在编译期生成代码，Rebuid一下项目，我们就会看到Dagger帮我们生成的代码，让我们查看一下
 ```Java
   //省略..
-  public final class Phone_Factory implements Factory<Phone> {
-          @Override
-          public Phone get() {
-            return newInstance();
-          }
-
-          public static Phone_Factory create() {
-            return InstanceHolder.INSTANCE;
-          }
-
-          public static Phone newInstance() {
-            return new Phone();
-          }
-
-          private static final class InstanceHolder {
-            private static final Phone_Factory INSTANCE = new Phone_Factory();
-          }
+  public final class CPU_Factory implements Factory<CPU> {
+    @Override
+    public CPU get() {
+      return newInstance();
+    }
+    public static CPU_Factory create() {
+      return InstanceHolder.INSTANCE;
+    }
+    public static CPU newInstance() {
+      return new CPU();
+    }
+      private static final CPU_Factory INSTANCE = new CPU_Factory();
+    }
   }
 ```
-分析下生成的`Phone_Factory`类 首先不可修改 实现Factory工厂接口，主要就是做了两件事：1、重写get方法，返回我们@Inject 构造的对象，其实就是帮我们`new 了一个 Person()`。2、生成一个`Phone_Factory`的单例(注意，是Phone_Factory，而不是Person单例)。
+分析下生成的`CPU_Factory`类 首先不可修改 实现Factory接口，重写get()方法，主要就是做了两件事：
+- 重写get方法，返回我们@Inject 构造的对象，其实就是帮我们`new 了一个 Person()`。
+- 生成一个`CPU_Factory`的单例(注意，是Phone_Factory，而不是Person单例)。
 
-  那我们是不是可以通过`Phone_Factory.newInstance()` 或者 `Phone_Factory.create().get` 就能拿到Phone了呢，确实可以，但这样做完全没意义，直接new 不香么，没人会傻到这么做，虽然代码不多，但这个Factory 就已经是是Dagger的核心了，后面的进阶，基本都是通过其他注释，进行二次包装。
+  那我们是不是可以通过`CPU_Factory.create().get` 就能拿到CPU的实例了呢，确实可以，但这样做完全没意义，直接new 不香么，没人会傻到这么做，我们记下来继续看下带参构造。
   - 带参构造:
 
-  将Phone注入Person
   ```Java
-  class Person @Inject constructor(var phone: Phone) {}
+  class Computer @Inject constructor(var cpu: CPU) {
+      var phoneName = "Mac"
+  }
   ```
   Rebuild一下项目
-
   ```Java
-  public final class Person_Factory implements Factory<Person> {
-      private final Provider<Phone> phoneProvider;
+  public final class Computer_Factory implements Factory<Computer> {
+    private final Provider<CPU> cpuProvider;
 
-      //1、
-      public Person_Factory(Provider<Phone> phoneProvider) {
-        this.phoneProvider = phoneProvider;
-      }
-
-      @Override
-      public Person get() {
-        return newInstance(phoneProvider.get());
-      }
-
-      public static Person_Factory create(Provider<Phone> phoneProvider) {
-        return new Person_Factory(phoneProvider);
-      }
-
-      public static Person newInstance(Phone phone) {
-        return new Person(phone);
-      }
+    public Computer_Factory(Provider<CPU> cpuProvider) {
+      this.cpuProvider = cpuProvider;
     }
+
+    @Override
+    public Computer get() {
+      return newInstance(cpuProvider.get());
+    }
+
+    public static Computer_Factory create(Provider<CPU> cpuProvider) {
+      return new Computer_Factory(cpuProvider);
+    }
+
+    public static Computer newInstance(CPU cpu) {
+      return new Computer(cpu);
+    }
+  }
   ```
-  对比无参构造发现，你会发现两大区别
-
-  1、Factory本身的创建方式需要提供一个Provider对象,如果你在上面细看过源码后，你会发现Factory 实现了Provider接口 ，那也就是说，这里可以理解为传入了一个Phone_Factory。
-
-  2、Person newInstance的时候也需要一个参数，而这个参数，则是通过Phone_Factory.get()获取到的，其实这时候就关联起来了，这样我们就通过Person_Factory.get()方法拿到了一个带着Phone对象的Person引用
+  对比无参构造发现，你会发现一个区别：
+    - 1、空参的Factory类是单例，而带参的Factory会需要一个Provider<参数> 作为入参
+    - 2、Computer newInstance() 的时候需要一个参数，而这个参数，则是通过CPU_Factory.get()获取到的，其实这时候就关联起来了，这样我们就通过Person_Factory.get()方法拿到了一个带着Phone对象的Person引用。
 
   但这还是不够，因为没人会这样用，简直就是多此一举，接下来我们使用其他注解，继续完善代码。
 

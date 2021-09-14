@@ -79,7 +79,7 @@ dependencies {
     /*AndroidX 约束布局*/
     api library.androidx_constraintlayout
 
-
+    implementation "androidx.activity:activity-ktx:1.2.0-beta01"
 
 
 

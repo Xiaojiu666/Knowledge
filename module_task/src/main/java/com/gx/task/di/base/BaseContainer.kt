@@ -6,5 +6,5 @@ import javax.inject.Singleton
 @Singleton
 @Component(modules = [ViewModule::class, TestModule::class])
 interface BaseContainer {
-    fun inject(baseActivity: BaseActivity)
+//    fun inject(baseActivity: BaseActivity)
 }

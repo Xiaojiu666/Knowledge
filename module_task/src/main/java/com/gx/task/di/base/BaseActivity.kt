@@ -5,6 +5,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.gx.module_task.R
 import com.gx.task.di.DatabaseModule
+import com.gx.task.di.demo.CPU_Factory
 import com.gx.task.di.demo.Clothes
 import com.gx.task.di.demo.House
 import com.gx.task.di.demo.Person
@@ -30,20 +31,22 @@ class BaseActivity : AppCompatActivity() {
 //    @Inject
 //    lateinit var house: House
 
-    @Inject
-    lateinit var taskDao: TaskDao
+//    @Inject
+//    lateinit var taskDao: TaskDao
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base)
-        val appComponent =
-            DaggerAppComponent.builder().databaseModule(DatabaseModule(baseContext)).build().inject(this)
+//        val appComponent =
+//            DaggerAppComponent.builder().databaseModule(DatabaseModule(baseContext)).build().inject(this)
 //
 //        val daoComponent =
 //            DaggerDaoComponent.builder().appComponent(appComponent).daoModule(DaoModule()).build()
 //                .inject(this)
-        LogUtil.e("BaseActivity", taskDao.toString())
+//        LogUtil.e("BaseActivity", taskDao.toString())
+        LogUtil.e("BaseActivity", CPU_Factory.create().toString())
+        LogUtil.e("BaseActivity", CPU_Factory.create().toString())
 
 //        DaggerBaseContainer.builder().viewModule(ViewModule(baseContext)).build().inject(this)
 //        DaggerApplicationComponent.builder().viewModule(ViewModule(baseContext)).build()

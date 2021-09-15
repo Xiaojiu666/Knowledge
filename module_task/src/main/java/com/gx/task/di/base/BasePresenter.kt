@@ -9,4 +9,5 @@ class BasePresenter @Inject constructor() {
     fun getData(): String {
         return "BasePresenter"
     }
+
 }

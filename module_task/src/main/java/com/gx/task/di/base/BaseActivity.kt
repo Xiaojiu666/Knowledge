@@ -5,7 +5,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.gx.module_task.R
 import com.gx.task.di.DatabaseModule
-import com.gx.task.di.demo.CPU_Factory
+import com.gx.task.di.computer.Computer
+import com.gx.task.di.computer.MainBoard
 import com.gx.task.di.demo.Clothes
 import com.gx.task.di.demo.House
 import com.gx.task.di.demo.Person
@@ -38,6 +39,7 @@ class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base)
+        val computer = Computer()
 //        val appComponent =
 //            DaggerAppComponent.builder().databaseModule(DatabaseModule(baseContext)).build().inject(this)
 //
@@ -45,8 +47,10 @@ class BaseActivity : AppCompatActivity() {
 //            DaggerDaoComponent.builder().appComponent(appComponent).daoModule(DaoModule()).build()
 //                .inject(this)
 //        LogUtil.e("BaseActivity", taskDao.toString())
-        LogUtil.e("BaseActivity", CPU_Factory.create().toString())
-        LogUtil.e("BaseActivity", CPU_Factory.create().toString())
+//        LogUtil.e("BaseActivity", CPU_Factory.create().toString())
+//        LogUtil.e("BaseActivity", CPU_Factory.create().toString())
+        LogUtil.e("BaseActivity", MainBoard.create().toString())
+        LogUtil.e("BaseActivity", MainBoard.create().toString())
 
 //        DaggerBaseContainer.builder().viewModule(ViewModule(baseContext)).build().inject(this)
 //        DaggerApplicationComponent.builder().viewModule(ViewModule(baseContext)).build()

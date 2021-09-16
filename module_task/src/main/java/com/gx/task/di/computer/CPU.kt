@@ -1,4 +1,4 @@
-package com.gx.task.di.demo
+package com.gx.task.di.computer
 
 import javax.inject.Inject
 

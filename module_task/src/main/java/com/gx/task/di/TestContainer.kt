@@ -1,6 +1,6 @@
 package com.gx.task.di
 
-import com.gx.task.TaskActivity
+import com.gx.task.ui.activities.TaskActivity
 import dagger.Component
 
 @Component

@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:name="com.gx.task.TaskApplication"
         android:theme="@style/Theme.Note">
-        <activity android:name="com.gx.task.TaskActivity">
+        <activity android:name="com.gx.task.ui.activities.TaskActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

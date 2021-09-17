@@ -35,7 +35,7 @@
 
     <fragment
         android:id="@+id/menu_task"
-        android:name="com.gx.task.TaskHomeFragment"
+        android:name="com.gx.task.ui.fragment.TaskHomeFragment"
         android:label="@string/app_task" />
     <fragment
         android:id="@+id/menu_setting"

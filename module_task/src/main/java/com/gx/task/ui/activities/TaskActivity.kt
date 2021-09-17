@@ -1,4 +1,4 @@
-package com.gx.task
+package com.gx.task.ui.activities
 
 import android.view.View
 import androidx.fragment.app.viewModels

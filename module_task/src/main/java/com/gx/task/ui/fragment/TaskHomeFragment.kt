@@ -1,4 +1,4 @@
-package com.gx.task
+package com.gx.task.ui.fragment
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,16 +7,15 @@ import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gx.accountbooks.base.BaseFragment
 import com.gx.module_task.databinding.FragmentTaskHomeBinding
+import com.gx.task.getTaskData
 import com.gx.task.ui.adapter.RvTaskListAdapter
 import com.gx.task.vm.TaskViewModel
 import com.gx.utils.log.LogUtil
-import com.tencent.mars.xlog.Log
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
 /**
  * A fragment representing a list of Items.

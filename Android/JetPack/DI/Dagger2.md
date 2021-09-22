@@ -9,7 +9,7 @@
 围绕着上面的问题，我们尝试使用Dagger来试一下效果，并了解下其中原理
 
 ######  @Inject
-  最核心的注释，自动生成创建对象的工厂 可以说其他的注释均为此类提供服务，主要注释在两个地方(构造函数和全局变量)
+  自动生成提供当前实例的工厂类 主要注释在两个地方(构造函数和全局变量)
 
 ![](/image/Dagger2-@inject-构造.png)
 
@@ -157,8 +157,8 @@ class CPU {
   来看被我们注释的成员变量:
     - 1、Dagger检测到 Person类中有变量存在@Inject注释，自动根据Computer(需求方的名字)+_MembersInjector 实现 MembersInjector生成一个类。
     - 2、构造根据被@Inject 注释变量的个数 传入多个`Provider<T>`。
-    - 3、重写接口中`injectMembers()`方法，
-    - 4、核心关键`injectPhone()`方法，把phone的实例，赋值给person中的 phone变量,用于绑定。
+    - 3、重写接口中`injectMembers()`方法，但暂时没用到
+    - 4、核心关键`injectCpu()`方法，将需求方和依赖方进行绑定。
 
 最后我们总结一下@Inject注释：
 - 注解在构造:1、被注解的类，自动实现`Provider<T>`接口生成工厂类，通过实现接口中`get()`方法，主要用于提供注解类的对象。2、如果被注解的构造有参数，则会通过参数的`Provider<T>`的`get()`方法，注入到需求方。
@@ -226,127 +226,142 @@ class CPU {
 - 会重写接口里面的方法，将需求方传入，与提供方进行赋值绑定。
 
 在简单的使用过程中，有几个疑问
-- @Inject 注释的类，已经可以提供实例了，为什么还需要容器类？而且容器类和Factory类也毫无关系？
-- 为什么@Component注释生成的类 会通过Builder模式，提供实例？
-
-随着问题，我们继续往下进阶研究
+- 被@Inject修饰构造，所生产的Factory，其实并没有应用到
+- 为什么被@Component修饰的接口所生成的类 会通过Builder模式提供实例？
 
 ### Dagger2进阶-模块
-在使用模块的时候，我们先考虑一个问题，我们上面的所有的demo `依赖提供方`都是可以
-通过new去实例化的类，但是在实际开发过程中，我们有很多类，是通过各种设计模式创建的(例如上面的Builder模式，单例等)，那这些类，如何提供依赖呢？由于@Component 修饰的容器只能是接口，Dagger2给我们提供了两个新的接口 @Module 和 @Provides 配合@Component使用
+在使用模块的时候，我们先考虑一个问题，我们上面的所讲的Demo中 `依赖提供方`都是可以
+通过new去实例化的类，但是在实际开发过程中，我们有很多实例，是无法直接 new 出来的，例如，现在有一台电脑，只能有一块主板，一块CPU，所以主板和CPU均是通过单例提供，这个时候容器类，就无法帮我们new出来我们想要的实例，那主板如何给Computer提供依赖呢？这个时候就需要我们手动提供给容器接口，由他来进行绑定。
 
-假设我们现在有一个View，需要提供给某个Activity使用
+Dagger2给我们提供了两个新的注释 @Module 和 @Provides 配合@Component使用
+![](/image/Dagger2-@module.png)
 
-同时 我们在给Activty注入一个正常的Clothersd实例
+假设我们现在有一台电脑，需要两个配件，一个主板，一个CPU，但在整个电脑里，主板和CPU 都只能有一个。
 ```Java
 //模块
-  @Module
-  class BaseModule constructor(var context: Context){
-      @Provides
-      fun getView(): View {
-          return LayoutInflater.from(context).inflate(R.layout.fragment_task_home, null)
-      }
-
-      @Provides
-      fun....
+@Module
+class PartsModule() {
+  //...
+  @Provides
+  fun provideCPU(): CPU {
+      return CPU.create()!!
   }
+}
 ```
 
 ```java
 //容器
-  @Component(modules = [BaseModule::class])
-  interface BaseContainer {
-      fun inject(baseActivity: BaseActivity)
-  }
+@Component(modules = [PartsModule::class])
+interface ComputerComponent {
+    fun inject(computer: Computer)
+}
 ```
 
 ```Java
-// 调用
-class BaseActivity : AppCompatActivity() {
+class Computer() {
     @Inject
-    lateinit var view: View
+    lateinit var cpu: CPU
 
     @Inject
-    lateinit var clothes: Clothes
+    lateinit var mainBoard: MainBoard
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_base)
-        DaggerBaseContainer.builder().baseModule(BaseModule(baseContext)).build().inject(this)
-        LogUtil.e("BaseActivity", view.toString())
+    @Inject
+   lateinit var disk: Disk
+
+    init {
+      // 调用
+       DaggerComputerComponent.builder()
+       .computerModule(PartsModule()).build().inject(this)
     }
 }
 ```
 我们来看一下容器的源码
 ```java
-public final class DaggerBaseContainer implements BaseContainer {
-  private final BaseModule baseModule;
+public final class DaggerComputerComponent implements ComputerComponent {
+  private final PartsModule partsModule;
 
-  private DaggerBaseContainer(BaseModule baseModuleParam) {
-    this.baseModule = baseModuleParam;
+  private DaggerComputerComponent(PartsModule partsModuleParam) {
+    this.partsModule = partsModuleParam;
   }
 
   public static Builder builder() {
     return new Builder();
   }
 
-  @Override
-  public void inject(BaseActivity baseActivity) {
-    injectBaseActivity(baseActivity);
+  public static ComputerComponent create() {
+    return new Builder().build();
   }
 
-  private BaseActivity injectBaseActivity(BaseActivity instance) {
-    BaseActivity_MembersInjector.injectClothes(instance, new Clothes());
-    BaseActivity_MembersInjector.injectView(instance, BaseModule_GetViewFactory.getView(baseModule));
+  @Override
+  public void inject(Computer computer) {
+    injectComputer(computer);
+  }
+
+  private Computer injectComputer(Computer instance) {
+    Computer_MembersInjector.injectCpu(instance, PartsModule_ProvideCPUFactory.provideCPU(partsModule));
+    Computer_MembersInjector.injectDisk(instance, new Disk());
+    Computer_MembersInjector.injectMainBoard(instance, PartsModule_ProvideMainBoardFactory.provideMainBoard(partsModule));
     return instance;
   }
 
   public static final class Builder {
-    private BaseModule baseModule;
+    private PartsModule partsModule;
 
     private Builder() {
     }
 
-    public Builder baseModule(BaseModule baseModule) {
-      this.baseModule = Preconditions.checkNotNull(baseModule);
+    public Builder partsModule(PartsModule partsModule) {
+      this.partsModule = Preconditions.checkNotNull(partsModule);
       return this;
     }
 
-    public BaseContainer build() {
-      Preconditions.checkBuilderRequirement(baseModule, BaseModule.class);
-      return new DaggerBaseContainer(baseModule);
+    public ComputerComponent build() {
+      if (partsModule == null) {
+        this.partsModule = new PartsModule();
+      }
+      return new DaggerComputerComponent(partsModule);
     }
   }
 }
 ```
-大致流程和之前的容器代码一样 1、根据接口生成代码 2、通过Budilder生成容器对象 3、将需要绑定的类和成员变量绑定
-###### @Module
-唯一的差异化是 在生成容器类对象的时候 需要传入@Component 注释里面的参数类，在双向绑定的时候，`依赖提供方` 获取的方式也有所不同。并且我们发现在Buidler里面对module做了很多检查。 接下里我们看下 提供方`BaseModule_GetViewFactory.getView(baseModule)` 是从哪里来的
+大致流程和之前的容器代码一样
+  - 1、被@Component 注释的接口 会自动以Dagger+接口名生成实现类,
+  - 2、通过一个Builder模式提供当容器类的实例(为什么用Builder模式后面会讲到)
+  - 3、重写接口方法，根据传入的需求方，进行赋值绑定。
 
-```Java
-  //1 、
-  public final class ViewModule_GetViewFactory implements Factory<View> {
-    private final ViewModule module;
+差异化的是
+  - 1、通过builder 注入 @Component 中的modules
+  - 2、绑定时，可以直接new的类，直接 new ，不能 new的类， 通过module中提供的方法获取。
 
-    public ViewModule_GetViewFactory(ViewModule module) {
-      this.module = module;
-    }
-    //1 、
-    @Override
-    public View get() {
-      return getView(module);
-    }
-    //2
-    public static ViewModule_GetViewFactory create(ViewModule module) {
-      return new ViewModule_GetViewFactory(module);
-    }
+我们来看一下被module修饰的类会帮我们做哪些事情
+被@module中@Provides修饰的方法，和最开始提及的被@Inject修饰的构造一样，均会实现Factory接口，重写get方法，用于提供实例。
+```java
+public final class PartsModule_ProvideMainBoardFactory implements Factory<MainBoard> {
+  private final PartsModule module;
 
-    public static View getView(ViewModule instance) {
-      return Preconditions.checkNotNullFromProvides(instance.getView());
-    }
+  public PartsModule_ProvideMainBoardFactory(PartsModule module) {
+    this.module = module;
   }
+  @Override
+  public MainBoard get() {
+    return provideMainBoard(module);
+  }
+
+  public static PartsModule_ProvideMainBoardFactory create(PartsModule module) {
+    return new PartsModule_ProvideMainBoardFactory(module);
+  }
+
+  public static MainBoard provideMainBoard(PartsModule instance) {
+    return Preconditions.checkNotNullFromProvides(instance.provideMainBoard());
+  }
+}
 ```
-1、根据`module名称+方法名称` 生成类 并实现Factory接口，说明当前类也支持提供对象的能力了，2、通过构造传入ViewModule的对象，并且调用我们写好的方法`getView`方法，来获取View的 对象。3、那问题来了，ViewModule的实例从哪里获取到的呢？在我们调用的时候，通过Builder传入的，这个时候，就可以明白， 为什么一定要用builder模式来构建容器类了，当有多个module的时候，builder模式就起到作用了。
+总结:
+  - 1、@module+@Provides 和 @Injcet在构造上的作用一样，均是为了提供实例，前者通过module类中的方法，获取实例。
+  - 2、容器中的builder模式，就是为了应对多个module时，用于产生容器对象，协助绑定需求方。
+
+### Dagger2进阶-模块-传参
+假设我们电脑中的部件，主板和显卡都需要供电，那我们在module中需要电的引用， 一般有几种方法 1、通过module的构造 2、使用@P
 
 ### Dagger2进阶-范围(单例)
 在前面的使用中，我们 `依赖提供方`每次提供的都是一个新的实例，但是在实际开发中，我们有很多时候都希望项目中只存在一个实例，那就需要我们用到一个注解@Singleton ，由于单例只针对 `依赖提供方` 所以，注释主要只在两个地方1、module 中 2、被@Injec修饰构造方法得类

@@ -1,7 +1,18 @@
 package com.gx.task.di.computer
 
-import javax.inject.Inject
 
-class CPU @Inject constructor() {
+class CPU  {
+
+    companion object {
+        fun create(): CPU? {
+            return InstanceHolder().INSTANCE
+        }
+
+        private class InstanceHolder() {
+            val INSTANCE = CPU()
+        }
+    }
+
     fun getCpuName() = "I9-10900X"
+
 }

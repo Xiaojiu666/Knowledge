@@ -1,9 +1,10 @@
 package com.gx.task.di.computer
 
+import android.content.Context
 import com.tencent.mars.xlog.Log
 import javax.inject.Inject
 
-class Computer {
+class Computer(var context: Context) {
     @Inject
     lateinit var cpu: CPU
 
@@ -16,9 +17,9 @@ class Computer {
     var phoneName = "Mac"
 
     init {
-        DaggerComputerComponent.builder().mainBoardModule(MainBoardModule()).build().inject(this)
-        Log.e("Computer cpu",cpu.getCpuName())
+//        DaggerComputerComponent.builder().computerModule(PartsModule(context)).build().inject(this)
+//        Log.e("Computer cpu",cpu.getCpuName())
         Log.e("Computer disk" ,disk.getDiskName())
-        Log.e("Computer mainBoard",mainBoard.getMainBoardName())
+//        Log.e("Computer mainBoard",mainBoard.getMainBoardName())
     }
 }

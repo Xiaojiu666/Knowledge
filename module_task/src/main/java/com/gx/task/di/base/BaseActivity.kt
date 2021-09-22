@@ -39,7 +39,7 @@ class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base)
-        val computer = Computer()
+        val computer = Computer(baseContext)
 //        val appComponent =
 //            DaggerAppComponent.builder().databaseModule(DatabaseModule(baseContext)).build().inject(this)
 //
@@ -49,8 +49,8 @@ class BaseActivity : AppCompatActivity() {
 //        LogUtil.e("BaseActivity", taskDao.toString())
 //        LogUtil.e("BaseActivity", CPU_Factory.create().toString())
 //        LogUtil.e("BaseActivity", CPU_Factory.create().toString())
-        LogUtil.e("BaseActivity", MainBoard.create().toString())
-        LogUtil.e("BaseActivity", MainBoard.create().toString())
+//        LogUtil.e("BaseActivity", MainBoard.create().toString())
+//        LogUtil.e("BaseActivity", MainBoard.create().toString())
 
 //        DaggerBaseContainer.builder().viewModule(ViewModule(baseContext)).build().inject(this)
 //        DaggerApplicationComponent.builder().viewModule(ViewModule(baseContext)).build()

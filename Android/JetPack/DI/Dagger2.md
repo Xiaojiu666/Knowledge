@@ -2,7 +2,7 @@
   当我们有一个Person类 需要去实例化，通常手段都是`Computer computer = new Computer()`, 如果 Computer 中需要依赖一个Phone对象，一般情况下都是通过构造传入`new Computer(new CPU)`，或者 set 方法 传入，这其实就是依赖注入最常见的两种方式，Dagger2 就是此两种方式上，通过`注解+JavaPoet`等手段，在编译期间，动态的生成 依赖方 所需要的对象。
 ![](/image/Dagger2.png)
 
-### 使用Dagger2
+### Dagger2-基础
 
 #### 基础介绍
 
@@ -229,12 +229,14 @@ class CPU {
 - 被@Inject修饰构造，所生产的Factory，其实并没有应用到
 - 为什么被@Component修饰的接口所生成的类 会通过Builder模式提供实例？
 
-### Dagger2进阶-模块
+### Dagger2-模块
 在使用模块的时候，我们先考虑一个问题，我们上面的所讲的Demo中 `依赖提供方`都是可以
 通过new去实例化的类，但是在实际开发过程中，我们有很多实例，是无法直接 new 出来的，例如，现在有一台电脑，只能有一块主板，一块CPU，所以主板和CPU均是通过单例提供，这个时候容器类，就无法帮我们new出来我们想要的实例，那主板如何给Computer提供依赖呢？这个时候就需要我们手动提供给容器接口，由他来进行绑定。
 
 Dagger2给我们提供了两个新的注释 @Module 和 @Provides 配合@Component使用
 ![](/image/Dagger2-@module.png)
+
+#### 模块基础使用
 
 假设我们现在有一台电脑，需要两个配件，一个主板，一个CPU，但在整个电脑里，主板和CPU 都只能有一个。
 ```Java
@@ -360,89 +362,145 @@ public final class PartsModule_ProvideMainBoardFactory implements Factory<MainBo
   - 1、@module+@Provides 和 @Injcet在构造上的作用一样，均是为了提供实例，前者通过module类中的方法，获取实例。
   - 2、容器中的builder模式，就是为了应对多个module时，用于产生容器对象，协助绑定需求方。
 
-### Dagger2进阶-模块-传参
-假设我们电脑中的部件，主板和显卡都需要供电，那我们在module中需要电的引用， 一般有几种方法 1、通过module的构造 2、使用@P
+#### 模块传递参数
+假设我们电脑中的部件，主板和显卡都需要供电，那我们在module中需要电的引用， 一般有几种方法 1、通过module的构造传入 2、使用@Provides提供实例。 我们围绕第二种来试一下，修改上面的代码。
 
-### Dagger2进阶-范围(单例)
-在前面的使用中，我们 `依赖提供方`每次提供的都是一个新的实例，但是在实际开发中，我们有很多时候都希望项目中只存在一个实例，那就需要我们用到一个注解@Singleton ，由于单例只针对 `依赖提供方` 所以，注释主要只在两个地方1、module 中 2、被@Injec修饰构造方法得类
+一块需要供电的主板。
 ```Java
-    //1 还需要在容器接口上添加
-    @Provides
-    @Singleton
-    fun getView(): View {
-        return LayoutInflater.from(context).inflate(R.layout.fragment_task_home, null)
-    }
-
-    //2
-    @Singleton
-    class  Person @Inject constructor(){
-
-    }
-```
-##### @Singleton
-```java
-  //省略部分代码
-  @Inject
-  lateinit var clothes: Clothes   //普通被@Inject和 @Singleton 注释的修饰构造的类
-  @Inject
-  lateinit var phone: Phone       //普通被@Inject注释的修饰构造的类
-  @Inject
-  lateinit var view: View         //通过Module单例提供的类
-  @Inject
-  lateinit var house: House       //通过Module提供的类
-
-
-  //生成的容器类
-  //省略部分代码...
-   BaseActivity_MembersInjector.injectClothes(instance, clothesProvider.get());
-   BaseActivity_MembersInjector.injectPhone(instance, new Phone());
-   BaseActivity_MembersInjector.injectView(instance, getViewProvider.get());
-   BaseActivity_MembersInjector.injectHouse(instance, TestModule_HouseFactory.house(testModule));
-
-```
-我们继续分析容器类，在上面我们通过成员变量注释，像需求方注入了很多实例，这些实例的提供方各不相同,但最终都是和`instance`进行绑定，我们逐个分析
-
-- Phone:`被@Inject注释修饰构造的类`之前已经讲过了。通过容器直接new 一个实例和 instance绑定
-
-- Clothes:`被@Inject和 @Singleton注释 修饰构造的类`，相对于Phone类，Clothes是多了一个@Singleton注释，
-```Java
-  //1、获取Clothes 实例
-  clothesProvider.get()
-  //2clothesProvider 其实就是Clothes_Factory的实例
-  this.clothesProvider = DoubleCheck.provider(Clothes_Factory.create());
-  //3 我们分析一下DoubleCheck.provider
-  //由于DoubleCheck也继承了Provider重写了get方法，
-  //4 DoubleCheck.get()通过双重判断单例，获取到provider.get()也就是Clothes对象，保证唯一
-  @Override
-  public T get() {
-    Object result = instance;
-    if (result == UNINITIALIZED) {
-      synchronized (this) {
-        result = instance;
-        if (result == UNINITIALIZED) {
-          result = provider.get();
-          instance = reentrantCheck(instance, result);
-          /* Null out the reference to the provider. We are never going to need it again, so we
-           * can make it eligible for GC. */
-          provider = null;
+class MainBoard private constructor(var electric: Electric) {
+    companion object {
+        fun create(electric: Electric): MainBoard? {
+            return InstanceHolder(electric).INSTANCE
         }
-      }
+
+        private class InstanceHolder(electric: Electric) {
+            val INSTANCE = MainBoard(electric)
+        }
     }
-    return (T) result;
+}
+```
+module类
+```java
+@Module
+class PartsModule() {
+    @Provides
+    fun provideElectric() = Electric()
+
+    @Provides
+    fun provideMainBoard(electric: Electric): MainBoard {
+        return MainBoard.create(electric)!!
+    }
+}
+```
+
+`provideElectric()`方法也是被@Provides修饰，所以会生成一个工厂类，用来提供Electric的实例。
+接下里开下容器类，依旧是`inject()`方法。
+```Java
+  //省略....
+  private Computer injectComputer(Computer instance) {
+      Computer_MembersInjector.injectCpu(instance, PartsModule_ProvideCPUFactory.provideCPU(partsModule));
+      Computer_MembersInjector.injectDisk(instance, new Disk());
+      Computer_MembersInjector.injectMainBoard(instance, mainBoard());
+      // Computer_MembersInjector.injectMainBoard(instance, PartsModule_ProvideMainBoardFactory.provideMainBoard(partsModule));
+      return instance;
+  }
+  private MainBoard mainBoard() {
+     return PartsModule_ProvideMainBoardFactory.provideMainBoard(partsModule, PartsModule_ProvideElectricFactory.provideElectric(partsModule));
+ }
+```
+可以看出，在进行绑定的时候，injectMainBoard()方法里面，MainBoard实例获取的方式不一样了，但其根本依旧是通过`PartsModule_ProvideMainBoardFactory.provideElectric()`获取到，只是多了一个参数`PartsModule_ProvideElectricFactory.provideElectric(partsModule)`,其实这个参数就是MainBorad所需的Electric实例。
+至此，传递参数，我们也已经很清晰了。
+
+### Dagger2-范围（单例）
+我们上面提到过的主板和CPU等部件，都是整个对象单例，但实际情况并不是所有电脑都用一个CPU，而是每一台电脑使用一个CPU，这个时候我们就需要优化我们的代码，使我们的单例仅针对这一台Computer，也就是模块的范围。
+
+##### @Singleton
+```Java
+    //1 module
+    @Singleton
+    @Provides
+    fun provideCPU(): CPU {
+        return CPU()
+    }
+
+    //2 提供方
+    @Singleton
+    class CPU @Inject constructor()  {
+      fun getCpuName() = "I9-10900X"
+    }
+    //3 容器
+    @Singleton
+    @Component(modules = [PartsModule::class])
+    interface ComputerComponent {
+        fun inject(computer: Computer)
+    }
+```
+我们在外面new两个Computer的实例，看下日志
+```java
+  class Computer(var context: Context) {
+      @Inject
+      lateinit var cpu: CPU
+
+      @Inject
+      lateinit var cpu1: CPU
+
+      init {
+          DaggerComputerComponent.builder().partsModule(PartsModule()).build().inject(this)
+          Log.e("Computer cpu" ,cpu.toString())
+          Log.e("Computer cpu1" ,cpu1.toString())
+          // 第一个
+          //cpu: [BaseActivity.kt, onCreate, 42]:com.gx.task.di.computer.CPU@ad51322
+          //cpu1: [BaseActivity.kt, onCreate, 42]:com.gx.task.di.computer.CPU@ad51322
+
+          //第二次输出
+          //[BaseActivity.kt, onCreate, 43]:com.gx.task.di.computer.CPU@6d9b1b3
+          //[BaseActivity.kt, onCreate, 43]:com.gx.task.di.computer.CPU@6d9b1b3
+      }
   }
 ```
-- View:
-```Java
-    // 和Clothes相同
-    this.getViewProvider = DoubleCheck.provider(ViewModule_GetViewFactory.create(viewModuleParam));
+那Dagger是如何做到的，其实玄机就在容器类里面，我们只需要关注一下绑定时，`依赖提供方`的实例如何获取的，就知道Dagger是如何做到在module中单例。
+
+```java
+  //1
+  private Computer injectComputer(Computer instance) {
+    Computer_MembersInjector.injectCpu(instance, provideCPUProvider.get());
+    Computer_MembersInjector.injectCpu1(instance, provideCPUProvider.get());
+    return instance;
+  }
+  //2
+  private void initialize(final PartsModule partsModuleParam) {
+    this.provideCPUProvider = DoubleCheck.provider(PartsModule_ProvideCPUFactory.create(partsModuleParam));
+  }
+
+  //3 DoubleCheck.class
+  //核心单例
+  @Override
+  public T get() {
+     Object result = instance;
+     if (result == UNINITIALIZED) {
+       synchronized (this) {
+         result = instance;
+         if (result == UNINITIALIZED) {
+           result = provider.get();
+           instance = reentrantCheck(instance, result);
+           /* Null out the reference to the provider. We are never going to need it again, so we
+            * can make it eligible for GC. */
+           provider = null;
+         }
+       }
+     }
+     return (T) result;
+   }
 ```
-- House:
-
-总结: @Singleton 保证提供对象时唯一的办法，就是通过调用`DoubleCheck`类中的get方法，通过单例进行判断
-
+分析:
+  - 1、在容器中绑定时，两个变量，都是通过provideCPUProvider.get()获取实例
+  - 2、provideCPUProvider  根据 DoubleCheck.provider()代理所得，将PartsModule_ProvideCPUFactory实例转为DoubleCheck的实例,因为他们俩均实现了Provider接口
+  - 3、最终provideCPUProvider已经被转换为DoubleCheck 所以调用的DoubleCheck重的get()方法，这里通过双重检查单例，返回CPU对象，这样就保证了容器中，所有的CPU都是同一个实例，所以注入到需求方，赋值绑定时，get()拿到的都是同一个实例。
 
 ### Dagger2进阶-子组件
 在实际项目中，为了方便管理，我们通常会将各个容器进行统一管理，这样有一个好处，父容器所提供的实例，子容器也可以用，并且子容器的生命周期是可控的。
+
+上面我们只是讲了一台电脑，假如我们项目中 除了电脑 还有一部手机，这样的话，无论电脑还是手机都需要供电，那我们就把provideElectric()放在最顶层，
 
 ######  @Subcomponent
  我们通过登陆模块进行详解，

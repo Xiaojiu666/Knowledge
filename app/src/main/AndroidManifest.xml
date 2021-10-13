@@ -5,12 +5,12 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/luancher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/luancher"
         android:supportsRtl="true"
         android:name="com.gx.accountbooks.MainApplication"
-        tools:replace="android:name"
+        tools:replace="android:name,android:roundIcon,android:icon"
         android:theme="@style/Theme.Note">
 
         <activity android:name="com.gx.accountbooks.HomeActivity">

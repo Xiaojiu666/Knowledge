@@ -11,16 +11,14 @@ import javax.inject.Singleton
 @Module
 class PartsModule() {
 
-//    @Provides
-//    fun provideElectric() = Electric()
-
     @Provides
-    fun provideMainBoard(): MainBoard {
-        return MainBoard.create()!!
+    fun provideMainBoard(electric: Electric): MainBoard {
+        return MainBoard.create(electric)!!
     }
 
+    @Singleton
     @Provides
     fun provideCPU(): CPU {
-        return CPU.create()!!
+        return CPU()
     }
 }

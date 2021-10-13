@@ -1,20 +1,20 @@
 package com.gx.task.di.computer
 
 
-class MainBoard private constructor() {
+class MainBoard private constructor(var electric: Electric) {
 
     companion object {
-        fun create(): MainBoard? {
-            return InstanceHolder().INSTANCE
+        fun create(electric: Electric): MainBoard? {
+            return InstanceHolder(electric).INSTANCE
         }
 
-        private class InstanceHolder() {
-            val INSTANCE = MainBoard()
+        private class InstanceHolder(electric: Electric) {
+            val INSTANCE = MainBoard(electric)
         }
     }
 
     fun getMainBoardName() = "ASUS"
 
 
-//    fun getMainBoardNameElectric() = "ASUS" + electric.getElectric()
+    fun getMainBoardNameElectric() = "ASUS" + electric.getElectric()
 }

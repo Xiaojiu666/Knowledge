@@ -40,6 +40,7 @@ class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base)
         val computer = Computer(baseContext)
+        val computer1 = Computer(baseContext)
 //        val appComponent =
 //            DaggerAppComponent.builder().databaseModule(DatabaseModule(baseContext)).build().inject(this)
 //

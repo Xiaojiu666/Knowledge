@@ -500,52 +500,141 @@ class PartsModule() {
 ### Dagger2进阶-子组件
 在实际项目中，为了方便管理，我们通常会将各个容器进行统一管理，这样有一个好处，父容器所提供的实例，子容器也可以用，并且子容器的生命周期是可控的。
 
-上面我们只是讲了一台电脑，假如我们项目中 除了电脑 还有一部手机，这样的话，无论电脑还是手机都需要供电，那我们就把provideElectric()放在最顶层，
+上面我们只是讲了一台电脑，假如我们项目中 除了电脑 还有一部手机，这样的话，无论电脑还是手机都需要供电，那我们就需要把provideElectric()放在最顶层，
+那我们就需要两个容器分别来提供 不同的实例
+![](/image/Dagger2-子容器.png)
+通过上面看出，在AppComponent中，通过AppMoudle 提供`Electric`实例，提供一个接口返回一个`Electric`实例。
 
-######  @Subcomponent
- 我们通过登陆模块进行详解，
-
-LoginComponent.class 子容器接口
+使用
 ```Java
-// 1、 首先定义一个登陆容器接口
-@Subcomponent
-interface LoginComponent {
-    // 2、 提供一个接口 用来创建这个容器接口的实例
-    @Subcomponent.Factory
-    interface Factory {
-        fun create(): LoginComponent
+
+@Inject
+lateinit var cpu: CPU
+@Inject
+lateinit var electric: Electric
+@Inject
+lateinit var otherPart: OtherPart
+@Inject
+lateinit var mainBoard: MainBoard
+
+// 先构建App的容器
+val appComponent = DaggerAppComponent.builder().appModule(AppModule()).build()
+//由于 dependencies 关系，会在Buidler中 提供方法，注入appComponent
+DaggerComputerComponent.builder().appComponent(appComponent).partsModule(PartsModule())
+```
+
+分析：DaggerAppComponent.class
+```java
+public final class DaggerAppComponent implements AppComponent {
+  private final AppModule appModule;
+
+  private DaggerAppComponent(AppModule appModuleParam) {
+    this.appModule = appModuleParam;
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
+  public static AppComponent create() {
+    return new Builder().build();
+  }
+
+  @Override
+  public Electric provideElectric() {
+    return AppModule_ProvideElectricFactory.provideElectric(appModule);
+  }
+
+  public static final class Builder {
+    private AppModule appModule;
+
+    private Builder() {
     }
-    // 3、 绑定一个BaseActivity
-    fun inject(loginActivity: BaseActivity)
-}
 
+    public Builder appModule(AppModule appModule) {
+      this.appModule = Preconditions.checkNotNull(appModule);
+      return this;
+    }
+
+    public AppComponent build() {
+      if (appModule == null) {
+        this.appModule = new AppModule();
+      }
+      return new DaggerAppComponent(appModule);
+    }
+  }
+}
 ```
-ApplicationComponent.class 父容器接口
+大致流程和之前的容器代码一样
+  - 1、被@Component 注释的接口 会自动以Dagger+接口名生成实现类,
+  - 2、重写接口方法，之前都是通过传入的需求方，进行赋值绑定，这次是通过一个带返回值的抽象方法方法，来获取实例。
+  - 3、接口方法，会通过AppModule 进行回去实例。
+
+分析:DaggerComputerComponent.class
 ```Java
-@Singleton
-@Component(modules = [ViewModule::class, SubcomponentsModule::class])
-interface ApplicationComponent {
-    //提供一个方法，通过父容器获取子容器的实例
-    fun loginComponent(): LoginComponent.Factory
+public final class DaggerComputerComponent implements ComputerComponent {
+  private final PartsModule partsModule;
+
+  private final AppComponent appComponent;
+
+  private DaggerComputerComponent(PartsModule partsModuleParam, AppComponent appComponentParam) {
+    this.partsModule = partsModuleParam;
+    this.appComponent = appComponentParam;
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
+  private MainBoard mainBoard() {
+    return PartsModule_ProvideMainBoardFactory.provideMainBoard(partsModule, Preconditions.checkNotNullFromComponent(appComponent.provideElectric()));
+  }
+
+  @Override
+  public void inject(Computer computer) {
+    injectComputer(computer);
+  }
+
+  private Computer injectComputer(Computer instance) {
+    Computer_MembersInjector.injectCpu(instance, PartsModule_ProvideCPUFactory.provideCPU(partsModule));
+    Computer_MembersInjector.injectCpu1(instance, PartsModule_ProvideCPUFactory.provideCPU(partsModule));
+    Computer_MembersInjector.injectElectric(instance, Preconditions.checkNotNullFromComponent(appComponent.provideElectric()));
+    Computer_MembersInjector.injectOtherPart(instance, new OtherPart());
+    Computer_MembersInjector.injectMainBoard(instance, mainBoard());
+    return instance;
+  }
+
+  public static final class Builder {
+    private PartsModule partsModule;
+
+    private AppComponent appComponent;
+
+    private Builder() {
+    }
+
+    public Builder partsModule(PartsModule partsModule) {
+      this.partsModule = Preconditions.checkNotNull(partsModule);
+      return this;
+    }
+
+    public Builder appComponent(AppComponent appComponent) {
+      this.appComponent = Preconditions.checkNotNull(appComponent);
+      return this;
+    }
+
+    public ComputerComponent build() {
+      if (partsModule == null) {
+        this.partsModule = new PartsModule();
+      }
+      Preconditions.checkBuilderRequirement(appComponent, AppComponent.class);
+      return new DaggerComputerComponent(partsModule, appComponent);
+    }
+  }
 }
 ```
-
-SubcomponentsModule.class  
-```Java
-@Module(subcomponents = [LoginComponent::class])
-class SubcomponentsModule {
-}
-```
-
-
-
-
-
-
-
-
-在开发过程中，每个Module所提供实例的生命周期是不一样的，例如有很多需要常驻整个应用的实例，如网络的管理类NetworkModule，如本地数据库管理DatabaseModule，还有一些是不需要常驻整个应用的，需要每次都进行更新，
-
+  - 1、Builder 中新增 appComponent(),用于传入appComponent，
+  - 2、问题在于，injectMainBoard()时，构造参数由何而来，是通过appComponent.provideElectric()获取，这样就和上面的关联起来了。
+  - 3、如果在appComponent中 不提供实例，例如OtherPart(),那么injectOtherPart()则会帮忙new出一个实例，防止崩溃。
 
 ### 参考资料
 - [@Component和@SubComponen](https://blog.csdn.net/soslinken/article/details/70231089)

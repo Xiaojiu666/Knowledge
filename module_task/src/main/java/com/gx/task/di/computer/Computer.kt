@@ -32,6 +32,5 @@ class Computer(var context: Context) {
         Log.e(TAG , electric.toString())
         Log.e(TAG , otherPart.toString())
         Log.e(TAG , mainBoard.toString())
-
     }
 }

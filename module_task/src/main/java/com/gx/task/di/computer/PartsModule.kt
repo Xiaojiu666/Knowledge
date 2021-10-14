@@ -9,14 +9,13 @@ import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class PartsModule() {
+class PartsModule {
 
     @Provides
     fun provideMainBoard(electric: Electric): MainBoard {
         return MainBoard.create(electric)!!
     }
 
-    @Singleton
     @Provides
     fun provideCPU(): CPU {
         return CPU()

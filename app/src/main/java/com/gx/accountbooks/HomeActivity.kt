@@ -15,18 +15,25 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
+import com.gx.accountbooks.di.Computer
 import com.gx.base.base.BaseAppCompatActivity
 import com.gx.utils.log.LogUtil
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeActivity : BaseAppCompatActivity() {
+
+    @Inject
+    lateinit var computer: Computer
+
     private lateinit var appBarConfiguration: AppBarConfiguration
 
-    val homeVIewModel:HomeVIewModel by viewModels()
+    val homeVIewModel: HomeVIewModel by viewModels()
 
     override fun init() {
         LogUtil.e(homeVIewModel.homeR.name)
+        LogUtil.e(computer.computerName)
     }
 
     override fun initView() {
@@ -40,7 +47,11 @@ class HomeActivity : BaseAppCompatActivity() {
 //        appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.menu_home, R.id.menu_account, R.id.menu_diary,R.id.menu_task,R.id.menu_setting
+                R.id.menu_home,
+                R.id.menu_account,
+                R.id.menu_diary,
+                R.id.menu_task,
+                R.id.menu_setting
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

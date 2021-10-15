@@ -1,11 +1,14 @@
 ### 什么是Dagger2
-  当我们有一个Person类 需要去实例化，通常手段都是`Computer computer = new Computer()`, 如果 Computer 中需要依赖一个Phone对象，一般情况下都是通过构造传入`new Computer(new CPU)`，或者 set 方法 传入，这其实就是依赖注入最常见的两种方式，Dagger2 就是此两种方式上，通过`注解+JavaPoet`等手段，在编译期间，动态的生成 依赖方 所需要的对象。
+  在我看来Dagger2是一个又高级又低级的的框架，在Java开发中，对象无处不在，无论是从初级开发，还是高级架构师，都离不开`Objec object =new Objec();`,每个java程序员每天都需要new 很多对象，为什么简简单单的new对象，却被Dagger2搞得如此复杂呢？
+
+##### 什么是依赖注入
+  在了解Dagge2之前，我们先简单了解一下，什么是依赖注入。当我们有一个Person类 需要去实例化，通常手段都是`Computer computer = new Computer()`, 如果 Computer 中需要依赖一个CPU的实例，一般情况下都是通过构造传入`new Computer(new CPU)`，或者 set 方法 传入，这其实就是依赖注入最常见的两种方式。Dagger2 就是通过`注解+JavaPoet`等手段，在编译期间，动态生成（通过module)的方式提供依赖`提供方`，并将通过容器 将`需求方`进行赋值绑定。
 ![](/image/Dagger2.png)
+
 
 ### Dagger2-基础
 
 #### 基础介绍
-
 围绕着上面的问题，我们尝试使用Dagger来试一下效果，并了解下其中原理
 
 ######  @Inject
@@ -84,7 +87,7 @@ class CPU {
 
   - 成员变量:
 
-  在开发的过程中，并不是所有类都有构造，例如Android中，常见的Activity，全部是通过系统源码创建，那我们如何像Activity中注入所需要的对象呢，Dagger 为我们提供了一种方法，将@Inject 注解在成员变量上。
+  在开发的过程中，并不是所有类都有构造，例如Android中，常见的Activity，全部是通过系统源码创建，那我们如何像Activity中注入所需要的对象呢，Dagger 为我们提供了一种方法，将@Inject 注解在成员变量上，通过容器类，将依赖方与需求方进行绑定。
 
   我们依旧将CPU注入给Computer
 
@@ -101,11 +104,6 @@ class CPU {
   class Computer {
       @Inject
       lateinit var cpu: CPU
-
-      @Inject
-      lateinit var disk: Disk
-
-      var phoneName = "Mac"
 
       init {
           DaggerComputerComponent.create().inject(this)
@@ -636,5 +634,13 @@ public final class DaggerComputerComponent implements ComputerComponent {
   - 2、问题在于，injectMainBoard()时，构造参数由何而来，是通过appComponent.provideElectric()获取，这样就和上面的关联起来了。
   - 3、如果在appComponent中 不提供实例，例如OtherPart(),那么injectOtherPart()则会帮忙new出一个实例，防止崩溃。
 
+
+### 总结
+我们在开头的时候说了Dagger又高级，又低级，在真的搞明白了Dagger后，你会发现Dagger会让项目中实例的依赖更加清晰，减少很多重复工作，但一个简简单单的new()就可以解决的问题，却被搞得如此复杂，还是仁者见仁。
+
+有些朋友接手Dagger或者Hilt项目后，甚至找不到对象由何而来，希望这篇文章可以帮助到你。
+
+
 ### 参考资料
-- [@Component和@SubComponen](https://blog.csdn.net/soslinken/article/details/70231089)
+- [官网](https://dagger.dev)
+- [androidGoogle官网](https://developer.android.google.cn/training/dependency-injection)

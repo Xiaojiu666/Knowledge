@@ -11,6 +11,6 @@ interface LoginComponent {
         fun create(): LoginComponent
     }
 
-//    fun inject(loginActivity: BaseActivity)
+    fun inject(loginActivity: LoginActivity)
 
 }

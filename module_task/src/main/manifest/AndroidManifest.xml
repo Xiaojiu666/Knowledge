@@ -19,6 +19,10 @@
         </activity>
 
         <activity android:name="com.gx.task.di.base.BaseActivity">
+
+        </activity>
+
+        <activity android:name="com.gx.task.di.subcomponent.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

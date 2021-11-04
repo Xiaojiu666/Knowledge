@@ -496,6 +496,7 @@ class PartsModule() {
   - 3、最终provideCPUProvider已经被转换为DoubleCheck 所以调用的DoubleCheck重的get()方法，这里通过双重检查单例，返回CPU对象，这样就保证了容器中，所有的CPU都是同一个实例，所以注入到需求方，赋值绑定时，get()拿到的都是同一个实例。
 
 ### Dagger2进阶-子组件
+##### 子组件继承
 在实际项目中，为了方便管理，我们通常会将各个容器进行统一管理，这样有一个好处，父容器所提供的实例，子容器也可以用，并且子容器的生命周期是可控的。
 
 上面我们只是讲了一台电脑，假如我们项目中 除了电脑 还有一部手机，这样的话，无论电脑还是手机都需要供电，那我们就需要把provideElectric()放在最顶层，
@@ -633,6 +634,15 @@ public final class DaggerComputerComponent implements ComputerComponent {
   - 1、Builder 中新增 appComponent(),用于传入appComponent，
   - 2、问题在于，injectMainBoard()时，构造参数由何而来，是通过appComponent.provideElectric()获取，这样就和上面的关联起来了。
   - 3、如果在appComponent中 不提供实例，例如OtherPart(),那么injectOtherPart()则会帮忙new出一个实例，防止崩溃。
+
+##### 子组件范围@Subcomponent
+  日常开发时，登录流程（由单个 LoginActivity 管理）由多个 Fragment 组成，您应在所有 Fragment 中重复使用 LoginViewModel 的同一实例。@Singleton 无法为 LoginViewModel 添加注释以重复使用该实例，原因如下：
+  - 流程结束后，LoginViewModel 的实例将继续保留在内存中。
+  - 您希望为每个登录流程使用不同的 LoginViewModel 实例。例如，如果用户退出，您希望使用不同的 LoginViewModel 实例，而不是用户首次登录时的实例。
+
+所以我们需要将loginViewModel的生命周期依赖于LoginActivity。
+
+
 
 
 ### 总结

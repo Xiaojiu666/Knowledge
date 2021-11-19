@@ -84,41 +84,41 @@
 						return null;
 				}
 		};
-		
+
 
 
 ##  线程调度器Schedulers
-####    简介 
+####    简介
     在没有给定调度器（Scheduler）的情况下，Subscription将默认(产生事件与订阅)运行于调用线程上。
     线程调度器（Scheduler）是将RxJava从同步观察者模式转到异步观察者模式的一个重要工具。
     Rxjava通过它来指定每一段代码应该运行在什么样的线程。
     Rxjava通过subscribeOn()和observeOn()两个方法来对线程进行控制，subscribeOn()指定subscribe()时间发生的线程，
     也就是事件产生的线程，observeOn()指定Subscriber做运行的线程，也就是消费事件的线程。
     Rxjava提供了5种调度器：
-    
+
 -   Scheduler Schedulers.io()
 -   Scheduler Schedulers.computation()
 -   Scheduler Schedulers.immediate()
 -   Scheduler Schedulers.newThread()
 -   Scheduler Schedulers.trampoline()
-    
+
     还有可用于测试的调度器Schedulers.test() 及 可自定义Scheduler—-Schedulers.form()
-    
+
 ######  Schedulers.io()
     内部创建一个rx.internal.schedulers.CachedThreadScheduler。
     底层实现是一个java中的ScheduledThreadPoolExecutor (extends ThreadPoolExecutorimplements ScheduledExecutorService)
     这个调度器用于I/O操作，比如：读写文件，数据库，网络交互等等。行为模式和newThread()差不多，重点需要注意的是线程池是无限制的，大量的I/O调度操作将创建许多个线程并占用内存。
-    
+
 ######  Schedulers.computation()
     计算工作默认的调度器，这个计算指的是 CPU 密集型计算，即不会被 I/O 等操作限制性能的操作，
     例如图形的计算。这个 Scheduler 使用的固定的线程池，大小为 CPU 核数。
-    
+
 ######  Schedulers.immediate()
     这个调度器允许你立即在当前线程执行你指定的工作。这是默认的Scheduler。
 
 ######  Schedulers.newThread()
     这个调度器正如它所看起来的那样：它为指定任务启动一个新的线程。
-    
+
 ######  Schedulers.trampoline()
     当我们想在当前线程执行一个任务时，并不是立即，我们可以用trampoline() 将它入队。
     这个调度器将会处理它的队列并且按序运行队列中每一个任务。
@@ -130,13 +130,13 @@
 -   什么是背压   
     Rx 中的数据流是从一个地方发射到另外一个地方。每个地方处理数据的速度是不一样的。如果生产者发射数据的速度比消费者处理的快会出现什么情况？
     事件产生的速度远远快于事件消费的速度，最终导致数据积累越来越多，从而导致OOM等异常。
-    
+
     -   1.0解决办法
         观察者可以根据自身实际情况按需拉取数据，而不是被动接收（也就相当于告诉上游观察者把速度慢下来），
         最终实现了上游被观察者发送事件的速度的控制，实现了背压的策略。   
         继承 Subscriber  通过 在onStart方法 中  request(1);在onStart中通知被观察者先发送一个事件
-       
-    -   2.0解决办法 
+
+    -   2.0解决办法
 
 
 ##	参考资料
@@ -144,3 +144,4 @@
 -	https://cloud.tencent.com/developer/article/1334650
 -	https://www.jianshu.com/p/3a188b995daa
 -	https://www.jianshu.com/p/3fdd9ddb534b
+-	[RxJava2开发CompositeDisposable](https://blog.csdn.net/ysy950803/article/details/84930656)

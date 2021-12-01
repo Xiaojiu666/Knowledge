@@ -1,94 +1,119 @@
-##	Jetpack_DataStore
-
-
-
-## Jetpack--DataBinding
-
-## Jetpack--Room
-
-
-
-##	Jetpack--LiveData
-
-####	介绍
-
+###	什么是LiveData
+###### 官方介绍
 [`LiveData`](https://developer.android.google.cn/reference/androidx/lifecycle/LiveData) 是一种可观察的数据存储器类。与常规的可观察类不同，LiveData 具有生命周期感知能力，意指它遵循其他应用组件（如 Activity、Fragment 或 Service）的生命周期。这种感知能力可确保 LiveData 仅更新处于活跃生命周期状态的应用组件观察者。
+
+如果观察者（由 Observer 类表示）的生命周期处于 STARTED 或 RESUMED 状态，则 LiveData 会认为该观察者处于活跃状态。LiveData 只会将更新通知给活跃的观察者。为观察 LiveData 对象而注册的非活跃观察者不会收到更改通知。
 
 Livedata 遵循观察者模式，并且 Livedata 会在生命周期变化的时候通知观察者。
 它优雅的处理了生命周期问题，并不会所有的数据变化都会回调，所以你可以在他回调时大胆的做更新 UI操作。
 
-观察者都是绑定Lifecycle的， Lifecycle destory 的话，会销毁自己。
+观察者都是绑定Lifecycle(观察的生命周期)的， Lifecycle destory 的话，会销毁自己。
 
 
+### 基础使用
+使用 LiveData的步骤：
+1. 创建LiveData的实例，以存储某种数据类型(泛型，包括集合)，大多数都配合ViewModel使用
+2. 通过observe()方法，绑定Observe对象，该对象会在被LiveData所修饰的数据改变时触发，将修改后的数据回调回来。
 
-## Jetpack--ViewModel
-
-####	介绍
-
-ViewModel类是被设计用来以可感知生命周期的方式存储和管理 UI 相关数据，ViewModel中数据会一直存活即使 activity configuration发生变化，比如横竖屏切换的时候。
-
-#### 1、数据持久化
-
-我们知道在屏幕旋转的 时候 会经历 activity 的销毁与重新创建，这里就涉及到数据保存的问题，显然重新请求或加载数据是不友好的。在 ViewModel 出现之前我们可以用 activity 的onSaveInstanceState()机制保存和恢复数据，但缺点很明显，onSaveInstanceState只适合保存少量的可以被序列化、反序列化的数据，假如我们需要保存是一个比较大的 bitmap list ，这种机制明显不合适。
-由于 ViewModel 的特殊设计，可以解决此痛点。
-
-#### 2、异步回调问题
-
-通常我们 app 需要频繁异步请求数据，比如调接口请求服务器数据。当然这些请求的回调都是相当耗时的，之前我们在 Activity 或 fragment里接收这些回调。所以不得不考虑潜在的内存泄漏情况，比如 Activity 被销毁后接口请求才返回。处理这些问题，会给我们增添好多复杂的工作。
-但现在我们利用 ViewModel 处理数据回调，可以完美的解决此痛点。
-
-#### 3、分担P层负担
-
-从最早的 MVC 到目前流行的 MVP、MVVM，目的无非是 明确职责，分离 UI controller 负担。
-UI controller 比如 Activity 、Fragment 是设计用来渲染展示数据、响应用户行为、处理系统的某些交互。如果再要求他去负责加载网络或数据库数据，会让其显得臃肿和难以管理。所以为了简洁、清爽、丝滑，我们可以分离出数据操作的职责给 ViewModel。
-
-#### 4、Fragments 间共享数据
-
+######  创建LiveData 对象
+大多数LiveData 都创建在ViewModel里，因为减少UI的代码量，并且使UI和 数据分离
 ```java
-public class SharedViewModel extends ViewModel {
-    private final MutableLiveData<Item> selected = new MutableLiveData<Item>();
-
-    public void select(Item item) {
-        selected.setValue(item);
+class NameViewModel : ViewModel() {
+    // Create a LiveData with a String
+    val currentName: MutableLiveData<String> by lazy {
+        MutableLiveData<String>()
     }
 
-    public LiveData<Item> getSelected() {
-        return selected;
-    }
 }
+```
+######  观察 LiveData 对象
+通常，LiveData 仅在数据发生更改时才发送更新，并且仅发送给活跃观察者。此行为的一种例外情况是，观察者从非活跃状态更改为活跃状态时也会收到更新。此外，如果观察者第二次从非活跃状态更改为活跃状态，则只有在自上次变为活跃状态以来值发生了更改时，它才会收到更新。
+```JAVA
+class NameActivity : AppCompatActivity() {
 
+    private val model: NameViewModel by viewModels()
 
-public class MasterFragment extends Fragment {
-    private SharedViewModel model;
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
-        itemSelector.setOnClickListener(item -> {
-            model.select(item);
-        });
-    }
-}
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-public class DetailFragment extends Fragment {
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        SharedViewModel model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
-        model.getSelected().observe(this, { item ->
-           // Update the UI.
-        });
+        val nameObserver = Observer<String> { newName ->
+            nameTextView.text = newName
+        }
+        model.currentName.observe(this, nameObserver)
     }
 }
 ```
 
 
 
+######  更新 LiveData 对象
+LiveData 没有公开可用的方法来更新存储的数据。所以我们会使用子类 MutableLiveData 重的 setValue(T) 和 postValue(T) 方法，进行更新LiveData中的数据
+```JAVA
+button.setOnClickListener {
+    val anotherName = "Test"
+    model.currentName.setValue(anotherName)
+}
+```
 
+### 进阶使用
 
+###### 配合Room
 
+###### 配合携程
 
+###### 自定义LiveData
+假设我们有一个需要实时同步的数据(例如心电图，股票)，在页面启动时开启，在销毁时断开
+```JAVA
+class StockLiveData : LiveData<Int>() {
 
+    private val stockManager = StockManager()
 
-## Jetpack--WorkManager
+    private val listener = SimplePriceListener {
+        value = it
+    }
+
+    override fun onActive() {
+        stockManager.requestPriceUpdates(listener)
+    }
+
+    override fun onInactive() {
+        stockManager.removeUpdates()
+    }
+}
+```
+- 当 LiveData 对象具有活跃观察者时，会调用 onActive() 方法。这意味着，您需要从此方法开始观察股价更新。
+- 当 LiveData 对象没有任何活跃观察者时，会调用 onInactive() 方法。由于没有观察者在监听，因此没有理由与 StockManager 服务保持连接。
+
+###### 转换 LiveData
+平常开发过程中，我们会需要将某些数据进行转化，例如:时间戳转化成字符串时间，我们可以通过`Transformations` 将一个LiveData对象转换成另一种LiveData对象
+- Transformations.map()
+  ```JAVA
+  //愿数据
+  val time : MutableLiveData<Long> by lazy {
+      MutableLiveData()
+  }
+  val time = viewModel.time
+  val map = Transformations.map(time) {
+        "map test $it "
+  }
+  ```
+
+- Transformations.switchMap()
+  ```JAVA
+  val time : MutableLiveData<Long> by lazy {
+      MutableLiveData()
+  }
+  val time = viewModel.time
+  val switch = Transformations.switchMap(time) {
+      val value = "switch test $it "
+      MutableLiveData<String>(value)
+  }
+  ```
+  switchMap 和 map的区别是，switchMap的回调方法返回的是一个LiveData对象，而 map 只需要返回数据类型即可，这也证明
+
+-
+
+###### 合并多个LiveData
 
 
 

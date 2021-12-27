@@ -93,7 +93,6 @@ class StockLiveData : LiveData<Int>() {
       MutableLiveData()
   }
   val time = viewModel.time
-  val map = Transformations.map(time) {
         "map test $it "
   }
   ```
@@ -111,13 +110,10 @@ class StockLiveData : LiveData<Int>() {
   ```
   switchMap 和 map的区别是，switchMap的回调方法返回的是一个LiveData对象，而 map 只需要返回数据类型即可，这也证明
 
--
+- 区别
+所以对于这两个函数的区别来说，map，更关注于数值的转换，他只会通过你之前的值去生成一个新的值，强调的是这个转换，也就是说新的LiveData对象的值，仍然是基于当前这个LiveData的值而生成的。
 
-###### 合并多个LiveData
-
-
-
-
+而switchMap，更关注于数值的触发，也就是说，他会监听你这个值的变化，而不关注你这个值本身，你可以理解成触发器或者扳机，当触发之后，你就需要自己去主动的返回任意一个你指定的liveData对象。
 
 
 
@@ -129,8 +125,8 @@ class StockLiveData : LiveData<Int>() {
 
 
 
-
-####	参考资料
-
+###	参考资料
+- [map()和switchMap](https://blog.csdn.net/a1203991686/article/details/106952398)
+- [Transformations的switchMap该怎么理解好](https://blog.csdn.net/newmandirl/article/details/100022021)
 - [数据库可视化工具SQLScout](https://blog.csdn.net/xhnmbest/article/details/105994122)
 - [深入了解架构组件之ViewModel](https://www.jianshu.com/p/35d143e84d42)

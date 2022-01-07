@@ -157,6 +157,8 @@ https://blog.csdn.net/weixin_42752574/article/details/106367959
 ##### [git 拉取远程分支到本地](https://www.cnblogs.com/jiafeimao-dabai/p/9957532.html)
 
 
+######  [合并B分支的某个文件到当前分支](https://blog.csdn.net/xhl_james/article/details/111061960)
+
 
 ## QA
 

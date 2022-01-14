@@ -7,10 +7,12 @@
 - [带参查询](https://www.it1352.com/1711588.html)
 
 
-### 常见问题
+### QA
 ###### 升级问题
 - [Int 升级问题 Migration didn't properly handle](https://www.jianshu.com/p/41272f319ae7?utm_campaign=maleskine)
+1. Q : Room cannot verify the data integrity. Looks like you've changed schema but forgot to update the version number. You can simply fix this by increasing the version number.
 
+   A : https://blog.csdn.net/wjzj000/article/details/95863976
 
 ### 配合其他组件
 

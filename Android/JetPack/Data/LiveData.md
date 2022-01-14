@@ -23,6 +23,13 @@ class NameViewModel : ViewModel() {
     val currentName: MutableLiveData<String> by lazy {
         MutableLiveData<String>()
     }
+    // 通过liveData 方法创建 ， 可以发送一些延迟数据 或者 数据源 可见LiveDataScope接口
+    var currentTime: LiveData<Long> = liveData {
+       while (true) {
+           emit(System.currentTimeMillis())
+           delay(1000)
+       }
+   }
 
 }
 ```
@@ -117,11 +124,7 @@ class StockLiveData : LiveData<Int>() {
 
 
 
-#### QA
 
-1. Q : Room cannot verify the data integrity. Looks like you've changed schema but forgot to update the version number. You can simply fix this by increasing the version number.
-
-   A : https://blog.csdn.net/wjzj000/article/details/95863976
 
 
 

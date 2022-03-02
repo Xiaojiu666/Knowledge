@@ -67,3 +67,36 @@ public Builder(
         //...
     }
 ```
+
+使用
+
+```JAVA
+selectionTracker =
+       new SelectionTracker.Builder<>(
+               "card_selection",
+               recyclerView,
+               new SelectableCardsAdapter.KeyProvider(adapter),
+               new SelectableCardsAdapter.DetailsLookup(recyclerView),
+               StorageStrategy.createLongStorage())
+           .withSelectionPredicate(SelectionPredicates.createSelectAnything())
+           .build();
+
+   adapter.setSelectionTracker(selectionTracker);
+   selectionTracker.addObserver(
+       new SelectionTracker.SelectionObserver<Long>() {
+         @Override
+         public void onSelectionChanged() {
+           if (selectionTracker.getSelection().size() > 0) {
+             if (actionMode == null) {
+               actionMode = startSupportActionMode(CardSelectionModeActivity.this);
+             }
+             actionMode.setTitle(String.valueOf(selectionTracker.getSelection().size()));
+           } else if (actionMode != null) {
+             actionMode.finish();
+           }
+         }
+       });
+```
+
+### 参考资料
+- [CardSelectionModeActivity类]( https://github.com/Xiaojiu666/material-components-android.git )

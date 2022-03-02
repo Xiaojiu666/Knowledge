@@ -1,10 +1,6 @@
-## ItemDecoration介绍
+### ItemDecoration介绍
 
 
-## ItemDecoration使用
-####  1.继承 ItemDecoration
-####  2.实现 getItemOffsets()
-    通过Rect对象set头顶区域的大小
-    outRect.set(0, mTitleAttributes.mItemHeight, 0, 0);
 
-####  3.实现 
+### 参考资料
+- [RecyclerView之ItemDecoration由浅入深](https://www.jianshu.com/p/b46a4ff7c10a)

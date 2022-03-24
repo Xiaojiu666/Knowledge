@@ -20,6 +20,12 @@
       例如网络请求借口，重复点击导致借口被调用多次,通过ExistingWorkPolicy 枚举进行控制
 - 支持多进程
 
+
+### 使用
+##### 几种Worker
+谷歌提供了四种Worker给我们使用，分别为：自动运行在后台线程的Worker、结合协程的CoroutineWorker、结合RxJava2的RxWorker和以上三个类的基类的ListenableWorker。
+
+
 ### 参考资料
 - [Android Studio 对现代 WorkManager 的支持](https://www.bilibili.com/video/BV1tS4y1F7Bc?p=1&share_medium=iphone&share_plat=ios&share_source=WEIXIN&share_tag=s_i&timestamp=1646407852&unique_k=Usz3RNA)
 - [WorkManager从入门到实践，有这一篇就够了](https://segmentfault.com/a/1190000020077800)

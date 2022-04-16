@@ -30,3 +30,4 @@
 - [Android Studio 对现代 WorkManager 的支持](https://www.bilibili.com/video/BV1tS4y1F7Bc?p=1&share_medium=iphone&share_plat=ios&share_source=WEIXIN&share_tag=s_i&timestamp=1646407852&unique_k=Usz3RNA)
 - [WorkManager从入门到实践，有这一篇就够了](https://segmentfault.com/a/1190000020077800)
 - [即学即用Android Jetpack - WorkManger](https://www.jianshu.com/p/68e720b8a939)
+- [WorkManager的基本使用](https://zhuanlan.zhihu.com/p/78599394)

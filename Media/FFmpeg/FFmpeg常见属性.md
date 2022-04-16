@@ -1,4 +1,5 @@
-####	libavcodec
+#	libavcodec
+声音/图像编解码,基本是最重要的库
 
 ######	AVCodec
 
@@ -51,12 +52,12 @@ int avcodec_send_packet(AVCodecContext *avctx, const AVPacket *avpkt);
 
 
 ```c++
-//从解码器中获取解码的输出数据 
-//@参数 avctx 编码上下文 
-//@参数 frame 这将会指向从解码器分配的一个引用计数的视频或者音频帧（取决于解码类型） 
-//@注意该函数在处理其他事情之前会调用av_frame_unref(frame) 
-//0：成功，返回一帧数据 
-int avcodec_receive_frame(AVCodecContext *avctx, AVFrame *frame); 
+//从解码器中获取解码的输出数据
+//@参数 avctx 编码上下文
+//@参数 frame 这将会指向从解码器分配的一个引用计数的视频或者音频帧（取决于解码类型）
+//@注意该函数在处理其他事情之前会调用av_frame_unref(frame)
+//0：成功，返回一帧数据
+int avcodec_receive_frame(AVCodecContext *avctx, AVFrame *frame);
 ```
 
 
@@ -97,7 +98,7 @@ AVPacket中的字段可用分为两部分：数据的缓存及管理，关于数
 
   - buf 是AVBufferRef类型的指针，用来管理data指针引用的数据缓存的，其使用在后面介绍。
 
-    
+
 
 视频的时长可以转换成HH:MM:SS的形式，示例代码如下：
 
@@ -134,8 +135,8 @@ AVPacket的创建有很多种，而由于Packet中的数据是通过data引用�
 
 
 
-####	libavutil
-
+#	libavutil
+包含一些公共的工具函数
 ######	AVFrame
 
 结构体描述了解码后的（原始）音频或视频数据。
@@ -144,5 +145,24 @@ AVPacket的创建有很多种，而由于Packet中的数据是通过data引用�
 
 1、使用`av_frame_alloc`分配AVFrame并将其字段设置为默认值。主要该函数只分配AVFrame的空间，
 
+# libavformat
+用于各种音视频封装格式的生成和解析，包括获取解码所需信息以生成解码上下文结构和读取音视频帧等功能；
+
+# libswscale
+用于视频场景比例缩放、色彩映射转换；视频像素数据的格式装换；
+
+# libpostproc
+用于后期效果处理；
+
+# libswresample
+音频采样格式数据转换；
+
+# libavfilter
+滤镜特效处理，如水印
+
+# libavdevice
+各种设备的输入输出
 
 
+### 参考资料
+- [分类](https://blog.csdn.net/qq_30124547/article/details/90708340)

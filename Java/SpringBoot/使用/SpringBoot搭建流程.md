@@ -15,6 +15,7 @@
 ## 安装Mysql
 - [Ubuntu下安装配置](https://blog.csdn.net/qq_40039731/article/details/124675476)
 - [卸载](https://www.jianshu.com/p/ea8b705f0915)
+- [3306 端口连不上] 修改配置中的 127.0.0.1
 
 
 ## 防火墙
@@ -23,6 +24,11 @@
 
 ## Xshell
 - [Xshell](https://blog.csdn.net/qq_53639645/article/details/122542732)
+
+## Reids
+
+## Workbench
+- [Workbench](https://blog.csdn.net/jsugs/article/details/124176899)
 
 ## 问题
 - 1、no main manifest attribute

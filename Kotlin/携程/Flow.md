@@ -30,8 +30,18 @@ private fun timeFlow(): Flow<LocalTime> = flow {
 ##### 从数据流中进行收集
 ```Java
 GlobalScope.launch(Dispatchers.Main) {
-          transformData.collect {
-              textView.text = it
-          }
-      }
+         transformData
+             .catch { exception -> LogUtils.d(exception) }
+             .collect {
+                 textView.text = it
+             }
+     }
 ```
+
+
+
+## StateFlow
+StateFlow 和 LiveData 具有相似之处。两者都是可观察的数据容器类，并且在应用架构中使用时，两者都遵循相似模式。
+区别
+- StateFlow 需要将初始状态传递给构造函数，而 LiveData 不需要。
+- 当 View 进入 STOPPED 状态时，LiveData.observe() 会自动取消注册使用方，而从 StateFlow 或任何其他数据流收集数据的操作并不会自动停止。如需实现相同的行为，您需要从 Lifecycle.repeatOnLifecycle 块收集数据流。

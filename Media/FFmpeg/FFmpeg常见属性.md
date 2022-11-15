@@ -166,3 +166,4 @@ AVPacket的创建有很多种，而由于Packet中的数据是通过data引用�
 
 ### 参考资料
 - [分类](https://blog.csdn.net/qq_30124547/article/details/90708340)
+- [ffmpeg获取视频信息](https://blog.csdn.net/qq_41824928/article/details/103631719)

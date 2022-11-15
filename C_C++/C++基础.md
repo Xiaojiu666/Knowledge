@@ -12,3 +12,4 @@
 
   https://blog.csdn.net/u012547790/article/details/22727277
 
+- [C++ 字符串追加int](https://www.itdaan.com/blog/2008/09/15/c6dce0a0e2e46fe36f268fa11a82685.html)

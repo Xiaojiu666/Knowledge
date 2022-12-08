@@ -1,17 +1,24 @@
 ### 什么是Dagger2
-  在我看来Dagger2是一个又高级又低级的的框架，在Java开发中，对象无处不在，无论是从初级开发，还是高级架构师，都离不开`Objec object =new Objec();`,每个java程序员每天都需要new 很多对象，为什么简简单单的new对象，却被Dagger2搞得如此复杂呢？
+  Dagger2是根据依赖注入衍生出的一套`静态解决方案，可生成在编译时连接依赖项的代码`。 在我看来Dagger2是一个又高级又低级的的框架，在Java开发中，对象无处不在，无论是从初级开发，还是高级架构师，都离不开`Objec object =new Objec();`,每个java程序员每天都需要new 很多对象，为什么简简单单的new对象，却要Dagger2搞得如此复杂呢？通过源码, 我们一起看下原理~
 
-##### 什么是依赖注入
-  在了解Dagge2之前，我们先简单了解一下，什么是依赖注入。当我们有一个Person类 需要去实例化，通常手段都是`Computer computer = new Computer()`, 如果 Computer 中需要依赖一个CPU的实例，一般情况下都是通过构造传入`new Computer(new CPU)`，或者 set 方法 传入，这其实就是依赖注入最常见的两种方式。Dagger2 就是通过`注解+JavaPoet`等手段，在编译期间，动态生成（通过module)的方式提供依赖`提供方`，并将通过容器 将`需求方`进行赋值绑定。
-![](/image/Dagger2.png)
+###### 官方介绍
+Dagger 可以执行以下操作，使您无需再编写冗长乏味又容易出错的样板代码：
+- 生成您在手动 DI 部分手动实现的 AppContainer 代码（应用图）。
+- 为应用图中提供的类创建 factory。这就是在内部满足依赖关系的方式。
+- 重复使用依赖项或创建类型的新实例，具体取决于您如何使用作用域配置该类型。
+- 为特定流程创建容器，操作方法与上一部分中使用 Dagger 子组件为登录流程创建容器的方法相同。这样可以释放内存中不再需要的对象，从而提升应用性能。
+
+只要您声明类的依赖项并指定如何使用注释满足它们的依赖关系，Dagger 便会在构建时自动执行以上所有操作。Dagger 生成的代码与您手动编写的代码类似。在内部，Dagger 会创建一个对象图，然后它可以参考该图来找到提供类实例的方式。对于图中的每个类，Dagger 都会生成一个 factory 类型类，它会使用该类在内部获取该类型的实例。
 
 
-### Dagger2-基础
+### Dagger2-基础使用
+###### 基础依赖
+```Java
+implementation 'com.google.dagger:dagger:2.x'
+annotationProcessor 'com.google.dagger:dagger-compiler:2.x'
+```
 
-#### 基础介绍
-围绕着上面的问题，我们尝试使用Dagger来试一下效果，并了解下其中原理
-
-######  @Inject
+######  注解-@Inject
   自动生成提供当前实例的工厂类 主要注释在两个地方(构造函数和全局变量)
 
 ![](/image/Dagger2-@inject-构造.png)
@@ -162,7 +169,7 @@ class CPU {
 - 注解在构造:1、被注解的类，自动实现`Provider<T>`接口生成工厂类，通过实现接口中`get()`方法，主要用于提供注解类的对象。2、如果被注解的构造有参数，则会通过参数的`Provider<T>`的`get()`方法，注入到需求方。
 - 注解在变量:2、被注解变量所在的类，自动实现`MembersInjector<T>`接口生成帮助类，通过实现接口中的`injectMembers()`方法，进行赋值绑定。
 
-######  @Component
+######  注解-@Component
   我们上面说过，整个依赖注入里面可以包括三个模块，被注入方，依赖提供方，容器。上面我们已经通过@Injected注释，讲了被注入方和提供方，接下来我们看看被@Component注释的接口。上面在注解成员变量的时候，我们有用过@Component注释的接口。让我们继续看下源码。
 ![](/image/Dagger2-@inject-成员变量.png)
 
@@ -234,9 +241,9 @@ class CPU {
 Dagger2给我们提供了两个新的注释 @Module 和 @Provides 配合@Component使用
 ![](/image/Dagger2-@module.png)
 
-#### 模块基础使用
+###### 模块基础使用
 
-假设我们现在有一台电脑，需要两个配件，一个主板，一个CPU，但在整个电脑里，主板和CPU 都只能有一个。
+假设我们现在有一台电脑，需要两个配件，一个主板，一个CPU，但在整个电脑里，主板和CPU 都只能有一个。这时候我们就需要像电脑里注入一块CPU 一块主板
 ```Java
 //模块
 @Module
@@ -245,6 +252,11 @@ class PartsModule() {
   @Provides
   fun provideCPU(): CPU {
       return CPU.create()!!
+  }
+
+  @Provides
+  fun provideBroad(): MainBoard {
+      return MainBoard.create()!!
   }
 }
 ```

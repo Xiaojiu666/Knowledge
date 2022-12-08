@@ -20,114 +20,143 @@ Livedata 遵循观察者模式，并且 Livedata 会在生命周期变化的时�
 1. 创建LiveData的实例，以存储某种数据类型(泛型，包括集合)，大多数都配合ViewModel使用
 2. 通过observe()方法，绑定Observe对象，该对象会在被LiveData所修饰的数据改变时触发，将修改后的数据回调回来。
 
-######  创建LiveData 对象
-大多数LiveData 都创建在ViewModel里，因为减少UI的代码量，并且使UI和 数据分离
+###### Java创建LiveData
+```Java
+// 创建一个MutableLiveData对象，这个使用LiveData的子类MutableLiveData
+// MutableLiveData暴露了postValue和setValue方法用于通知数据变化
+MutableLiveData<Object> liveData = new MutableLiveData<>();
+
+// 在UI线程中调用该方法通知数据变更
+liveData.setValue(object);
+// 在子线程中调用该方法通知数据变更，该方法中切换到UI线程后调用setValue方法
+liveData.postValue(object);
+
+// 监听数据变化，进行界面更新等操作，该方法一般放在Activity onCreate方法中调用，只注册一次
+//  通常，LiveData 仅在数据发生更改时才发送更新，并且仅发送给活跃观察者。此行为的一种例外情况是，观察者从非活跃状态更改为活跃状态时也会收到更新。此外，如果观察者第二次从非活跃状态更改为活跃状态，则只有在自上次变为活跃状态以来值发生了更改时，它才会收到更新。
+liveData.observe(this, new Observer<Object>() {
+    @Override
+    public void onChanged(Object o) {
+     // TODO 此处进行o对象的数据与界面进行绑定刷新
+    }
+```
+
+###### Kotlin创建LiveData
+由于Kotlin语法问题，除了常规的直接创建，还提供了不少边界函数 用户创建LiveData对象
+- MutableLiveData() 对象
+
 ```java
-class NameViewModel : ViewModel() {
-    // Create a LiveData with a String
-    val currentName: MutableLiveData<String> by lazy {
-        MutableLiveData<String>()
+    // 通过liveData()方法创建 ，内部创建一个携程空间，并返回一个LiveData对象
+    val currentTime: MutableLiveData<String> by lazy {
+          MutableLiveData<String>()
+      }
+    //监听同Java
+    currentTime.currentTimeTransformed.observe(this) {
+         // TODO
     }
-    // 通过liveData 方法创建 ， 可以发送一些延迟数据 或者 数据源 可见LiveDataScope接口
+
+```
+
+- liveData()
+
+```java
+    // 通过liveData()方法创建 ，内部创建一个携程空间，并返回一个LiveData对象
     var currentTime: LiveData<Long> = liveData {
-       while (true) {
-           emit(System.currentTimeMillis())
-           delay(1000)
-       }
-   }
-
-}
-```
-######  观察 LiveData 对象
-通常，LiveData 仅在数据发生更改时才发送更新，并且仅发送给活跃观察者。此行为的一种例外情况是，观察者从非活跃状态更改为活跃状态时也会收到更新。此外，如果观察者第二次从非活跃状态更改为活跃状态，则只有在自上次变为活跃状态以来值发生了更改时，它才会收到更新。
-```JAVA
-class NameActivity : AppCompatActivity() {
-
-    private val model: NameViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        val nameObserver = Observer<String> { newName ->
-            nameTextView.text = newName
-        }
-        model.currentName.observe(this, nameObserver)
+            // 携程空间
+           while (true) {
+               emit(System.currentTimeMillis())
+               delay(1000)
+           }
     }
-}
-```
-
-
-
-######  更新 LiveData 对象
-LiveData 没有公开可用的方法来更新存储的数据。所以我们会使用子类 MutableLiveData 重的 setValue(T) 和 postValue(T) 方法，进行更新LiveData中的数据
-```JAVA
-button.setOnClickListener {
-    val anotherName = "Test"
-    model.currentName.setValue(anotherName)
-}
+    //监听同Java
+    currentTime.currentTimeTransformed.observe(this) {
+         // TODO
+    }
 ```
 
 ### 进阶使用
 
-###### 配合Room
-
-###### 配合携程
-
 ###### 自定义LiveData
-假设我们有一个需要实时同步的数据(例如心电图，股票)，在页面启动时开启，在销毁时断开
+假设我们有一个系统时间显示的需求，在页面启动时显示，在销毁时断开
 ```JAVA
-class StockLiveData : LiveData<Int>() {
+class TimeLiveData : LiveData<Long>() {
+    //获取系统时间管理类
+    private val systemTimeManager = SystemTimeManager()
 
-    private val stockManager = StockManager()
-
-    private val listener = SimplePriceListener {
+    //获取系统时间回调接口
+    private val listener = SystemTimeListener {
         value = it
     }
-
+    //当 LiveData 对象具有活跃观察者时，会调用 onActive() 方法。这意味着，从此刻，开始获取当前系统时间
     override fun onActive() {
-        stockManager.requestPriceUpdates(listener)
+        systemTimeManager.requestCurrentTime(listener)
+    }
+    //当 LiveData 对象没有任何活跃观察者时，会调用 onInactive() 方法。由于没有观察者在监听，因此没有理由与 StockManager 服务保持连接。
+    override fun onInactive() {
+        systemTimeManager.removeUpdates()
     }
 
-    override fun onInactive() {
-        stockManager.removeUpdates()
-    }
+    homeViewModel.currentTimeTransformed.observe(viewLifecycleOwner){
+      textView.text = it.toString()
+  }
 }
 ```
-- 当 LiveData 对象具有活跃观察者时，会调用 onActive() 方法。这意味着，您需要从此方法开始观察股价更新。
-- 当 LiveData 对象没有任何活跃观察者时，会调用 onInactive() 方法。由于没有观察者在监听，因此没有理由与 StockManager 服务保持连接。
-
 ###### 转换 LiveData
 平常开发过程中，我们会需要将某些数据进行转化，例如:时间戳转化成字符串时间，我们可以通过`Transformations` 将一个LiveData对象转换成另一种LiveData对象
-- Transformations.map()
-  ```JAVA
-  //愿数据
-  val time : MutableLiveData<Long> by lazy {
-      MutableLiveData()
-  }
-  val time = viewModel.time
-        "map test $it "
-  }
+- Transformations.map()  
+对存储在 LiveData 对象中的值应用函数，并将结果传播到下游。
+
+```JAVA
+  //原数据
+  // Long
+  val systemTime : MutableLiveData<Long>  = TimeLiveData()
+  // String
+  val viewTime = Transformations.map(systemTime) {
+    it.toString()
+}
   ```
 
-- Transformations.switchMap()
-  ```JAVA
-  val time : MutableLiveData<Long> by lazy {
-      MutableLiveData()
+- Transformations.switchMap()  
+与 map() 类似，对存储在 LiveData 对象中的值应用函数，并将结果解封和分派到下游。传递给 switchMap() 的函数必须返回 LiveData 对象.
+
+```JAVA
+  // 根据系统时间获取当前月份
+  private fun getYear(time: Long): LiveData<String> {
+  ...
   }
-  val time = viewModel.time
-  val switch = Transformations.switchMap(time) {
-      val value = "switch test $it "
-      MutableLiveData<String>(value)
-  }
-  ```
-  switchMap 和 map的区别是，switchMap的回调方法返回的是一个LiveData对象，而 map 只需要返回数据类型即可，这也证明
+  // Long
+  val systemTime : MutableLiveData<Long>  = TimeLiveData()
+  // 可以继续被观察，当月份变化时，可以做一些其他的UI处理
+  val year = Transformations.switchMap(systemTime) { time -> getYear(time) }
+```
 
-- 区别
-所以对于这两个函数的区别来说，map，更关注于数值的转换，他只会通过你之前的值去生成一个新的值，强调的是这个转换，也就是说新的LiveData对象的值，仍然是基于当前这个LiveData的值而生成的。
+- Transformations.switchMap() 实战  
+假设有个页面需要根据当前时间往前，获取任务列表，并更新UI
 
-而switchMap，更关注于数值的触发，也就是说，他会监听你这个值的变化，而不关注你这个值本身，你可以理解成触发器或者扳机，当触发之后，你就需要自己去主动的返回任意一个你指定的liveData对象。
+```JAVA
+class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
 
+    private fun getTaskList4Time(time: Long): LiveData<List<Task>> {
+        return repository.getTaskList(time)
+    }
+}
+```  
+问题:由于网络延迟，从当前页面返回，其他页面，VM的持久引用，`LiveData`没有设置宿主，无法跟随宿主的生命周期进行中断。再次进入时，无法拿到新的`LiveData`实例，并且如果需要在页面初始化时，就去调用一次接口，上面也无法实现。所以使用将数据通过switchMap转换`LiveData`对象。
 
+```JAVA
+class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
+  private val time = MutableLiveData<Long>()
+     val taskList: LiveData<String> = Transformations.switchMap(addressInput) {
+             time -> repository.getTaskList(time) }
+
+     private fun setInputTime(systemTime: Long) {
+         time.value = systemTime
+     }
+}
+```  
+
+### 配合Room
+
+### 配合携程
 
 
 
@@ -136,5 +165,5 @@ class StockLiveData : LiveData<Int>() {
 ###	参考资料
 - [map()和switchMap](https://blog.csdn.net/a1203991686/article/details/106952398)
 - [Transformations的switchMap该怎么理解好](https://blog.csdn.net/newmandirl/article/details/100022021)
-- [数据库可视化工具SQLScout](https://blog.csdn.net/xhnmbest/article/details/105994122)
+- [MediatorLiveData](https://medium.com/androiddevelopers/livedata-beyond-the-viewmodel-reactive-patterns-using-transformations-and-mediatorlivedata-fda520ba00b7)
 - [深入了解架构组件之ViewModel](https://www.jianshu.com/p/35d143e84d42)

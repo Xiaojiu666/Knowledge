@@ -1,12 +1,17 @@
-## 一、RecyclerView
+### 什么是RecyclerView
 
 
 
+###	基础使用
+###### 导包
+```java
+  implementation 'com.android.support:recyclerview-v7:28.0.0'
+```
+###### 使用
+网上教程一大堆..
 
 
 
-
-##	二、LayoutManager
 
 ####	1、参考资料：
 

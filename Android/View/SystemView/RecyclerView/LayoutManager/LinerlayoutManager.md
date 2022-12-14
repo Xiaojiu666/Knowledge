@@ -1,7 +1,4 @@
-### RecyclerView.LayoutManager
-
-
-### 自定义LayoutManger
+### LinerLayoutManager
 
 ###### 继承 抽象静态内部类RecyclerView.LayoutManager
 不了解ViewGroup的同学建议百度搜一下,网上教程会更细  

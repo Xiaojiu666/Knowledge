@@ -29,17 +29,3 @@ RecyclerView 在第三个构造函数里初始化属性与方法。
 1、不冻结RecyclerView状态
 
 ### 抽象静态内部类RecyclerView.LayoutManager
-
-#### 系统提供的LinerLayoutManager
-###### 构造
--  第一个和第二个构造基本一致通过New 传递属性
--  第三个构造，用到很少，根据布局文件配置获取属性
-
-###### setOrientation
-
-###### setReverseLayout
-设置是否反转布局   
-如果是垂直布局,将布局上下反转0..10 ->10..0，并将焦点移动到最下面的0上面
-
-
-### final 类Recycler

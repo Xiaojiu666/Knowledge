@@ -153,11 +153,11 @@ loop() 循环获取消息并分发
 public static void loop() {
 
     final Looper me = myLooper();
- 
+
     if (me == null) {
         throw new RuntimeException("No Looper; Looper.prepare() wasn't called on this thread.");
     }
-   
+
     final MessageQueue queue = me.mQueue;
     //...
     for (;;) {
@@ -221,7 +221,7 @@ Message next() {
                     mBlocked = false;
                 		// 4. 判断当前信息前面是否有数据
                     if (prevMsg != null) {
-                      // 4.1 
+                      // 4.1
                         prevMsg.next = msg.next;
                     } else {
                       // 4.2 链表指针指向下一个消息体
@@ -300,4 +300,3 @@ sendMsg 也会调用 sendDelayed()，默认时间为0，->   控制顺序sendMes
 - https://blog.csdn.net/u013700040/article/details/105655154
 - https://blog.csdn.net/ly502541243/article/details/52414637
 - https://www.jianshu.com/p/3c5d7f09dfbd
-

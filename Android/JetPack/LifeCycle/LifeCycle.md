@@ -1,3 +1,12 @@
+---
+title: LifeCycle
+date: 2022-05-01 16:05:41
+categories:
+           - JetPack
+tags:
+           - JetPack学习
+---
+
 ### 什么是LifeCycle
 ###### 官方介绍
 生命周期感知型组件可执行操作来响应另一个组件（如 Activity 和 Fragment）的生命周期状态的变化。这些组件有助于您编写出更有条理且往往更精简的代码，此类代码更易于维护。
@@ -120,7 +129,7 @@ public enum State {
     }
 
 ```
-在`LifecycleRegistry`源码中，并不是依靠Event得值进行，直接回调，会将Event结合State 进行二次处理，保证后面注册，也能收到之前得状态。
+在`LifecycleRegistry`源码中，并不是依靠Event得值进行直接回调，而是会将Event结合State 进行二次处理，保证后面注册，也能收到之前得状态。
 
 
 ### 参考资料

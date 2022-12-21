@@ -33,7 +33,7 @@
 ####	5.ListView和RecyclerView的使用，区别？
 -   效果 :  LayoutManager, 自带条目动画，可移动
 -   性能 :  自带ViewHodler  对item进行复用，
--   可扩展性高 : 
+-   可扩展性高 :
 
 ####	6.Git问题
 ######	6.1新建一个分支
@@ -483,6 +483,32 @@ https://blog.csdn.net/feather_wch/article/details/81136078
 		种描述语言，可以拿来生产IPC代码，从某种意义上说AIDL其实就是一个模板，因为在使用过程中，实际起作用的并不是AIDL文件，而是
 		据此生产的一个Interface的实例代码，AIDL其实是为了避免我们重复写代码而出现的一个模板。
 
+
+### 四大组件-Activity
+
+##### 启动流程
+[Activity启动流程分析](https://blog.csdn.net/java521666/article/details/126607351)  
+1、点击桌面App图标，Launcher进程采用Binder IPC向system_server进程发起startActivity请求  
+2、system_server进程接收到请求后，向zygote进程发送创建进程的请求；
+Zygote进程fork出新的子进程，即App进程  
+3、App进程，通过Binder IPC向sytem_server进程发起attachApplication请求；  
+4、system_server进程在收到请求后，进行一系列准备工作后，再通过binder IPC向App进 程发送scheduleLaunchActivity请求  
+5、App进程的binder线程（ApplicationThread）在收到请求后，通过handler向主线程发送LAUNCH_ACTIVITY消息  
+6、主线程在收到Message后，通过发射机制创建目标Activity，并回调Activity.onCreate()等方法  
+
+##### 生命周期
+新页面在onResume() 和 onStop() onCreate /onStart /onResume
+
+##### 启动模式
+
+
+### 四大组件-Fragment
+##### 新建 Fragment 为何不要在构造方法中传递参数
+[Fragment传参用法](https://blog.csdn.net/stzy00/article/details/44764537/)  
+
+
+### APK打包
+###### APK打包流程和其内容
 
 
 

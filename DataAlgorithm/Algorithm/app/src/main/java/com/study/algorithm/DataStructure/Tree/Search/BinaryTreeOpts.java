@@ -8,18 +8,23 @@ public class BinaryTreeOpts {
 
 
     private static void insert(int data) {
+        //1 如果树得根节点没有节点，新增
         if (root == null) {
             root = new BinarySearchTreeNode(data);
             return;
         }
+        // 临时节点
         BinarySearchTreeNode node = root;
         while (node != null) {
+            // 2.数据小于当前节点得数据。
             if (data < node.getData()) {
                 if (node.getLeftNode() == null) {
+                    // 3. 往左子树上新增
                     BinarySearchTreeNode binarySearchTreeNode = new BinarySearchTreeNode(data);
                     node.setLeftNode(binarySearchTreeNode);
                     return;
                 }
+                //否则继续查
                 node = node.getLeftNode();
             } else if (data > node.getData()) {
                 if (node.getRightNode() == null) {
@@ -35,21 +40,21 @@ public class BinaryTreeOpts {
 
     public static void main(String[] args) {
 //        int[] datas = new int[]{100, 80, 200, 54, 90, 150, 210};
-        int[] datas = new int[]{60, 40, 80, 30, 50, 70, 100, 20, 35, 45, 55};
+//        int[] datas = new int[]{60, 40, 80, 30, 50, 70, 100, 20, 35, 45, 55};
+        int[] datas = new int[]{6, 4, 7, 5};
         for (int i = 0; i < datas.length; i++) {
             insert(datas[i]);
         }
         mid(root);
 //        find(100);
         System.out.println(" ");
-       remove(40);
+        remove(5);
         //        change(20);
         mid(root);
     }
 
 
-
-    private static void change(int data){
+    private static void change(int data) {
         BinarySearchTreeNode node = root;
         node.setData(data);
     }
@@ -94,9 +99,6 @@ public class BinaryTreeOpts {
         } else if (node.getRightNode() != null) {
             childNode = node.getRightNode();
         }
-        System.out.println("被删除节点 : " + node.getData());
-        System.out.println("被删除节点的父节点 : " + parent.getData());
-//        System.out.println("被删除节点的子节点 : " + childNode.getData());
 
         //3.   重新对父节点赋值
         if (parent == null) {
@@ -108,8 +110,6 @@ public class BinaryTreeOpts {
             parent.setRightNode(childNode);
             System.out.println("parent.getRightNode() : " + parent.getRightNode());
         }
-
-
     }
 
     private static void find(int data) {
@@ -125,7 +125,6 @@ public class BinaryTreeOpts {
             }
         }
         System.out.println("没找到 ： " + data);
-
     }
 
 

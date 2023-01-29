@@ -52,7 +52,6 @@ public class BinaryTreeTraversal {
         if (cur == null) {
             return;
         }
-
         mid(cur.getLeftNode());
         System.out.println(cur.getData());
         mid(cur.getRightNode());
@@ -66,7 +65,6 @@ public class BinaryTreeTraversal {
         post(cur.getLeftNode());
         post(cur.getRightNode());
         System.out.println(cur.getData());
-
     }
 
 

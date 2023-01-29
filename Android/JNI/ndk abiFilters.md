@@ -1,0 +1,2 @@
+### 参考资料
+- [Android ndk.abiFilters armeabi-v7a、arm64-v8a、arneabi、x86、x86-64 解析](https://blog.csdn.net/yearningseeker/article/details/118554430?spm=1001.2101.3001.6661.1&utm_medium=distribute.pc_relevant_t0.none-task-blog-2~default~CTRLIST~Rate-1-118554430-blog-112055328.pc_relevant_aa&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-2~default~CTRLIST~Rate-1-118554430-blog-112055328.pc_relevant_aa&utm_relevant_index=1)

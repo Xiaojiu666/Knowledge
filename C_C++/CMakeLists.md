@@ -11,14 +11,14 @@ cmake_minimum_required(VERSION 3.4.1)
 
 
 
-######	SET(VAR [VALUE] [CACHE TYPE DOCSTRING [FORCE]]) 
+######	SET(VAR [VALUE] [CACHE TYPE DOCSTRING [FORCE]])
 
 ```c
 //定义so库和头文件所在目录，方面后面使用
 set(ffmpeg_lib_dir ${CMAKE_SOURCE_DIR}/../libs/${ANDROID_ABI})
 ```
 
- 
+
 
 
 
@@ -76,3 +76,8 @@ find_library( # Sets the name of the path variable.
         # you want CMake to locate.
         log )
 ```
+
+
+
+### 参考资料
+- [CMake详解](https://blog.csdn.net/u011150681/article/details/103630938)

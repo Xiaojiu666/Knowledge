@@ -77,14 +77,14 @@
 
 ![](http://www.runoob.com/wp-content/uploads/2015/03/271259025495085.png)
 ![](http://www.runoob.com/wp-content/uploads/2015/03/271300329558531.png)
-		
+
 
 		3.合并
 		请注意啦，不管你本地有没有代码，fetch之后呢，是都要merge的，
 		也就是说，fetch下来后，大大的代码还在一个小黑屋里，我们需要把它装到自己兜里。
 		选择合并 - 本地合并，然后选择本地的分支（如果你没有创建分支，则只有1个主支master） !]http://www.runoob.com/wp-content/uploads/2015/03/271254126278757.png)
-	
-		4.冲突处理（Conflict） 
+
+		4.冲突处理（Conflict）
 	合的过程中可能会出现一些红色的文件与一堆叹号，这时候慌慌张张的点啥它都不管用，不用担心，不是程序坏了，
 		只是有冲突的文件，例如A童鞋写了width:1180px，你写了width:auto。那到底用你们谁的呢。
 		在GUI界面正文区，正文区右键可以选择，Use local version（使用本地版本）或Use remote version（使用远程版本），
@@ -108,8 +108,8 @@
     git add .                               //重新Add所有文件
     git commit -m “update .gitignore"       // commit
     git push
-    
-    
+
+
 
 ## 推送新分支内容到远端
 
@@ -154,12 +154,18 @@ https://blog.csdn.net/weixin_42752574/article/details/106367959
 
 
 
+##### [git 拉取远程分支到本地](https://www.cnblogs.com/jiafeimao-dabai/p/9957532.html)
 
+
+######  [合并B分支的某个文件到当前分支](https://blog.csdn.net/xhl_james/article/details/111061960)
 
 
 ## QA
 
 ​	Q:LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to github.com:443
 
-​	A:git config --global http.sslBackend "openssl" 
+​	A:git config --global http.sslBackend "openssl"
 
+### 参考资料
+- [MAC 443](https://blog.csdn.net/wufantastic/article/details/91488651)
+- [Https变更为SSH] (https://www.cnblogs.com/lvfish/p/10271673.html)

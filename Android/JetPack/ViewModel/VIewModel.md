@@ -1,24 +1,34 @@
 ### 什么是"ViewModel"
-##### 官方介绍
-ViewModel负责为界面准备数据。在配置更改期间会自动保留 ViewModel 对象，以便它们存储的数据立即可供下一个 Activity 或 Fragment 实例使用。例如，如果您需要在应用中显示用户列表，请确保将获取和保留该用户列表的责任分配给 ViewModel
+###### 官方介绍
+ViewModel 类是一种业务逻辑或屏幕级状态容器。它用于将状态公开给界面，以及封装相关的业务逻辑。 它的主要优点是，它可以缓存状态，并可在配置更改后持久保留相应状态。这意味着在 activity 之间导航时或进行配置更改后（例如旋转屏幕时），界面将无需重新提取数据。
 
-如果重新创建了该 Activity，它接收的 MyViewModel 实例与第一个 Activity 创建的实例相同。当所有者 Activity 完成时，框架会调用 ViewModel 对象的 onCleared() 方法，以便它可以清理资源。
+###### 优点
+- 它允许您持久保留界面状态(页面数据保存)。
+- 它可以提供对业务逻辑的访问权限(MVVM)。
 
-<img src="C:\Users\86188\AppData\Roaming\Typora\typora-user-images\image-20210713223405458.png" alt="image-20210713223405458" style="zoom:80%;" />
+###### 持久性
+ViewModel 允许数据在 ViewModel 持有的状态和 ViewModel 触发的操作结束后继续存在。这种缓存意味着在常见的配置更改（例如屏幕旋转）完成后，无需重新提取数据。
 
-##### 生命周期
-ViewModel 对象存在的时间范围是获取 ViewModel 时传递给 ViewModelProvider 的 Lifecycle。ViewModel 将一直留在内存中，直到限定其存在时间范围的 Lifecycle 永久消失：对于 Activity，是在 Activity 完成时；而对于 Fragment，是在 Fragment 分离时。
+###### 作用域
+实例化 ViewModel 时，您会向其传递实现 ViewModelStoreOwner 接口的对象。它可能是 Navigation 目的地、Navigation 图表、activity、fragment 或实现接口的任何其他类型。然后，ViewModel 的作用域将限定为 ViewModelStoreOwner 的 Lifecycle。它会一直保留在内存中，直到其 ViewModelStoreOwner 永久消失。  
+当 ViewModel 的作用域 fragment 或 activity 被销毁时，异步工作会在作用域限定到该 fragment 或 activity 的 ViewModel 中继续进行。这是持久性的关键。
 
-图 1 说明了 Activity 经历屏幕旋转而后结束时所处的各种生命周期状态。该图还在关联的 Activity 生命周期的旁边显示了 ViewModel 的生命周期。此图表说明了 Activity 的各种状态。这些基本状态同样适用于 Fragment 的生命周期。
+###### SavedStateHandle
+使用SavedStateHandle不仅可以在更改配置后持久保留数据，还可以在进程重新创建过程中持久保留数据。也就是说，即使关闭应用，稍后又将其打开，界面状态也可以保持不变。
 
-##### 自我理解
-将数据和View层分开，让View不持有数据的引用，即使View销毁，也不影响Data，可以理解为一个单例的Manager数据管理类，配合LiveData 可以对数据进行进行观察，MVVM 框架核心
+###### 对业务逻辑的访问权限
+尽管绝大多数业务逻辑都存在于数据层中，但界面层也可以包含业务逻辑。当您合并多个代码库中的数据以创建屏幕界面状态时，或特定类型的数据不需要数据层时，情况就是如此。
+ViewModel 是在界面层处理业务逻辑的正确位置。当需要应用业务逻辑来修改应用数据时，ViewModel 还负责处理事件并将其委托给层次结构中的其他层。
 
-##### 优点
-- 数据持久化
-- 异步回调问题
-- MVVM
-- Fragments 间共享数据
+###### 自我理解
+ MVVM 框架核心，UI层的控制器，约等于MVP中的P层，但是多了对数据的持久化操作，VM 主要作用，M层的数据调用，存储UI所需要的数据。
+
+
+### 基础使用
+###### 
+
+
+
 
 
 ### 普通使用
@@ -87,3 +97,4 @@ class MyActivity : AppCompatActivity() {
 ### QA
 
 ### 参考资料
+- [ViewModel 四种集成方式](https://zhuanlan.zhihu.com/p/143346337)

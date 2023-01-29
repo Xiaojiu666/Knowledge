@@ -1,15 +1,66 @@
-#一、View相关介绍
+### 什么是View
+
+
+### 什么是自定义View
+
+###### 构造
+	View一共提供四个构造便子类使用
+
+-	MyView(Context context)
+
+		通过New 创建实例的时候 会使用此构造。
+
+-	MyView(Context context, @Nullable AttributeSet attrs)
+
+		通过布局文件加载的View 会使用此构造
+
+		-	AttributeSet接口 :一组属性集合，与XML文档中的标记相关联。通常您不希望直接使用这个接口，而是将其传递给Resources.Theme.obtainStyledAttributes()，它将负责为您解析属性。
+		-	TypedArray : 用于Resources.Theme检索的值数组容器，通过styledattributesResources.Theme.styledattributes()方法获取实例，可以根据属性ID，获取到XML里面的值。
+
+- MyView(Context context, @Nullable AttributeSet attrs, int defStyleAttr)
+
+- MyView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes)
+
+
+
+
+
+
+
+### 什么是自定义ViewGroup
+
+
+
+
+### 参考资料
+-	[attrs/style/theme区别](https://blog.csdn.net/zq2114522/article/details/53312530)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###
 ##1.简介
 	为什么要自定义View，
 
 ##2.类
-###2.1 
+###2.1
 
-###2.2 AttributeSet 
+###2.2 AttributeSet
 ###2.3 Canvs(画布)
 ###2.3 Rect(矩阵)
 ###2.3 matrix(矩阵)
-###2.3 ColorFilter()	
+###2.3 ColorFilter()
 
 ##3.方法
 ###3.1 构造
@@ -18,7 +69,7 @@
 	3.当有自定义属性的时候使用
 
 ###3.3 onDraw()
-	
+
 
 
 
@@ -46,7 +97,7 @@
 	1.widthMeasureSpec & heightMeasureSpec 不是宽高的值，是由模式+宽高的值组合起来的
 	2.在控件没有父布局之前，MeasureSpec 有三种模式:
 	------二进制表示：00
-   
+
 
     EXACTLY：表示父控件给子view一个具体的值，子view要设置成这些值的大小。
     ------直接数值 && match_parent
@@ -85,7 +136,7 @@
 	父控件onMeasure->measureChildrenmeasureChildWithMargin->getChildMeasureSpec-> 子控件的measure->onMeasure->setMeasureDimension-> 父控件onMeasure结束调用setMeasureDimension保存自己的大小
 
 ![](https://xiaojiu-daily.oss-cn-beijing.aliyuncs.com/onMeasure%E5%A4%84%E7%90%86.jpg)
-	
+
 
 ####3.4.4 使用场景
 	自定义View时，如果不去重写onMeasure时，会发生一个问题，就是当view父控件matchparnt时，如果自定义控件包裹，自定义View的布局还是填充父控件，这个时候需要在onMeasure里对规格和尺寸进行重新定义，
@@ -109,30 +160,30 @@
 ##步骤:
 - 1.配置：在res/values中的attrs.xml中自定义属性。
 
-    
-   		 <declare-styleable name="TestView"> 
+
+   		 <declare-styleable name="TestView">
     		<attr name="attrone" format="dimension"/>
-    			<attr name="attrtwo" format="string" > 
-    			<enum name="one" value="0"/> 
-    		<enum name="two" value="1"/> 
-    		</attr> 
+    			<attr name="attrtwo" format="string" >
+    			<enum name="one" value="0"/>
+    		<enum name="two" value="1"/>
+    		</attr>
  	   	</declare-styleable>
-    
+
 
 - 2.使用：首先加入命名空间：xmlns:app="http://schemas.android.com/apk/res-auto"
 
-	    <com.mg.axe.androiddevelop.view.TestView 
-			android:layout_width="match_parent" 
-			android:layout_height="match_parent" 
-			app:attrone="10dp" 
+	    <com.mg.axe.androiddevelop.view.TestView
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			app:attrone="10dp"
 			app:attrtwo="two" />
 
 
 - 3.自定义View里获取自定义属性
 
-		TypedArray ta = getContext().obtainStyledAttributes(attrs, R.styleable.TestView); 
-		float attrone = ta.getDimension(R.styleable.TestView_attrone,0); 
-		String attrTwo = ta.getString(R.styleable.TestView_attrtwo); 
+		TypedArray ta = getContext().obtainStyledAttributes(attrs, R.styleable.TestView);
+		float attrone = ta.getDimension(R.styleable.TestView_attrone,0);
+		String attrTwo = ta.getString(R.styleable.TestView_attrtwo);
 
 
 - 4.赋值
@@ -148,6 +199,3 @@
 - 4.https://www.jianshu.com/p/a5b1e778744f					  //自定义View-onLayout篇
 - 5.https://github.com/openXu/OXChart						  //自定义Viewchart
 - 6.https://www.cnblogs.com/wjtaigwh/p/6647114.html			  //贝塞尔曲线
-
-
-

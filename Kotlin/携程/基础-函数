@@ -1,0 +1,61 @@
+### 高阶函数
+如果一个函数接收另一个函数作为参数，或者返回值的类型是另一个函数，那么该函数就称为高阶函数
+
+#### 基础用法
+格式
+```JAVA
+fun 高阶函数名(参数1: 参数类型, 参数2: 参数类型, 方法引用名称: (方法参数1类型 , 方法参数2类型) -> 方法返回值类型 ): 高阶函返回值类型 {
+    return 方法引用名称((参数1, 参数2)
+}
+// 调用
+// :: 这是一种函数引用方式的写法
+高阶函数名(实际参数1,实际参数2,::方法引用名称)
+
+```
+假如有一个计算器方法，我们需要他帮助我们计算加/减/乘/除四种运算。
+
+我们就可以定义一个简单的高阶函数，将加/减/乘/除传入计算器。
+```JAVA
+@JvmStatic
+ fun main(args: Array<String>) {
+     println(calculator(1, 2, ::addition))
+     println(calculator(1, 2, ::subtraction))
+ }
+
+fun calculator(num1: Int, num2: Int, operation: (Int , Int) -> Int ): Int {
+    return operation(num1, num2)
+}
+
+fun addition(num1: Int, num2: Int): Int {
+       return num1 + num2
+}
+
+fun subtraction(num1: Int, num2: Int): Int {
+       return num1 - num2
+}
+
+// 3
+// -1
+```
+
+####  Lambda
+如果每次调用任何高阶函数时都还得先定义一个与其函数类型参数相匹配的函数，会变得很复杂
+没错，因此 Kotlin 还支持其他多种方式来调用高阶函数，比如 Lambda 表达式
+```JAVA
+var addition = calculator(1, 2) { n1, n2 ->
+      n1 + n2
+}
+
+var subtraction = calculator(1, 2) { n1, n2 ->
+      n1 - n2
+}
+println(addition)
+println(subtraction)
+// 3
+// -1
+```
+ Lambda 表达式是最常见也是最普遍的高阶函数调用方式，刚才的代码使用 Lambda 表达式来实现（Lambda 表达式最后一行自动作为返回值）
+
+
+### 参考资料
+- [高阶函数](https://blog.csdn.net/u010356768/article/details/108490612)

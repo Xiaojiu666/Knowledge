@@ -35,15 +35,23 @@ public class BinaryTreeOpts {
 
     public static void main(String[] args) {
 //        int[] datas = new int[]{100, 80, 200, 54, 90, 150, 210};
-        int[] datas = new int[]{60, 40, 80, 30, 50, 70, 100, 45, 55};
+        int[] datas = new int[]{60, 40, 80, 30, 50, 70, 100, 20, 35, 45, 55};
         for (int i = 0; i < datas.length; i++) {
             insert(datas[i]);
         }
         mid(root);
 //        find(100);
         System.out.println(" ");
-        remove(40);
+       remove(40);
+        //        change(20);
         mid(root);
+    }
+
+
+
+    private static void change(int data){
+        BinarySearchTreeNode node = root;
+        node.setData(data);
     }
 
     private static void remove(int data) {
@@ -64,7 +72,7 @@ public class BinaryTreeOpts {
         }
 
         // 4.  在Node只有两个子节点时
-        // 4.1 需要找到最对的
+        // 4.1 删除原理：找到node 右节点中最小值进行替换 ，然后删除最小节点
         if (node.getLeftNode() != null && node.getRightNode() != null) {
             BinarySearchTreeNode minNode = node.getRightNode();
             BinarySearchTreeNode minParentNode = node;
@@ -73,12 +81,10 @@ public class BinaryTreeOpts {
                 minNode = minNode.getLeftNode();
 
             }
-            node.setData(minNode.getData());
-            node = minNode;
+            node.setData(minNode.getData()); // 节点数据转换 ， 左右子指针不变
+            node = minNode;                  // 将原有要删除的node 更换为minNode
             parent = minParentNode;
-            System.out.println("要被删除得节点有两个子节点 ");
         }
-
 
         //2.  找到要被删除节点的 的 子左右节点，
         //2.1 在Node只有单子节点时 ， 删除的根本在于，将Node父节点的指针，指向Node的子节点
@@ -88,14 +94,19 @@ public class BinaryTreeOpts {
         } else if (node.getRightNode() != null) {
             childNode = node.getRightNode();
         }
+        System.out.println("被删除节点 : " + node.getData());
+        System.out.println("被删除节点的父节点 : " + parent.getData());
+//        System.out.println("被删除节点的子节点 : " + childNode.getData());
 
         //3.   重新对父节点赋值
         if (parent == null) {
             root = childNode;
         } else if (parent.getLeftNode() == node) {
             parent.setLeftNode(childNode);
+            System.out.println("parent.getLeftNode() : " + parent.getLeftNode());
         } else if (parent.getRightNode() == node) {
             parent.setRightNode(childNode);
+            System.out.println("parent.getRightNode() : " + parent.getRightNode());
         }
 
 

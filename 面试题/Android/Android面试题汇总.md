@@ -121,7 +121,7 @@ StartServer 和 BinderServer
 
 
 
-##	
+##
 
 ##	进阶篇
 
@@ -178,7 +178,7 @@ StartServer 和 BinderServer
 
 ######	图存储结构
 
-问题: 
+问题:
 
 1. 哈希冲突
    - 开放定址法：
@@ -199,7 +199,7 @@ StartServer 和 BinderServer
 
 　　Java内存模型规定所有的变量都是存在主存当中（类似于前面说的物理内存），每个线程都有自己的工作内存（类似于前面的高速缓存）。线程对变量的所有操作都必须在工作内存中进行，而不能直接对主存进行操作。并且每个线程不能访问其他线程的工作内存。
 
-​	
+​
 
 ####	多线程
 
@@ -219,7 +219,7 @@ StartServer 和 BinderServer
 
   可见性是指当多个线程访问同一个变量时，一个线程修改了这个变量的值，其他线程能够立即看得到修改的值。
 
-  
+
 
 - 有序性问题
 
@@ -268,7 +268,7 @@ StartServer 和 BinderServer
   ```
   //线程2:
   while``(!inited ){
-   ``sleep() 
+   ``sleep()
   }
   doSomethingwithconfig(context);
   ```

@@ -26,6 +26,10 @@
 
 
 ```
+#### AVCodecParameters(AVStream.)
+```C++
+
+```
 
 #### AVStream
 ```Java

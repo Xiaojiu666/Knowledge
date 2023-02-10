@@ -35,21 +35,6 @@
 -   性能 :  自带ViewHodler  对item进行复用，
 -   可扩展性高 :
 
-####	6.Git问题
-######	6.1新建一个分支
-	git branch text
-######	6.2提交修改内容
-	git add ”“
-	git commit
-######	6.3把test分支合并到develop
-	git merge develop
-######	6.4把develop推送到远程服务器
-	git remote add origin ”地址“
-	git push
-######	6.5更新develop分支
-	$ git fetch [name] master 从仓库检出分支只是从远程获取最新版本到本地,不会merge(合并)
-	$ git merge origin/master 合并本地仓库和远程仓库
-
 ######	7.内存泄露问题
 	内存指程序在申请内存后,无法释放已经申请的内存空间,一次内存泄露危害可以忽略,但内存泄露堆积后的结果很严重,无论多少内存,迟早会被占光
 - 1.单例模式导致的内存泄漏

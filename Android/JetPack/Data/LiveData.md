@@ -1,13 +1,13 @@
 ---
-title: Dagger2
-date: 2022-03-02 21:53:19
+title: LiveData
+date: 2023-1-2 21:53:19
 type: Jetpack
 ---
 ###	什么是LiveData
 ###### 官方介绍
 [`LiveData`](https://developer.android.google.cn/reference/androidx/lifecycle/LiveData) 是一种可观察的数据存储器类。与常规的可观察类不同，LiveData 具有生命周期感知能力，意指它遵循其他应用组件（如 Activity、Fragment 或 Service）的生命周期。这种感知能力可确保 LiveData 仅更新处于活跃生命周期状态的应用组件观察者。
 
-如果观察者（由 Observer 类表示）的生命周期处于 STARTED 或 RESUMED 状态，则 LiveData 会认为该观察者处于活跃状态。LiveData 只会将更新通知给活跃的观察者。为观察 LiveData 对象而注册的非活跃观察者不会收到更改通知。
+如果观察者（由 Observer 类表示）的生命周期处于` STARTED` 或 `RESUMED `状态，则 LiveData 会认为该观察者处于活跃状态。LiveData 只会将更新通知给活跃的观察者。为观察 LiveData 对象而注册的非活跃观察者不会收到更改通知。
 
 Livedata 遵循观察者模式，并且 Livedata 会在生命周期变化的时候通知观察者。
 它优雅的处理了生命周期问题，并不会所有的数据变化都会回调，所以你可以在他回调时大胆的做更新 UI操作。
@@ -167,3 +167,4 @@ class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
 - [Transformations的switchMap该怎么理解好](https://blog.csdn.net/newmandirl/article/details/100022021)
 - [MediatorLiveData](https://medium.com/androiddevelopers/livedata-beyond-the-viewmodel-reactive-patterns-using-transformations-and-mediatorlivedata-fda520ba00b7)
 - [深入了解架构组件之ViewModel](https://www.jianshu.com/p/35d143e84d42)
+- [set/post丢值](https://blog.csdn.net/csj731742019/article/details/126375610)

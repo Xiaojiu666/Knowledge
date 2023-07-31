@@ -86,7 +86,9 @@ com.gx.kt.study.by.cls.Worker@50f8360d ，他的 默认 workName 是 Android Dev
   - property —— 必须是类型 KProperty<*>或其超类型。(类似于java 中的Field)
   - value —— 必须与属性同类型或者是它的子类型。  
 
-##### 另一种实现属性委托的方式
+
+###### 另一种自定义属性委托的方式    
+
 要实现属性委托，就必须要提供getValue/setValue方法，对于比较懒的同学可能就要说了，这么复杂的参数，还要每次都要手写，真是麻烦，一不小心就写错了。确实是这样，为了解决这个问题， Kotlin 标准库中声明了2个含所需 operator方法的 ReadOnlyProperty / ReadWriteProperty 接口。
 ```Java
 interface ReadOnlyProperty<in R, out T> {
@@ -106,7 +108,7 @@ Kotlin 标准库中提供了几种委托，例如：
 - 可观察属性（observable properties）: 监听器会收到有关此属性变更的通知；
 - 把多个属性储存在一个映射（map）中，而不是每个存在单独的字段中。
 
-##### 延迟属性 by lazy
+###### 延迟属性 by lazy
 lazy() 是接受一个 lambda 并返回一个 Lazy <T> 实例的函数，返回的实例可以作为实现延迟属性的委托： 第一次调用 get() 会执行已传递给 lazy() 的 lambda 表达式并记录结果， 后续调用 get() 只是返回记录的结果。
 ```Java
 val age : Int by lazy {
@@ -133,7 +135,7 @@ fun main() {
  -  LazyThreadSafetyMode. PUBLICATION： 初始化的lambda表达式可以在同一时间被多次调用，但是只有第一个返回的值作为初始化的值。
  -  LazyThreadSafetyMode. NONE：没有同步锁，多线程访问时候，初始化的值是未知的，非线程安全，一般情况下，不推荐使用这种方式，除非你能保证初始化和属性始终在同一个线程
 
-##### 可观察属性 observable / vetoable
+###### 可观察属性 observable / vetoable
 如果你要观察一个属性的变化过程，那么可以将属性委托给Delegates.observable, observable函数原型如下：
 ```Java
 var number: Int by Delegates.observable(1){
@@ -168,7 +170,21 @@ fun main() {
 ```
 可以看出，当年龄大于 100时，并未赋值成功
 
-##### 属性存储在映射中
+
+###### 委托给另一个属性
+一个属性可以把它的 getter 与 setter 委托给另一个属性。
+- 顶层属性
+  var newValue: Int by ::value
+- 同一个类的成员或扩展属性  
+  var newValue: Int by this::newValue
+- 另一个类的成员或扩展属性  
+  val delegatedToAnotherClass: Int by anotherClassInstance::anotherClassInt
+
+      委托属性时，查到的结果始终是最新值
+
+
+
+###### 属性存储在映射中
 还有一种情况，在一个映射（map）里存储属性的值，使用映射实例自身作为委托来实现委托属性，如：
 ```Java
 fun main() {
@@ -184,6 +200,10 @@ class User(val map: Map<String, Any?>) {
     val age: Int     by map
 }
 ```
+`注意:map的 key 和 属性名, value 和属性的数据格式 必须对应，否则报错`
+
+
+
 
 ### 总结
 像Android 日常开发中，就有很多需要初始化一次，后续无须初始化的地方，例如:findViewById，SP存储等，我们就可以使用 `by lazy()`
@@ -191,3 +211,4 @@ class User(val map: Map<String, Any?>) {
 
 ### 参考资料
 - [一文彻底搞懂Kotlin中的委托](https://juejin.cn/post/6844904038589267982)
+- [kotlin中文文档](https://book.kotlincn.net/text/delegation.html)

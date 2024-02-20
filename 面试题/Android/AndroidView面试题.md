@@ -29,3 +29,6 @@ MainActivity onTouchEvent
 -   避免在 onBindViewHolder() 方法中执行耗时操作： onBindViewHolder() 方法应该尽量保持轻量级，避免执行耗时操作，以确保列表滚动的流畅性。
 
 -   关闭动画（如果不需要）： 如果不需要列表项的动画效果，可以通过 setItemAnimator(null) 方法关闭默认的动画，从而提高性能。
+
+#### RecyclerView 优化
+https://www.jianshu.com/p/bd432a3527d6

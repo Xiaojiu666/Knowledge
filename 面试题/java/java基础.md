@@ -108,7 +108,7 @@ Parcelable方式的实现原理是将一个完整的对象进行分解，而分�
 
 
 ###### java中有哪些引用方式，请做详细解释(百度)
--	强引用
+-	强引用  
 			是指创建一个对象并把这个对象赋给一个引用变量
 			比如：
 			Object object =new Object();
@@ -126,8 +126,8 @@ Parcelable方式的实现原理是将一个完整的对象进行分解，而分�
 			也就是说，一旦SoftReference保存了对一个Java对象的软引用后，在垃圾线程对 这个Java对象回收前，SoftReference类所提供的get()方法返回Java对象的强引用。
 			另外，一旦垃圾线程回收该Java对象之 后，get()方法将返回null。
 			MyObject aRef = new  MyObject();    			//强引用  
-			SoftReference aSoftRef=new SoftReference(aRef); //弱引用  
-
+			SoftReference aSoftRef=new SoftReference(aRef); //弱引用    
+    
 			此时，对于这个MyObject对象，有两个引用路径，一个是来自SoftReference对象的软引用，
 			一个来自变量aReference的强引用，所以这个MyObject对象是强可及对象。
 
@@ -143,8 +143,8 @@ Parcelable方式的实现原理是将一个完整的对象进行分解，而分�
 
 
 
--		弱引用
-				弱引用也是用来描述非必需对象的，当JVM进行垃圾回收时，无论内存是否充足，都会回收被弱引用关联的对象。在java中，用java.lang.ref.WeakReference类来表示。下面是使用示例：
+-	弱引用  
+			弱引用也是用来描述非必需对象的，当JVM进行垃圾回收时，无论内存是否充足，都会回收被弱引用关联的对象。在java中，用java.lang.ref.WeakReference类来表示。下面是使用示例：
 
 				WeakReference<People>reference=new WeakReference<People>(new People("zhouqian",20));  
 		        System.out.println(reference.get());  
@@ -167,29 +167,29 @@ Parcelable方式的实现原理是将一个完整的对象进行分解，而分�
 
 				弱引用可以和一个引用队列（ReferenceQueue）联合使用，如果弱引用所引用的对象被JVM回收，这个软引用就会被加入到与之关联的引用队列中。
 
--			虚引用
+-	虚引用
 
-					虚引用和前面的软引用、弱引用不同，它并不影响对象的生命周期。在java中用java.lang.ref.PhantomReference类表示。如果一个对象与虚引用关联，
-					则跟没有引用与之关联一样，在任何时候都可能被垃圾回收器回收。
-					要注意的是，虚引用必须和引用队列关联使用，当垃圾回收器准备回收一个对象时，
-					如果发现它还有虚引用，就会把这个虚引用加入到与之 关联的引用队列中。
-					程序可以通过判断引用队列中是否已经加入了虚引用，
-					来了解被引用的对象是否将要被垃圾回收。
-					如果程序发现某个虚引用已经被加入到引用队列，那么就可以在所引用的对象的内存被回收之前采取必要的行动。
+				虚引用和前面的软引用、弱引用不同，它并不影响对象的生命周期。在java中用java.lang.ref.PhantomReference类表示。如果一个对象与虚引用关联，
+				则跟没有引用与之关联一样，在任何时候都可能被垃圾回收器回收。
+				要注意的是，虚引用必须和引用队列关联使用，当垃圾回收器准备回收一个对象时，
+				如果发现它还有虚引用，就会把这个虚引用加入到与之 关联的引用队列中。
+				程序可以通过判断引用队列中是否已经加入了虚引用，
+				来了解被引用的对象是否将要被垃圾回收。
+				如果程序发现某个虚引用已经被加入到引用队列，那么就可以在所引用的对象的内存被回收之前采取必要的行动。
 
 
 ### 字符串基础
-###### String、StringBuffer和StringBuilder
+##### String、StringBuffer和StringBuilder
 -	String是不可变类，每次操作都会生成新的String对象，并将结果指针指向新的对象，由此会产生内存碎片。如果要频繁对字符串修改，建议采用StringBuffer 和 StringBuilder。
 -	StringBuffer 和 StringBuilder的差别在于，StringBuffer 是线程安全的，而 StringBuilder 是非线程安全的，由于无需维护线程安全的操作，所以StringBuilder 的性能要高于 StringBuffer，所以在单线程环境下推荐使用 StringBuilder，多线程环境下推荐使用 StringBuffer。由于大多数环境下是单线程，所以大多是用 StringBuilder。
 -	StringBuffer 使用 `synchronized` 关键字实现线程同步
 
-###### String str="abc"与 String str=new String(“abc”)的定义方法一样吗？
+##### String str="abc"与 String str=new String(“abc”)的定义方法一样吗？
 不一样  
 -	String str="abc"的方式，java 虚拟机会将其分配到常量池中；所以建议这种写法。
 -	String str=new String(“abc”) 则会被分到堆内存中，如果再频繁修改，会导致内存碎片。
 
-###### String 类的常用方法都有那些？
+##### String 类的常用方法都有那些？
 - indexOf()：返回指定字符的索引。
 - length()：返回字符串长度。
 - equals()：字符串比较。

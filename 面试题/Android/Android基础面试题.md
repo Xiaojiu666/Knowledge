@@ -20,59 +20,7 @@
 
 
 
-###### 7.
 
-## UI 方面
-
-#### 1.View
-
-###### 1.1 触摸事件事件分发机制
-
-![avatar](image\dispath.png)
-
-    一、为什么要有事件分发机制
-    	为了解决安卓触摸事件需要在哪层响应，让事件可控
-    	响应层分为三层Activity-->ViewGroup-->View
-    二、默认原理
-    	dispatchTouch(控制事件和分发事件)
-    	onTouch(响应事件和处理事件)
-    	在上面两个方法没有进行任何方法重写和控制情况下，也就是默认的所有dispatchTouch 和 OnTouch返回值为super的情况下，事件会默认的走完三个层级，并且三个层级全部进行事件的响应
-    三、自定义需求
-    	1.1 三层全部不响应，那么无论dispatchTouch返回true&false 他自己和下面两层的onToutch都不会响应。
-    	1.2 AC层响应，下面两层不响应，将VG层的dispatchTouch返回false，因为在AC层dispatchTouch的源码中，如果返回值为false
-    四、总结
-    	只要控制好dispatchTouch方法，就可以控制事件响应的对应的层级关系，onInterceptTouch方法主要作用是担心ViewGroup里面没有子View，但是AC就不需要担心里面没有子ViewGroup ，因为AC里面必然有xml否则会报错
-
-###### 1.2 自定义 View
-
-###### 1.3 View 的绘制流程
-
-#### 2.RecyclerView
-
-###### 优化
-
-https://www.jianshu.com/p/bd432a3527d6
-
-## 五大组件
-
-#### 1.activity
-
-    Activity是Android程序与用户交互的窗口，是Android构造中最基本的一种，它需要为保持各界面的状态，
-    做很多持久化的事情，妥善管理生命周期以及一些跳转逻辑。
-
-
-
-#### 2.fragment
-
-###### 2.1 fragment 生命周期
-
-###### 2.1 fragment 生命周期
-
-######
-
-#### 3.service
-
-![avatar](image\service_diff.png)
 
 ###### 3.1Service 的两种使用方式分别是什么？它们的生命周期分别怎样迁移？
 

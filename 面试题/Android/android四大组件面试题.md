@@ -238,14 +238,113 @@ ViewModel 的数据会在 Activity 非配置变更触发的销毁时清除，具
 -   2、onSaveInstanceState() ：使用场景针对于应用被系统回收后重建时对数据的恢复，由于应用进程在这个过程中会消亡，因此不能选择内存存储而只能选择使用持久化存储。又由于这部分数据需要通过 Bundle 机制在应用进程和 AMS 服务之间传递，因此会受到 Binder 事务缓冲区大小限制，只可以存储小规模数据。
 
 ![Alt text](image.png)
+
+
 ### Service
-#### 启动方式
-区别：对应着动态绑定和静态绑定； 静态对应着startService，动态对应着bindService，静态有自己独立的生命周期，动态会依附activity等组件的生命周期。
+#### 启动方式 和区别
+Service的生命周期和两种启动方式的主要区别:
+生命周期:
+- onCreate():服务第一次创建时调用
+- onStartCommand(): 每次启动服务时调用
+- onDestroy():服务销毁前调用
+- onBind():服务被绑定时调用  
+- onUnbind(): 服务被解绑时调用
 
-生命周期： onCreate → startCommand → onDestroy
-onCreate → onBind→onUnBind→ onDestroy
+两种启动方式:
+1. startService:
+- 调用Context的startService()
+- 服务会一直运行,不会被销毁,除非手动停止或内存不足。
+- 适合启动后需要长期运行的服务。  
+2. bindService:
+- 调用Context的bindService()
+- 依赖于调用服务的客户端生命周期,客户端销毁则服务将销毁。
+- 用于客户端需要和服务交互的情况。
 
-使用场景：即上述区别，如果需要一直存在的服务，即静态绑定，反之依赖于组件
+区别:
+
+- startService可以长期在后台运行,bindService生命周期依赖客户端。
+- startService适合独立的后台服务,bindService适合客户端需要交互的服务。
+- onStartCommand对应startService,onBind对应bindService。
+
+#### 服务保活
+保证Service不被系统杀死的常用方法有:
+
+1. 开启前台Service
+2. 通过startService启动
+3. 重写onStartCommand()
+在onStartCommand()中返回START_STICKY,如果Service被杀死可以重启。
+
+4. 成为进程的主线程
+可以在AndroidManifest中为Service设置android:process=":main",使其运行在主进程中,作为主线程不会被随意销毁。
+5. 系统自动重启 在服务中增加自重启机制
+
+6. 提高服务优先级
+7. 与用户交互
+定期通过Notification和用户交互,用户正在使用的服务系统不会轻易杀死。
+8. 加入白名单
+
+#### Service 如何通信
+1. BroadCastReceiver
+2. EventBus
+3. Callback
+5. AIDL
+定义AIDL接口,Service和Activity分别实现,可以跨进程通信。
+6. SharedPreferences
+7.数据库 
+8. 文件
+
+#### IntentService是什么,IntentService原理，应用场景及其与Service的区别
+IntentService是Android提供的一种特殊的Service，用于在后台执行异步任务。它继承自Service类，并且通过队列的方式处理来自主线程的Intent请求。IntentService在处理完所有的Intent请求后会自动停止，因此不需要手动调用stopSelf()方法来停止Service。
+
+**工作原理**：
+1. 当Activity或其他组件调用startService()方法启动IntentService时，IntentService会创建一个工作线程（HandlerThread），并在该线程上依次处理每个Intent请求。
+2. 在IntentService的onHandleIntent()方法中，处理传递过来的Intent对象，执行需要在后台完成的任务。
+3. 处理完一个Intent请求后，IntentService会停止并销毁自身。
+
+**应用场景**：
+1. 执行短暂的、耗时较少的后台任务，比如下载文件、上传数据、处理数据等。
+2. 在不需要与用户交互的情况下执行后台任务，比如接收推送消息后执行相关处理。
+3. 需要按顺序处理多个后台任务，且确保所有任务都会被处理到。
+
+**与普通Service的区别**：
+1. **生命周期管理**：IntentService在处理完所有的Intent请求后会自动停止并销毁，而普通的Service需要手动调用stopSelf()或stopService()方法来停止。
+2. **线程管理**：IntentService内部已经实现了一个工作线程，因此不需要手动管理线程。而普通的Service需要手动创建线程来执行后台任务。
+3. **任务队列**：IntentService会按顺序处理传递过来的Intent请求，而普通的Service则需要自行管理任务的队列。
+4. **并发处理**：IntentService处理Intent请求是在单个工作线程中依次执行的，因此不存在并发执行的情况。而普通的Service可以手动创建多个线程来实现并发处理。
+
+#### Service 的 onStartCommand 方法有几种返回值?各代表什么意思?
+
+在Service的onStartCommand()方法中，有三种返回值，分别是：
+1. **START_NOT_STICKY**：表示Service被系统销毁后，不会重新启动Service。即使还有未处理的Intent请求，系统也不会尝试重新启动Service。适用于执行一次性任务的Service。
+
+2. **START_STICKY**：表示Service被系统销毁后，会尝试重新启动Service，并重新传递最后一个Intent请求给Service。但是不会重新传递之前的未处理的Intent请求。适用于需要保持长期运行的Service，比如播放音乐的后台服务。
+
+3. **START_REDELIVER_INTENT**：表示Service被系统销毁后，会尝试重新启动Service，并重新传递所有未处理的Intent请求给Service。适用于需要确保所有Intent请求都被处理的情况，比如下载文件的后台服务。
+
+这些返回值决定了Service在被系统销毁后的重新启动行为，根据不同的需求选择合适的返回值来确保Service的行为符合预期。
+
+#### 用过哪些系统服务
+1. **ActivityManagerService**：负责管理Activity的生命周期、进程管理、任务栈管理等。
+
+2. **PackageManagerService**：负责管理应用程序包，包括安装、卸载、权限管理等。
+
+3. **WindowManagerService**：负责管理窗口、布局、Surface等窗口相关的操作。
+
+4. **NotificationManagerService**：负责管理通知，包括发送通知、取消通知、通知栏管理等。
+
+5. **AlarmManagerService**：负责管理定时任务、闹钟等，用于在指定时间触发特定的操作。
+
+6. **TelephonyManagerService**：负责管理电话相关的操作，比如拨号、接听电话、发送短信等。
+
+7. **WifiManagerService**：负责管理Wi-Fi网络连接，包括搜索可用的Wi-Fi网络、连接指定的Wi-Fi网络等。
+
+8. **BluetoothManagerService**：负责管理蓝牙连接和通信。
+
+9. **PowerManagerService**：负责管理设备的电源管理，包括休眠模式、唤醒锁等。
+
+10. **LocationManagerService**：负责管理设备的位置信息，包括GPS定位、网络定位等。
+
+这些系统Service提供了Android系统的核心功能，并且可以通过系统API与应用程序进行交互，从而实现各种功能和服务。
 
 #### Service如何进行保活
 利用系统广播拉活

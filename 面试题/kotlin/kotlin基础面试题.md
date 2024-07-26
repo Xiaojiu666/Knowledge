@@ -88,3 +88,123 @@ Kotlin 中的高阶函数可以使用 lambda 表达式来实现，这样可以�
 
 #### noinline 
 内联函数的「函数参数」 不允许作为参数传递给非内联的函数，
+基础级别
+
+
+#### 什么是Kotlin？
+
+Kotlin是由JetBrains开发的一种静态类型编程语言。它与Java完全兼容，主要用于Android开发。
+Kotlin的主要特性是什么？
+
+简洁的语法
+安全（空安全，类型推断）
+与Java互操作
+工具友好（可与所有现有的Java框架和库一起使用）
+表达力强（提供许多强大的功能，如高阶函数、lambda等）
+解释Kotlin中的空安全。
+
+Kotlin旨在消除代码中的NullPointerException。Kotlin中的类型默认是不可为空的。要允许变量持有空值，需要显式地用?标记类型。
+#### val和var的区别是什么？
+
+val（值）是不可变的，只读的。一旦分配，它不能被重新分配。
+var（变量）是可变的，可以重新分配。
+如何在Kotlin中创建数据类？
+
+kotlin
+复制代码
+data class User(val name: String, val age: Int)
+中级水平
+什么是Kotlin中的伴生对象？
+
+伴生对象是与类关联的单例对象。它允许你定义与类而不是类的实例相关的方法和属性。
+解释Kotlin中by关键字的用法。
+
+by关键字用于委托。例如，一个类可以将特定接口的实现委托给另一个类。
+什么是Kotlin中的扩展函数？
+
+扩展函数允许你向现有类添加功能，而无需修改它们的代码。它们在类的外部定义，但可以像类的方法一样调用。
+kotlin
+复制代码
+fun String.removeFirstLastChar(): String = this.substring(1, this.length - 1)
+在Kotlin中如何处理异常？
+
+与Java类似，可以使用try，catch和finally块。
+kotlin
+复制代码
+try {
+    // 可能抛出异常的代码
+} catch (e: Exception) {
+    // 处理异常
+} finally {
+    // 始终执行的代码
+}
+==和===在Kotlin中的区别是什么？
+
+==检查结构相等（相当于Java中的equals()）。
+===检查引用相等（是否指向同一个对象）。
+高级水平
+什么是Kotlin中的协程？
+
+协程是Kotlin中用于异步编程的特性。它们是轻量级的线程，允许你以顺序的方式编写异步代码。
+如何在Kotlin中启动协程？
+
+kotlin
+复制代码
+GlobalScope.launch {
+    // 协程代码
+}
+解释协程中的launch和async的区别。
+
+launch用于启动不返回结果的协程。
+async用于启动返回Deferred结果的协程，可以被等待。
+Kotlin中suspend修饰符的作用是什么？
+
+suspend修饰符用于标记一个可以挂起的函数，意味着它可以暂停并在稍后恢复。
+解释高阶函数并举例。
+
+高阶函数是将其他函数作为参数或返回函数的函数。
+kotlin
+复制代码
+fun <T> List<T>.customFilter(predicate: (T) -> Boolean): List<T> {
+    val result = mutableListOf<T>()
+    for (item in this) {
+        if (predicate(item)) {
+            result.add(item)
+        }
+    }
+    return result
+}
+如何在Kotlin中确保线程安全？
+
+使用同步块、原子变量或使用适当的调度器进行高层次的并发框架，如协程。
+什么是Kotlin中的内联函数及其用途？
+
+内联函数是指在调用点扩展的函数，从而减少函数调用的开销。
+kotlin
+复制代码
+inline fun <T> lock(lock: Lock, body: () -> T): T {
+    lock.lock()
+    try {
+        return body()
+    } finally {
+        lock.unlock()
+    }
+}
+如何在Kotlin中定义密封类，及其使用场景？
+
+密封类用于表示受限的类层次结构，其中一个值只能是有限集合中的一种类型。
+kotlin
+复制代码
+sealed class Shape
+class Circle(val radius: Double) : Shape()
+class Rectangle(val height: Double, val width: Double) : Shape()
+解释Kotlin中的具体化类型参数的概念。
+
+具体化类型参数允许你在运行时访问类型信息，这在泛型中通常是被擦除的。
+kotlin
+复制代码
+inline fun <reified T> Gson.fromJson(json: String): T = this.fromJson(json, T::class.java)
+Kotlin集合中的map和flatMap有什么区别？
+
+map将集合中的每个元素转换为新元素并返回转换后的元素列表。
+flatMap将集合中的每个元素转换为一个可迭代的元素，并将结果展平成一个单一列表。

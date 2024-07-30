@@ -75,7 +75,7 @@ msg.setData(bundle);
 sendMessageAtTime(msg, SystemClock.uptimeMillis() + delayMillis);
 ```
 
-#### ThreadLocal
+#### HandlerThread
 1. HandlerThread 是一种含有 Looper 的线程,可以使用 Handler 向其发送 Message。
 
 2. 与普通 Thread 相比,其主要优点是自带 Looper,使用更方便,可以直接通过 Handler 与其进行交互。

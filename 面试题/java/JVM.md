@@ -64,4 +64,4 @@ https://blog.csdn.net/seriousplus/article/details/80780243
 -  标记清除算法
 -  复制收集方式
 -  标记整理算法
--	 分代回收算法(虚拟机默认的算法)
+-  分代回收算法(虚拟机默认的算法)

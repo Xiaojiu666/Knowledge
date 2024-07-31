@@ -1,5 +1,5 @@
 
-#### android 性能优化
+### android 性能优化
 
 优化 Android 应用的性能是一个广泛的话题，涉及多个方面，包括内存管理、UI渲染、网络请求、数据存取等。以下是一些常见的优化技巧：
 
@@ -24,6 +24,61 @@
 10. **混淆优化**：在发布应用时使用代码混淆工具（如 ProGuard）对代码进行混淆，减小 APK 大小并增加安全性。
 
 这些只是优化 Android 应用性能的一些常见技巧，实际上，性能优化是一个持续改进的过程，需要根据具体应用的情况进行分析和优化。
+
+##### App内存优化
+- 1、非静态内部类会隐式地持有外部类的引用，容易导致内存泄漏。使用静态内部类避免这种情况。
+	对于某些长生命周期的对象，使用WeakReference可以避免持有对象的强引用，防止内存泄漏。
+	```JAVA
+	static class MyHandler extends Handler {
+		private final WeakReference<MyActivity> mActivity;
+
+		MyHandler(MyActivity activity) {
+			mActivity = new WeakReference<>(activity);
+		}
+
+		@Override
+		public void handleMessage(Message msg) {
+			MyActivity activity = mActivity.get();
+			if (activity != null) {
+				// Handle message
+			}
+		}
+	}
+	```
+- 2、 及时清理资源
+释放Bitmap
+Bitmap是Android中占用内存较大的对象，使用完毕后应及时调用recycle()方法释放内存。
+关闭流
+及时关闭文件流
+- 3、使用内存缓存 LruCache  
+	```JAVA
+	int cacheSize = 4 * 1024 * 1024; // 4MiB
+	LruCache<String, Bitmap> bitmapCache = new LruCache<>(cacheSize);
+	bitmapCache.put(key, bitmap);
+	Bitmap bitmap = bitmapCache.get(key);
+	```
+- 4、避免内存抖动
+	减少内存创建，合理的在需要的时候再去创建内存
+	使用依赖注入维护对象
+
+- 5、使用工具监控内存
+	Android Profiler
+	LeakCanary
+
+- 6、使用合适的数据结构
+	选择合适的数据结构可以节省内存。例如，使用SparseArray代替HashMap。
+
+- 7、避免使用内存密集型组件
+	使用合适的布局
+	避免使用嵌套过深的布局，使用ConstraintLayout替代多层级布局，减少内存开销。
+- 8、管理大文件和资源
+	分析和压缩资源
+	buildTypes {
+    release {
+        minifyEnabled true
+        proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    }
+}
 #### 图片压缩
 ```Java
     /**

@@ -43,12 +43,13 @@ Message msg = Message.obtain();
 Message msg = new Message();
 这种方式会创建新的Message实例,如果频繁创建会造成内存占用过多。
 ```
+
 3. 通过Handler.obtainMessage()获得
 ```java
 Message msg = handler.obtainMessage(); 
 这种方式也是从消息池重复利用Message实例,但带有Handler的信息,会直接关联到这个Handler。
+```
 ```java
-
 
 Message msg = handler.obtainMessage();
 Bundle bundle = new Bundle();

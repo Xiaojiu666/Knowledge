@@ -1,11 +1,151 @@
 
-#### == 和 === 区别
-== 比较的是值 通过Intrinsics.areEqual(b, c)来比较两个对象的值
-=== 比较的时地址值
+## 1. 基础知识
+
+### 1.1 什么是 Kotlin？它与 Java 的主要区别是什么？
+Kotlin 是一种现代化的静态类型编程语言，官方推荐用于 Android 开发。
+**区别**：
+- Kotlin 语法简洁，减少样板代码。
+- Kotlin 支持空安全（Null Safety）。
+- Kotlin 具有扩展函数和更好的函数式编程支持。
+- Kotlin 具有协程支持，适用于异步编程。
+
+### 1.2 Kotlin 的基本数据类型有哪些？
+- 数字类型（Byte 1字节、Short 2字节、Int 4字节、Long 8字节、Float 4字节、Double 8字节）
+- 字符类型（Char 2字节）
+- 布尔类型（Boolean 1 字节）
+- 字符串类型（String）
+- 数组（Array）
+
+### 1.3 Kotlin 的可空类型（Nullable Types）如何处理？
+使用 `?` 声明可空类型，例如 `var name: String? = null`，并使用 `?.`（安全调用）或 `!!`（非空断言）处理。
+
+### 1.4 Kotlin 的 `val` 和 `var` 有什么区别？
+- `val`：不可变变量（类似 Java 的 `final`）。
+- `var`：可变变量。
+
+### 1.5 什么是扩展函数（Extension Function）？
+扩展函数允许在不修改类的情况下扩展其功能。例如：
+```kotlin
+fun String.reverse(): String {
+    return this.reversed()
+}
+```
+
+### 1.6 Kotlin 的 `when` 语句如何使用？
+`when` 是 Kotlin 版的 `switch`，支持复杂条件判断：
+```kotlin
+when (value) {
+    1 -> println("One")
+    in 2..5 -> println("Between 2 and 5")
+    else -> println("Other")
+}
+```
+
+### 1.7 Kotlin 的 `object` 关键字有哪些用法？
+- **对象声明**（单例模式）。
+- **伴生对象**（类似 Java 的静态成员）。
+- **匿名对象**（用于临时创建对象）。
+
+### 1.8 Kotlin 的 `sealed class` 作用是什么？
+`sealed class` 适用于定义受限的继承结构，比如 UI 状态管理。
+
+### 1.9 什么是数据类（Data Class）？
+数据类用于存储数据，自动生成 `toString()`、`equals()`、`hashCode()` 等方法。
+```kotlin
+data class User(val name: String, val age: Int)
+```
+
+### 1.10 `lateinit` 和 `lazy` 的区别是什么？
+- `lateinit` 适用于可变变量（`var`），在初始化前不能访问。
+- `lazy` 适用于不可变变量（`val`），只会在第一次使用时初始化。
+
+## 2. Kotlin 高级特性
+
+### 2.1 什么是协程（Coroutines）？它的优点是什么？
+协程是一种轻量级线程，支持挂起和恢复，避免阻塞主线程，适用于异步编程。
+
+### 2.2 `suspend` 关键字的作用？
+`suspend` 用于标记挂起函数，可在协程内调用。
+
+### 2.3 `launch` 和 `async` 的区别？
+- `launch` 启动协程但不会返回结果。
+- `async` 启动协程并返回 `Deferred`，可通过 `await()` 获取结果。
+
+### 2.4 `withContext` 的作用是什么？
+用于切换协程上下文，如 `withContext(Dispatchers.IO)` 切换到 IO 线程。
+
+### 2.5 什么是 `Flow`？与 `LiveData` 的区别是什么？
+- `Flow` 是 Kotlin 协程提供的数据流，支持背压。
+- `LiveData` 主要用于 Android UI 组件，生命周期感知但不支持挂起函数。
+
+### 2.6 Kotlin 中的 `inline` 关键字的作用？
+`inline` 用于内联函数，减少 lambda 开销。
+
+### 2.7 `crossinline` 和 `noinline` 有什么区别？
+- `crossinline` 防止 lambda 被非局部返回。
+- `noinline` 禁止 lambda 内联。
+
+### 2.8 什么是 `reified` 关键字？
+在泛型函数中用于保留泛型类型信息，允许在运行时获取类型。
+
+## 3. Android 相关
+
+### 3.1 在 Android 开发中，如何使用 Kotlin 协程处理网络请求？
+使用 `Retrofit`+`Coroutine`：
+```kotlin
+suspend fun getData(): Response<Data> {
+    return apiService.getData()
+}
+```
+
+### 3.2 ViewModel 如何使用协程？
+在 `viewModelScope` 中启动协程：
+```kotlin
+viewModelScope.launch {
+    val data = repository.getData()
+}
+```
+
+### 3.3 `LiveData` 和 `StateFlow` 的区别？
+- `LiveData` 适用于 UI 层，生命周期感知。
+- `StateFlow` 适用于数据流，支持挂起。
+
+### 3.4 Kotlin 如何实现单例模式？
+使用 `object` 关键字：
+```kotlin
+object Singleton {
+    val instance = "Hello"
+}
+```
+
+## 4. 性能优化与最佳实践
+
+### 4.1 如何优化 Kotlin 代码性能？
+- 使用 `inline` 减少 lambda 开销。
+- 避免 `vararg` 造成的数组分配。
+- 使用 `lazy` 延迟初始化。
+
+### 4.2 Kotlin 协程的最佳实践是什么？
+- 适当使用 `Dispatchers` 控制线程。
+- 在 `viewModelScope` 中管理生命周期。
+- 使用 `try-catch` 处理异常。
+
+### 4.3 如何避免 Kotlin 代码中的内存泄漏？
+- 使用 `weak reference` 避免 Activity 持有 ViewModel 引用。
+- 在 `onDestroy` 取消协程。
+
+### 4.4 在 Android 项目中，如何使用 Kotlin 编写高效的 RecyclerView 适配器？
+使用 `ListAdapter` 和 `DiffUtil` 优化性能。
+
+### 4.5 如何使用 Kotlin 提高 Android 项目的可读性和可维护性？
+- 使用扩展函数减少重复代码。
+- 适当使用 `sealed class` 处理 UI 状态。
+- 使用 `data class` 处理数据对象。
+
+---
 
 
-#### 协变 逆变 不变
-协变(out) 只能作为输出,即只能读取类型参数T,不能写入T。适用于只输出泛型类型的场景。
+
 
 ```JAVA
 interface Source<out T> {
